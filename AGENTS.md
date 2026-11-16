@@ -8,6 +8,12 @@ This repo is for a university **ASR (automatic speech recognition) course projec
 
 The repo holds the course materials, their digests, and `asrbench`, the evaluation harness in `src/asrbench/`. **No languages have been chosen yet.** Swahili appears in the example config only as a test of the pipeline.
 
+## Status (paused 2026-11-16)
+
+- **Done:** materials digested; evaluation harness built and verified on the GPU (Whisper-small smoke run on 40 FLEURS Swahili dev clips; 22 tests pass).
+- **Waiting on:** the instructor's project details, expected around the week of 2026-11-23: deadline, grading, report format, how many languages and models. Update `docs/project-requirements.md` when they arrive.
+- **Next:** choose eligible languages → check FLEURS and model support → register them in the class tracker → dev runs with 2–3 models → one frozen test run → error analysis and report. Optional: install and verify the NeMo and Qwen extras.
+
 ## Harness quick reference
 
 - **Environment:** `uv` with Python 3.12. Install with `uv sync --extra hf --group dev`. Run commands as `uv run asrbench …` and `uv run pytest`. torch 2.14 is pinned, with CUDA 13 wheels on Windows/Linux.
