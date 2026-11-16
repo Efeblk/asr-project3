@@ -4,7 +4,7 @@ This file holds context for any coding agent (Claude Code, Codex, Cursor, …) w
 
 ## What this repo is
 
-This repo is for a university **ASR (automatic speech recognition) course project**. The students call it "Project 3"; the slides only ever say "the project". The task is to evaluate speech recognizers that output a **same-language transcript** on several **non-English** languages, against trusted reference transcripts, and to produce a reproducible, per-language evaluation.
+This repo is for a university **ASR (automatic speech recognition) course project**, done **solo** (a "group" of one, so commit straight to `main`). The students call it "Project 3"; the slides only ever say "the project". The task is to evaluate speech recognizers that output a **same-language transcript** on several **non-English** languages, against trusted reference transcripts, and to produce a reproducible, per-language evaluation.
 
 The repo holds the course materials, their digests, and `asrbench`, the evaluation harness in `src/asrbench/`. **No languages have been chosen yet.** Swahili appears in the example config only as a test of the pipeline.
 
