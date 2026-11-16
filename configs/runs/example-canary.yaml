@@ -1,0 +1,12 @@
+# NeMo Canary v2 (S72). Install with `uv sync --extra nemo` (Linux/WSL recommended). Untested in this repo.
+name: canary-1b-v2_fleurs-xx_dev
+dataset: data/fleurs/xx/manifest.jsonl
+split: dev
+languages: [xx]
+eligibility_confirmed: false
+batch_size: 8
+model:
+  family: nemo
+  id: nvidia/canary-1b-v2     # parakeet alternative: nvidia/parakeet-tdt-0.6b-v3 (NOT v2: English-only)
+  device: cuda
+  language_hints: {xx: xx}    # Canary source_lang/target_lang code

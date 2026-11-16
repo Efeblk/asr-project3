@@ -1,0 +1,14 @@
+# Language-specific CTC checkpoint example (S49). Find one fine-tuned for YOUR language and check its card.
+name: xlsr-ctc_fleurs-xx_dev
+dataset: data/fleurs/xx/manifest.jsonl
+split: dev
+languages: [xx]
+eligibility_confirmed: false
+batch_size: 8
+model:
+  family: hf-ctc
+  id: <org>/<wav2vec2-or-xlsr-ctc-checkpoint-for-your-language>
+  revision: main
+  device: cuda
+  dtype: float16
+  model_language: xx          # guard: refuses to run on other languages

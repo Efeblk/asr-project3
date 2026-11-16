@@ -1,0 +1,15 @@
+# Scoring policy (S16, S17). Declare it BEFORE comparing models and keep it fixed.
+# Applied identically to references and hypotheses at scoring time; raw predictions are never changed.
+default:
+  unicode_form: NFC          # NFC | NFD | NFKC | NFKD | none
+  lowercase: true            # casefold
+  remove_punctuation: true   # Unicode category P
+  strip_diacritics: false    # accents can change meaning (S23) - only enable with a stated reason
+  word_unit: whitespace      # whitespace | none  (none -> CER only, for languages without spaces)
+  cer_unit: codepoint        # codepoint | grapheme
+
+# Per-language overrides (merged over default). Examples:
+languages:
+  ja: {word_unit: none, note: "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."}
+  zh: {word_unit: none, note: "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."}
+  th: {word_unit: none, cer_unit: grapheme, note: "No spaces between words; grapheme clusters for CER."}

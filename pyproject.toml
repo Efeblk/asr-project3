@@ -1,0 +1,64 @@
+[project]
+name = "asrbench"
+version = "0.1.0"
+description = "Reproducible multilingual (non-English) ASR evaluation harness for the course project"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "jiwer>=3.1",
+    "numpy>=1.26",
+    "soundfile>=0.12",
+    "soxr>=0.4",
+    "pyyaml>=6.0",
+    "huggingface-hub[hf_xet]>=0.26",
+    "regex>=2024.0",
+]
+
+[project.optional-dependencies]
+# Transformers-based models: Whisper (multilingual) and wav2vec2/XLS-R CTC fine-tunes.
+hf = [
+    "torch>=2.5",
+    "transformers>=4.46",
+    "accelerate>=1.0",
+]
+# NVIDIA NeMo models (Canary v2, Parakeet TDT v3). NeMo is best supported on Linux/WSL.
+nemo = [
+    "torch>=2.5",
+    "nemo_toolkit[asr]>=2.4",
+]
+# Qwen3-ASR (needs a CUDA GPU with bfloat16).
+qwen = [
+    "torch>=2.5",
+    "qwen-asr",
+]
+
+[project.scripts]
+asrbench = "asrbench.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/asrbench"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: downloads models or datasets (deselect with -m 'not slow')"]
+
+# CUDA builds of torch on Windows/Linux; macOS falls back to the default PyPI (CPU/MPS) wheels.
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
+
+
+[tool.uv]
+# Keep the same torch release on every platform (the CUDA index lags PyPI).
+constraint-dependencies = ["torch==2.14.*"]

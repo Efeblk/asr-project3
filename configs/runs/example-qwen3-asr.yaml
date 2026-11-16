@@ -1,0 +1,14 @@
+# Qwen3-ASR (S74-S75). Install with `uv sync --extra qwen`; needs a bf16-capable CUDA GPU. Untested in this repo.
+name: qwen3-asr-1.7b_fleurs-xx_dev
+dataset: data/fleurs/xx/manifest.jsonl
+split: dev
+languages: [xx]
+eligibility_confirmed: false
+batch_size: 4
+model:
+  family: qwen
+  id: Qwen/Qwen3-ASR-1.7B
+  device: cuda
+  dtype: bfloat16
+  max_new_tokens: 256         # a low cap truncates long outputs (S74)
+  language_hints: {xx: <LanguageName>}

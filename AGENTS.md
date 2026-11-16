@@ -6,7 +6,17 @@ This file holds context for any coding agent (Claude Code, Codex, Cursor, …) w
 
 This repo is for a university **ASR (automatic speech recognition) course project**. The students call it "Project 3"; the slides only ever say "the project". The task is to evaluate speech recognizers that output a **same-language transcript** on several **non-English** languages, against trusted reference transcripts, and to produce a reproducible, per-language evaluation.
 
-The project code doesn't exist yet. So far the repo only holds the course materials and their digests.
+The repo holds the course materials, their digests, and `asrbench`, the evaluation harness in `src/asrbench/`. **No languages have been chosen yet.** Swahili appears in the example config only as a test of the pipeline.
+
+## Harness quick reference
+
+- **Environment:** `uv` with Python 3.12. Install with `uv sync --extra hf --group dev`. Run commands as `uv run asrbench …` and `uv run pytest`. torch 2.14 is pinned, with CUDA 13 wheels on Windows/Linux.
+- **Pipeline:** `import-fleurs`/`import-tsv` → `validate` → `run <config>` → `score <run>` → `compare <a> <b>`. Usage is in README.md.
+- **Data format** (`dataset.py`): manifests are JSONL with `id, audio, reference, language, split[, speaker, session, duration]`. An empty `reference` means the clip contains no speech. Bootstrap clusters use session, then speaker, then the item ID.
+- **Models** (`models/`): to add a family, subclass `Recognizer`, implement `load()` and `transcribe(list[np.ndarray 16 kHz], language) -> list[str]`, and register it in `models/__init__.py`. `hf-whisper` and `hf-ctc` have been verified on the GPU. `nemo` and `qwen` follow the slide APIs but have **not been run yet**.
+- **Scoring policy:** `configs/scoring.yaml`, with per-language overrides. Normalization is applied only at scoring time, and `predictions.jsonl` stays raw.
+- **Tests:** `tests/test_metrics.py` encodes the slide examples (S13, S18, S20–S23, S26, S76). Keep them passing.
+- **Where things live:** `data/` is gitignored and can be regenerated. `runs/<name>_<ts>/` holds real runs and is committed. `runs/_*/` holds scratch or smoke runs and is ignored.
 
 ## Project rules (hard constraints, so check every proposal against them)
 
@@ -63,6 +73,11 @@ Code snippets for each are in the cheatsheet, §4.
 ## Repo layout
 
 ```
+src/asrbench/                  ← harness: dataset, importers, audio, normalize, metrics, bootstrap, models/, runner, scoring, cli
+configs/                       ← scoring.yaml (policy) + runs/*.yaml (run configs; examples)
+tests/                         ← pytest suite (slide-derived metric checks + end-to-end)
+data/                          ← gitignored audio + manifests (regenerable)
+runs/                          ← run outputs (deliverables); runs/_*/ = scratch, ignored
 AGENTS.md                      ← you are here (CLAUDE.md just imports this)
 docs/
   project-requirements.md      ← every project rule, with slide citations
@@ -89,5 +104,5 @@ materials/
 ## Keeping this file useful
 
 - When the user provides the official project brief (deadline, grading, format), add it under `materials/course/` with a text copy. Then update `docs/project-requirements.md` and the "Still unknown" line above.
-- When project code is added, document its layout and its run/eval commands here.
+- When the harness changes (new model family, new command, new output file), update the quick reference above and README.md.
 - Keep this file short. Detail belongs in `docs/`.

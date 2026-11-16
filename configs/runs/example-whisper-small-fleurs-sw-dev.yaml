@@ -1,0 +1,17 @@
+# Smoke-test config. Swahili is used here only as a pipeline example - it is NOT a project choice.
+# Replace with your group's confirmed languages (see docs/project-requirements.md).
+name: whisper-small_fleurs-sw_dev
+dataset: data/fleurs/sw_ke/manifest.jsonl
+split: dev                    # tune on dev; test needs `frozen: true` and runs once (S7, S60)
+languages: [sw]
+eligibility_confirmed: true   # group confirms: not English, not any member's mother tongue (never record whose)
+limit: 40                     # first N items per language by id - dev smoke tests only
+batch_size: 8
+model:
+  family: hf-whisper          # hf-whisper | hf-ctc | nemo | qwen
+  id: openai/whisper-small    # multilingual; never a .en checkpoint (S69)
+  revision: main              # resolved to an exact commit hash in manifest.json
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints: {sw: swahili}

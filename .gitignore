@@ -5,8 +5,10 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 # Large/local data and model caches (keep manifests + predictions in git, not raw audio)
-data/raw/
-data/cache/
+data/*
+!data/README.md
+# Scratch / smoke-test runs (prefix with _). Real runs under runs/ are deliverables: commit them.
+runs/_*/
 *.ckpt
 *.safetensors
 .cache/
