@@ -1,0 +1,576 @@
+## Slide 1
+
+Speech Processing:
+Acoustic Phonetics
+Module 2
+Dr Catherine Lai
+25 September 2025
+Notes:
+
+## Slide 2
+
+So far
+Module 1: Phonetics and representations of speech
+
+Today’s Question:
+How can we tell what someone is saying from the waveform? 
+Notes:
+
+## Slide 3
+
+From modules 1 & 2, you should be able to: 
+Describe how speech sounds in terms of voicing, manner and place of articulation
+Know enough vocal anatomy/phonetics terminology to read and interpret the IPA chart
+You don’t need to memorize all the symbols or be able to make all the sounds!
+
+Notes:
+
+## Slide 4
+
+If you don’t have a phon background it may take some time to absorb.  That’s ok! 
+Try to build on and consolidate the concepts from module 1 & 2 through the semester
+
+Notes:
+
+## Slide 5
+
+manner
+Place of articulation
+Consonants
+Air stream
+
+Notes:
+
+## Slide 6
+
+Vowels are mainly characterised by their height and frontness (tongue position), and lip roundness
+Computers can’t see into our mouths (generally speaking!) so we want to derive features from the speech signal that we can use to identify different speech sounds → articulatory/acoustic mapping
+Vowels
+We generally characterise vowels as voiced (in English at least) are but is this always the case in actual speech? → Phonetics v Phonology
+style.visibilitystyle.visibilityNotes:
+
+Is [h] a voiceless vowel? https://linguistics.stackexchange.com/questions/4834/why-is-h-called-voiceless-vowel-phonetically-and-h-consonant-phonologically/4836#4836 
+
+## Slide 7
+
+Vowels are mainly characterised by their height and frontness (tongue position), and lip roundness
+articulatory/acoustic mapping: what can we infer about articulation from the sound wave?  What features of the sound wave are informative of this?  
+Vowels
+We will come back to the question of how we use phonetic/phonemic transcription in the next weeks.  But first…
+style.visibilityNotes:
+
+The main point of learning about the IPA at this stage is to see that there is a systematic way to describe speech sounds.  Later we’ll want to see how this relates to what’s actually used in speech technology. 
+
+## Slide 8
+
+Study aid: Seeing Speech
+An interactive IPA chart with MRI, X-ray and animations of speech sounds:
+https://www.seeingspeech.ac.uk/ipa-charts/
+Tip: Phonetics is generally easier to learn by doing!  Try looking at the articulators in the video and try it yourself.  Record yourself and look at the spectrogram in Praat.  You’ll pick up the terminology with practice (our tests are open book anyway)!  
+Notes:
+
+## Slide 9
+
+Speech and sound waves
+Notes:
+
+## Slide 10
+
+Sound waves
+Air particles bounce back and forth at different frequencies.  This causes changes in pressure in the air:  particles squashed together → higher air pressure
+https://media.npr.org/assets/img/2014/04/08/compressionwave.gif
+
+Notes:
+
+## Slide 11
+
+Sound waves in air
+Air particles bounce back and forth at different frequencies: we observe a ‘wave’ of compression (and rarefaction) travelling through the air
+
+https://www.acs.psu.edu/drussell/Demos/waves/wavemotion.html 
+ 
+Compression ↦ “squished” ↦  higher pressure
+Rarefaction ↦ “spread” ↦ low pressure
+Notes:
+
+## Slide 12
+
+Sound waves: displacement and pressure
+Air pressure is highest when the air particles are compressed (i.e. squished together).  This produces a sinusoidal pattern as pressure at a single point changes in time. 
+Figure from Dan Russell’s acoustics and vibration animations
+Sinusoidal waves showing particle velocity and pressure
+Particle movement due to source
+Measure of displacement (distance moved) of individual particles 
+Notes:
+
+## Slide 13
+
+https://www.animations.physics.unsw.edu.au/waves-sound/sound/index.html 
+Sound waves: (air) pressure 
+We generally characterise sound waves in terms of changes in pressure in a medium (usually air) caused by some physical source. 
+style.visibilityNotes:
+
+## Slide 14
+
+Time vs Frequency
+Notes:
+
+## Slide 15
+
+Speech in the Time Domain
+Time domain: amplitude (measured pressure relative to atmospheric pressure) over time
+
+Lab 1 take-away: It’s very hard to determine difference vowels and consonants just from the time versus amplitude graph!
+Notes:
+
+## Slide 16
+
+Spectrograms: Frequencies through Time
+
+The spectrogram shows the frequency characteristics of the waveform through time.  Each vertical bar represents frequencies present in a small window of time. 
+Notes:
+
+## Slide 17
+
+Individual frequencies represent “pure tone” sine waves: e.g.,     200 Hz,      300 Hz
+Spectrograms: Speech in the Frequency Domain
+Time (s)
+Frequency (Hertz)
+Dark bits in the spectrogram (in Praat) indicate specific frequency components are present in the speech signal at a specific time
+Amplitude
+
+style.visibilityNotes:
+
+## Slide 18
+
+Fourier Transform
+We can decompose a periodic waveform into a set of simple periodic waves (i.e., pure tones) of different frequencies. 
+Just like a prism splits light into component colours
+A spectrum of colours!
+ 
+style.visibilityNotes:
+
+## Slide 19
+
+Fourier Transform
+We can decompose a periodic waveform into a set of simple periodic waves (i.e., pure tones) of different frequencies. 
+If we scale and shift those pure tones appropriately we can approximate the original waveform by adding the scaled and shifted waves together  
+
+8Hz
+20Hz
+36Hz
++
++
+We’ll talk a lot more about what this actual is in module 3
+Notes:
+
+## Slide 20
+
+Individual frequencies represent “pure tone” sine waves: e.g.,     200 Hz,      300 Hz
+Spectrograms: Speech in the Frequency Domain
+Time (s)
+Frequency (Hertz)
+We take a small window in time, apply the Fourier Transform and get an estimate for the magnitude of waves of different frequencies that make up the original
+Amplitude
+
+style.visibilityNotes:
+
+## Slide 21
+
+Spectrograms: 300 Hz sine wave
+If we look at a 300 Hz tone in Praat we only see a black band around 300 Hz? 
+You may be wondering why is this black band so wide here? We’ll come back to this in module 3…
+Notes:
+
+## Slide 22
+
+If we select a window of time of our 300 Hz tone and apply the Fourier Transform to it, we get a spectral slice.  Here our slice just as a peak around 300 Hz as expected - it’s the only frequency in our input
+Spectral slices: moments in time
+Notes:
+
+## Slide 23
+
+The spectrogram and spectral slice of some actual speech look quite different (this is an [i] from the word “she”).  The slice shows a few peaks, corresponding to the black (horizontal) bands in the spectrogram.   There are a lot more frequencies involved in speech! 
+Spectral slices: moments in time
+Notes:
+
+## Slide 24
+
+Spectral slices: moments in time
+Spectrum [a]
+Spectrum [i]
+Spectrogram [ai]
+The overall shape of the spectrum (the spectral envelope) changes depending on articulator positions.  But the the size (and shape) of the input window can change the shape of spectrum!  
+
+Notes:
+
+## Slide 25
+
+Viewing speech as a spectrogram
+We recognise articulation in terms of frequency components of the sound wave over short periods of time → use this to learn mapping between words and acoustics
+stop
+stop
+fricative
+diphthong
+fricative
+vowel
+High vowel
+nasal
+High vowel
+style.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilityNotes:
+
+Extra: Want to do more spectrogram reading? Check of the (no longer updated) monthly mystery spectrogram site:  http://home.cc.umanitoba.ca/~robh/index.html 
+
+## Slide 26
+
+Viewing speech as a spectrogram
+Today, let’s look at broad acoustic characterisations of different phone classes 
+stop
+stop
+fricative
+diphthong
+fricative
+vowel
+High vowel
+nasal
+High vowel
+Notes:
+
+Extra: Want to do more spectrogram reading? Check of the (no longer updated) monthly mystery spectrogram site:  http://home.cc.umanitoba.ca/~robh/index.html 
+
+## Slide 27
+
+Viewing speech as a spectrogram
+We want to model this recognition process computationally, but first let’s see what cues we could use, i.e., spectrogram reading
+stop
+stop
+fricative
+diphthong
+fricative
+vowel
+High vowel
+nasal
+High vowel
+Notes:
+
+Extra: Want to do more spectrogram reading? Check of the (no longer updated) monthly mystery spectrogram site:  http://home.cc.umanitoba.ca/~robh/index.html 
+
+## Slide 28
+
+Speech Acoustics: Source and Filter
+Notes:
+
+## Slide 29
+
+Source-filter model 
+We can model difference in sounds by considering the sound source and how this is affected by a filter 
+
+Notes:
+
+## Slide 30
+
+Source-filter model: human speech 
+We can model difference in sounds by considering the sound source and how this is affected by a filter 
+Sound source: vocal fold vibration or turbulent air flow through the vocal cords (or both!)
+Filter: vocal tract shape, determined by placement of articulators
+Notes:
+
+## Slide 31
+
+Source-filter model: human speech, simplified 
+Sound source: vocal fold vibration or turbulent air flow through the vocal cords (or both!)
+Filter: vocal tract shape, determined by placement of articulators
+Notes:
+
+## Slide 32
+
+Vocal tract as a tube?
+pulses
+Atmospheric pressure
+We can model the vocal tract as a tube open at one end (the mouth)
+What vowel does a single tube most resemble? 
+style.visibilityNotes:
+
+## Slide 33
+
+Human speech: source
+Voiced: Vocal folds vibrating (pulses of air)
+Unvoiced: vocals fold held close but not vibrating
+We also have turbulent air flow caused by an obstruction in the vocal tract (e.g. fricatives)
+
+https://youtu.be/b89RSYCaUBo 
+style.visibilityNotes:
+
+## Slide 34
+
+Filter: Vocal tract as a series of tubes
+https://annex.exploratorium.edu/exhibits/vocal_vowels/vocal_vowels.html
+We can approximate the vocal tract as a set of tubes
+Tongue position determines tube shape/size 
+Tubes act as filters on the source sound
+Some frequencies are amplified while some are dampened
+Frequencies that are amplified are resonances
+Source: “duck call”
+Notes:
+
+## Slide 35
+
+Resonance
+A resonant frequency is a natural frequency of vibration determined by the physical parameters of the vibrating object, i.e. shape.
+
+Resonant frequency determined by length of pendulum
+Resonant frequency determined by vocal tract shape
+style.visibilitystyle.visibilityNotes:
+
+## Slide 36
+
+Vocal Tract Resonance
+We can “see” vocal tract shapes by looking at resonant frequencies in the acoustic signal, i.e., by extracting frequency information from the waveform 
+→ Spectrograms
+pulses
+Notes:
+
+## Slide 37
+
+Source source: Turbulent air flow → Fricatives
+We previously characterised fricatives (e.g., [s], [z]) in terms of a small constriction and turbulent air flow (like a hiss!).
+
+Notes:
+
+## Slide 38
+
+This turbulent flow sounds like white noise - we see a lot of frequencies are present. This is an aperiodic wave (contrast with periodic waves for the vowels).  
+  
+Aperiodic wave: no repeating structure
+Periodic wave: repeating structure
+Periodic wave: repeating structure
+Unvoiced fricatives as aperiodic waves
+Notes:
+
+## Slide 39
+
+This aperiodicity is reflected in the spectral slice: we don’t really see regular structure here, more like one broad peak across the frequency spectrum
+  
+Window for the spectral slice
+The spectrum (spectral slice) shows activity across frequencies, with a peak at ~8200 Hz
+Frequency Spectrum of [s]
+Notes:
+
+## Slide 40
+
+Sound source: voiced, vowel
+If we look at vowels instead, we can see periodic structure more clearly. This comes from the periodic opening and closing of the vocal folds
+  
+In the pink window we see 5 cycles of the repeating pattern. 
+
+The length of each cycle is the period (t) of the wave and (for sound waves) is measured in seconds. 
+The number of cycles completed each second corresponds to the frequency (f) and is measured in Hertz (Hz)
+You can calculate the frequency from the period and vice versa: 
+ f = 1/t
+Notes:
+
+## Slide 41
+
+Sound source: voiced vowel
+The spectrum for this slice shows more structure: distinct peaks, corresponding to the dark bits in the spectrogram. 
+  
+Notes:
+
+## Slide 42
+
+Seeing manner of articulation: Oral stops
+Oral stops are recognisable by the closure and burst in the waveform and spectrogram
+
+Closure 
+This recording has a bit of background buzz, so the closures aren’t completely “flat”! 
+Notes:
+
+## Slide 43
+
+Oral stops are recognisable by the closure and burst in the waveform and spectrogram
+bursts
+
+Seeing manner of articulation: Oral stops
+Notes:
+
+## Slide 44
+
+Oral stops are recognisable by the closure and burst in the waveform and spectrogram
+bursts
+
+Unvoiced stops can be aspiration → looks a bit like a fricative between the burst and the next vowel
+Seeing manner of articulation: Oral stops
+Notes:
+
+## Slide 45
+
+Nasal stops
+Nasals are characterised by a decrease in amplitude (less dark) across the spectrum.  They still show periodic structure. 
+Much less energy in the higher frequencies for this [n] when followed by voiceless stop 
+Drop in amplitude in the waveform and the spectrogram
+Notes:
+
+## Slide 46
+
+Approximants
+Approximants look a lot like vowels, but with lowered amplitude and usually changing in formant trajectory. It isn’t usually clear where to place boundaries! 
+Notes:
+
+## Slide 47
+
+Seeing place of articulation
+We can “see” differences in place of articulation and manner of speech sounds by looking at how at the spectral characteristics of speech (i.e. the frequencies present in the sound) and how it changes over time 
+From phonetics lecture notes by Louis Goldstein 
+
+Oral stops (aka plosives) at the start of a word can be distinguished by resonant frequency (formant) transitions into the following vowel
+These are really clear examples. Most speech recordings aren’t this clear.  This is a good thing to keep in mind when we start to think about automatic speech recognition!
+style.visibilitystyle.visibilitystyle.visibilitystyle.visibilitystyle.visibilityNotes:
+
+## Slide 48
+
+Vowels
+We can distinguish vowels by their resonances → formants (aka “overtones”)
+Notes:
+
+## Slide 49
+
+Vowels: Resonances → Formants
+We can distinguish vowels by their resonances → formants (aka “overtones”)
+Resonances are ordered by relative frequency
+
+The 2nd formant (F2)
+1st resonance = 1st formant (F1)
+style.visibilityNotes:
+
+## Slide 50
+
+Vowel Quality: Formants
+We can distinguish vowels by their resonances → formants (aka “overtones”)
+The 1st formant (F1) aligns with tongue height: high vowels have lower F1, low vowels have higher F1 (inverse relationship)
+The 2nd formant (F2) aligns with frontness: front vowels have higher F2, back vowels have lower F2
+style.visibilityNotes:
+
+## Slide 51
+
+Mapping the vowel space: F2 v F1
+F2
+F1
+Ladefoged & Johnson 8.6
+
+The 2nd formant (F2) aligns with frontness: front vowels have higher F2, back vowels have lower F2
+Notes:
+
+## Slide 52
+
+Mapping the vowel space: F2 v F1
+F2
+F1
+Ladefoged & Johnson 8.6  - US  English vowel formants
+
+The 1st formant (F1) aligns with tongue height: high vowels have lower F1, low vowels have higher F1 (inverse relationship)
+Notes:
+
+## Slide 53
+
+Mapping the vowel space: F2 v F1
+F2
+F1
+Ladefoged & Johnson 8.6  - US  English vowel formants
+Plotting formant values like this then matches where we expect these vowels to be in our mouths! 
+Note: F2 v F1 plots have zero values in the top right corner.  
+Notes:
+
+## Slide 54
+
+Mapping the vowel space: F2 v F1
+F2
+F1
+US  English vowel formants
+IPA vowel chart
+Notes:
+
+## Slide 55
+
+Vowel Quality vs Articulatory Descriptors
+The relationship between tongue position and vowel quality is complicated
+F2
+F1
+Not all front vowels equally front, not all high vowels equally high → tongue movement is complicated  
+Notes:
+
+## Slide 56
+
+Vowel Quality vs Articulatory Descriptors
+Descriptions like front/back, high/low may actually be more indicative of acoustic differences as captured by formants (see Ladefoged & Johnson Ch. 8)
+F2
+F1
+Not all front vowels equally front, not all high vowels equally high → tongue movement is complicated  
+Notes:
+
+## Slide 57
+
+Vowel Quality, Acoustic Variation
+Vowel formant plots generally show a lot of within speaker and between speaker variation
+Gordon E. Peterson and Harold L. Barney “Control Methods Used in a Study of the Vowels” The Journal of the Acoustical Society of America 24, 175 (1952). DOI: 10.1121/1.1906875
+Notes:
+
+## Slide 58
+
+When analysing vowel spaces, it’s often more useful to label vowel groups with keywords representative of different vowels.  
+Ferragne, E., & Pellegrino, F. (2010). Formant frequencies of vowels in 13 accents of the British Isles. Journal of the International Phonetic Association, 40(1), 1-34. doi:10.1017/S0025100309990247
+Glasgow
+Scottish Highlands (Elgin)
+Notes:
+
+## Slide 59
+
+This approach is also common when developing pronunciation resources for speech technologies.
+Ferragne, E., & Pellegrino, F. (2010). Formant frequencies of vowels in 13 accents of the British Isles. Journal of the International Phonetic Association, 40(1), 1-34. doi:10.1017/S0025100309990247
+Glasgow
+Scottish Highlands (Elgin)
+Notes:
+
+## Slide 60
+
+Watson, C. I., Harrington, J., & Evans, Z. (1998). An acoustic comparison between New Zealand and Australian English vowels. Australian journal of linguistics, 18(2), 185-207.
+
+Acoustic variation
+For any specific phone, there is a lot of variation between speakers within and between dialects
+→ We need statistical methods! 
+
+style.visibilityNotes:
+
+## Slide 61
+
+Formant transitions into and out of vowels can be good indicators of place of articulation, e.g. for oral stops, but this isn’t always that clear in real speech
+Seeing place of articulation
+Notes:
+
+## Slide 62
+
+Take-aways
+We can find acoustic cues to speech articulations by looking at the frequency spectrum of speech across time, i.e. spectrograms
+We saw distinct cues for different manner and place of articulation in the spectrogram
+We can attribute these to differences in source (e.g. vocal fold vibration, turbulent airflow) and filter (vocal tract shape)
+Vocal tract resonances (i.e., formants) tell us about the shape of the filter
+Though we can see systemic differences in speech sounds, actual acoustic realisations are highly variable -> we need statistical methods to model this variability
+Notes:
+
+## Slide 63
+
+Take-away: Acoustic phonetics
+This frequency information is key to both automatic speech recognition and speech synthesis: We can determine what is being said without seeing the actual articulations, and we can generate sounds with a vocal tract!  
+ 
+From phonetics lecture notes by Louis Goldstein 
+Notes:
+
+## Slide 64
+
+Continue to think about…
+The difference between the sound pattern of language (i.e., phonology) and what you actually get in speech (phonetics).  
+What sort of phonetic detail do we want to capture?
+What how would we label the data? At what level of detail?
+Do we want phonetic or phonemic transcriptions? 
+This stack overflow answer gives a good concise example of the difference between phonetics and phonology: 
+Why is h called a voiceless vowel phonetically 
+Notes:

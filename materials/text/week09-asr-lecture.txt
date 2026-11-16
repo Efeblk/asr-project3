@@ -1,0 +1,1426 @@
+## Slide 1
+
+W9 · Automatic Speech Recognition
+
+                         COE025 · November 16, 2026. ASR = automatic speech recognition.
+1
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Begin with a specific recognition contract: a French recording must produce French text. Trace the schematic sound signal to the required reference, then emphasize that the reference is independent of the model.
+
+Origins of values
+
+The scheduled class is Week 9 on November 16, 2026. The French sentence is an authored teaching reference. The waveform is synthetic, drawn from deterministic sine terms for illustration; it is not a recording of this sentence.
+
+Step-by-step reasoning
+
+ASR means automatic speech recognition. Its input is speech and its output is a transcript in the spoken language. The exact reference wording defines the target against which errors will be counted. No numerical recognition result is claimed.
+
+Teaching script and check question
+
+Ask: if output is fluent but does not match what was spoken, has recognition succeeded? No. Fluency is insufficient; use the recording and trusted transcript. Preview methods, reproducible predictions and multilingual error measurement.
+1
+
+## Slide 2
+
+Define the conditions before choosing a model
+
+                         Schematic signals and supplied text. Conditions change the evidence available to the recognizer.
+2
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show how acoustic conditions change the input while the intended words remain stable. The three signal panels compare clean, noisy and overlapping speech, making the need for a clear operating condition tangible.
+
+Origins of values
+
+The waveforms and noise lines are deterministic drawings, not measured recordings. el gato duerme is supplied Spanish text. No noise level, recognition probability or performance score is asserted.
+
+Step-by-step reasoning
+
+A recognizer must recover word sequences despite acoustic variability. In overlap, a reference must state whether it includes all speakers or a designated speaker. A fluent output is not proof that the intended speaker or words were recovered.
+
+Teaching script and check question
+
+Ask whether the clean-recording score predicts meeting performance. Not by itself: test noise, channels, accents and overlap representative of the intended use. Keep the same scoring policy when comparing systems within a condition.
+2
+
+## Slide 3
+
+Specify what counts as the transcript
+
+                         Both targets describe the same utterance. Freeze verbatim/edited and formatting rules before scoring.
+3
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Read the same supplied Spanish utterance under a verbatim and edited annotation policy. Colored tokens identify the removed hesitation and reformatted number. This is a visible target change, not a change in speech.
+
+Origins of values
+
+eh son dos euros and Son 2 euros. are authored explanatory examples. The filled pause eh is removed and dos is formatted as 2 by the chosen edited policy. They are not model predictions.
+
+Step-by-step reasoning
+
+Verbatim annotation preserves the spoken pause and words. Edited annotation removes the pause, changes case, formats the number and adds punctuation. Comparing an edited prediction to verbatim labels may count policy differences as word errors.
+
+Teaching script and check question
+
+Ask: is removing eh always wrong? It depends on the declared reference policy. Fix the policy before model comparison; retain original text and disclose normalized scoring. Do not silently credit label cleanup as acoustic improvement.
+3
+
+## Slide 4
+
+Speech arrives without written word spaces
+
+                         Time →; frequency ↑; darker = stronger energy. A phoneme is a sound category that can distinguish words. Source: Jurafsky & Martin, Fig. 14.22.
+4
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Use the supplied spectrogram as a brief phonetics anchor. Read left to right through “she just had a baby”; point out that the word labels are annotations over a continuous signal, not gaps automatically supplied to a recognizer.
+
+Origins of values
+
+The figure is Jurafsky and Martin, supplied chapter 14, Figure 14.22, page 19, August 2025 draft. Its time and phonetic labels come from the source example. The plot is a source illustration, not a new experiment. The English example is retained for teaching a source figure; project recordings must follow the separate non-English rule.
+
+Step-by-step reasoning
+
+A spectrogram displays changing frequency content over time; darker regions represent stronger energy in this source. The word and sound labels were aligned to that signal. A phoneme is a language-specific sound category that can distinguish words. Realizations vary with speaker and neighboring sounds, so a recognizer cannot treat every pause as a word separator or every sound category as one fixed waveform.
+
+Teaching script and check question
+
+Spend no more than 2.5 minutes here. Ask: does every word boundary require silence? Answer: no. The practical consequence is to learn temporal representations and alignments. Do not expand into anatomy, IPA memorization, or a phoneme inventory. The later front-end section explains how time-frequency features are computed.
+4
+
+## Slide 5
+
+Separate learning, decisions, and reporting
+
+                         Supplied speaker/session example. Use documented splits and state whether speakers are held out.
+5
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Point to the speaker/session rows, then to the split columns. Related clips remain together, and each column has a distinct experimental role.
+
+Origins of values
+
+Speakers A, B and C, rooms 1–3 and clip 1/clip 2 are supplied illustrative identifiers. The diagram is not a recommended percentage split or a real dataset inventory.
+
+Step-by-step reasoning
+
+Training fits model parameters; development selects preprocessing, decoder settings and checkpoints; the held-out test reports the final system after those decisions are frozen. In this example a speaker/session appears in only one split.
+
+Teaching script and check question
+
+Ask which split should select beam size. Development. Ask whether unseen utterances guarantee unseen speakers. No. Follow the dataset protocol and disclose the generalization target; prevent unintended duplicate or speaker leakage.
+5
+
+## Slide 6
+
+Project rule: broaden the language coverage
+
+Eligible project languages
+No English.
+No group member’s mother tongue.
+Check trusted reference data.
+
+Coordinate class-wide coverage
+Cover as many eligible languages as feasible.
+Propose unclaimed languages.
+Verify checkpoint support.
+
+Use trusted reference data; unfamiliarity with a language is not permission to invent labels.
+6
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+State the project restrictions clearly and connect them to the shared register. The objective is breadth across the class with credible evaluation.
+
+Origins of values
+
+These are instructor requirements: no English; no mother tongue of any group member; cover as many eligible languages as feasible and coordinate proposals. There is no invented assignment or minimum language count.
+
+Step-by-step reasoning
+
+First exclude ineligible languages. Then verify trusted reference data, a suitable split and exact checkpoint support. Register proposed languages before experiments; the instructor coordinates duplication and confirms choices.
+
+Teaching script and check question
+
+Ask whether the strongest English checkpoint creates an exception. No. Use independent references for unfamiliar languages; a model cannot supply its own trusted ground truth. Share eligibility confirmation rather than unnecessary personal language details.
+6
+
+## Slide 7
+
+Register proposals before the experiments
+
+Group
+Language / variety
+Data + model
+Status
+
+—
+—
+—
+Unassigned
+Record language codes, varieties, dataset/test split, model support, and eligibility confirmation.
+Instructor coordination: Proposed → Confirmed, or Needs revision.
+
+Use the shared language tracker to prevent accidental duplication and increase class coverage.
+7
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show the empty register as a coordination mechanism. No language is reserved by the example.
+
+Origins of values
+
+Dashes are empty fields. Proposed, Confirmed and Needs revision are workflow states, not measured values or real assignments.
+
+Step-by-step reasoning
+
+Each group proposes languages, supplies dataset/revision/split and exact checkpoint support, and confirms eligibility. The instructor resolves overlaps and confirms or requests revision. Count distinct confirmed languages without treating every locale as a different language.
+
+Teaching script and check question
+
+Ask when a proposal becomes a reservation. Only when it is confirmed in the shared tracker. Keep individual mother tongues private; public eligibility confirmation is enough.
+7
+
+## Slide 8
+
+Leave a reproducible experimental trail
+
+Freeze
+Data IDs, task, language, checkpoint, settings.
+→
+
+Run + save
+Keep predictions paired with trusted references.
+→
+
+Report
+Per-language errors, runtime, hardware, examples.
+
+Compare systems on the same test items and the same declared evaluation policy.
+8
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Preview the full experimental artifact that methods and metric slides will fill in. Follow the reproducibility chain from immutable data identifiers to cached predictions and then to the report.
+
+Origins of values
+
+The boxes are workflow stages. There are no claimed measurements on this slide. A revision identifies the model/checkpoint version rather than merely its family name.
+
+Step-by-step reasoning
+
+Record the audio and reference IDs, task/language settings, preprocessing, checkpoint revision, and decoder choices. Run each model against the same test items. Save predictions before scoring so that later metric-policy checks do not require silently changing the model output. Report language-level errors and runtime with the hardware and conditions.
+
+Teaching script and check question
+
+Ask why a screenshot of one successful transcript is insufficient. Answer: it provides neither a reproducible corpus evaluation nor representative error analysis. Later slides define the metric formulas and show how to run model families. This preview establishes what the project must leave behind.
+8
+
+## Slide 9
+
+Count aligned word errors before reporting WER
+
+                         WER = word error rate; N = 6 reference words. A dash is an alignment gap. Insertions can push WER above 100%.
+9
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Read the reference first, then align the prediction. The dash is an alignment gap, not a literal token. Explain why lexical scoring starts from a trusted reference. Source: https://huggingface.co/learn/audio-course/en/chapter5/evaluation
+
+Origins of values
+
+The two six/ five-word strings come from the linked evaluation lesson. There are six reference words, four matching words, one substituted word and one missing word. No model inference was run for this slide.
+
+Step-by-step reasoning
+
+WER uses a minimum-edit word alignment. The word sat is replaced by sit, and mat is deleted. S=1, D=1, I=0, N=6; (1+1+0)/6=0.333333, displayed as 33.3%. Each word counts once regardless of length.
+
+Teaching script and check question
+
+Ask: Does the missing mat reduce the denominator? Answer: no, the denominator remains the six reference words. Ask students to identify an insertion by adding an extra predicted word. WER is an error ratio, not a percentage of sentences understood.
+9
+
+## Slide 10
+
+Align characters to measure partial spelling errors
+
+                         CER = character error rate; N = 22 reference characters, including spaces. Partial spelling overlap does not guarantee preserved meaning.
+10
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Keep the preceding example visible mentally and change only the units being aligned. Point out that the deleted space before mat is also counted. Source: https://huggingface.co/learn/audio-course/en/chapter5/evaluation and https://jitsi.github.io/jiwer/reference/process/
+
+Origins of values
+
+The reference contains 17 letters and five spaces, so 22 characters. The hypothesis retains 18 characters; one character differs and four are absent. These are counted from the supplied text, not measured model performance.
+
+Step-by-step reasoning
+
+Count word lengths 3+3+3+2+3+3=17, then add five spaces. Substitute a with i in sat. Delete the final four-character substring ' mat'. Thus CER=(1+4+0)/22=0.2272727, rounded to 22.7%.
+
+Teaching script and check question
+
+Ask: Is 22.7% automatically a fairer score than 33.3%? Answer: it answers a different question. A one-character change can reverse meaning or alter a name. Keep WER and CER together with language-aware error analysis.
+10
+
+## Slide 11
+
+Fix the scoring policy before comparing models
+
+                         Declare language-specific segmentation. Chinese and Japanese have words without reliable spaces between them. No metric makes all languages directly comparable.
+11
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Explain that the scoring pipeline is part of the experiment. Compare two literal strings differing only in casing and punctuation before discussing writing systems. Source for normalization and CER conventions: https://huggingface.co/learn/audio-course/en/chapter5/evaluation; https://jitsi.github.io/jiwer/reference/process/
+
+Origins of values
+
+The Spanish strings are invented instructional text. No performance values appear. The language examples illustrate tokenization conventions; they are not claims that a language lacks words.
+
+Step-by-step reasoning
+
+Apply one declared transform to reference and prediction, then align. Raw whitespace tokenization considers Hola. and hola different words, but a predeclared lowercase/punctuation policy maps both to hola. This may be useful for transcription scoring while hiding formatting errors, which is why raw output must be retained.
+
+Teaching script and check question
+
+Ask: May we choose a normalizer after seeing which one gives our model its best score? Answer: no; use development data to define policy and freeze it for both systems. Do not erase meaningful diacritics. Correct the linked lesson's misleading wording about languages having no words.
+11
+
+## Slide 12
+
+Aggregate counts, not just sentence percentages
+
+                         All counts are supplied examples. Corpus WER weights reference words; mean clip WER gives each clip one vote.
+12
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Read each row, sum counts, and contrast pooling with averaging percentages. This is essential when groups compare different test sizes. The corpus aggregation rule is documented in https://huggingface.co/learn/audio-course/en/chapter5/evaluation
+
+Origins of values
+
+All clip sizes and error counts are chosen instructional data. They are not measured model results. A and B are clips, not languages, on this slide.
+
+Step-by-step reasoning
+
+Clip A: 1/2=.5. Clip B: 1/8=.125. Mean utterance WER=(.5+.125)/2=.3125. Corpus WER=(1+1)/(2+8)=.2. Larger reference sequences contribute more weight to corpus WER.
+
+Teaching script and check question
+
+Ask: Which score would change more if we added a long clean clip? Answer: corpus WER weights all its words; mean utterance WER gives it just one vote. Keep all per-language scores visible before aggregating across languages.
+12
+
+## Slide 13
+
+Inspect what changed, not only how many words
+
+                         Use a predefined error taxonomy for names, quantities, negation and other important content. Supplied examples, not model results.
+13
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Read the reference and the two candidate transcripts column by column. Both candidates have one lexical substitution but the content changed in different ways, so WER alone cannot describe the consequence.
+
+Origins of values
+
+All Spanish strings are supplied teaching examples, not measured outputs or instructions for medical use. The reference contains four words: no, tome, dos, pastillas. dos/tres mark two/three; pastillas/pastilla mark plural/singular.
+
+Step-by-step reasoning
+
+System A replaces dos with tres; system B replaces pastillas with pastilla. Each has S=1,D=0,I=0,N=4, giving WER=1/4=25%. Equal edit counts do not imply equal preservation of quantities or grammatical distinctions.
+
+Teaching script and check question
+
+Ask whether the equal WER proves the systems are interchangeable. No. Add a predefined error taxonomy for names, numbers and negation, review representative clips with trusted labels, and report failure counts rather than only selected success stories.
+13
+
+## Slide 14
+
+Start with the recording’s actual sample rate
+
+                         Illustrative waveform; mono means one audio channel. Sample count = rate × duration = 16,000 samples/s × 1 s = 16,000. Actually resample to the checkpoint’s rate; changing metadata changes apparent speed.
+14
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Start from an inspectable waveform and an explicit duration/sample-rate contract. The oscillation is synthetic so no student should infer recognized words from it. Establish the difference between a sample, a frame and a token before any algorithm.
+
+Origins of values
+
+The drawn waveform is an analytic illustration: 0.55 sin(2π10t)+0.22 sin(2π37t), scaled solely for a visible waveform. It is not speech or a real recording. One second and16,000samples/second are supplied settings. The sample-rate convention is16kHz, not a claim about every checkpoint.
+
+Step-by-step reasoning
+
+Sample count = sample rate × duration =16,000×1=16,000 amplitude values. To resample a different recording, use its actual source rate and a resampling algorithm; altering metadata does not create new samples. Mono means one channel, not one sample. A later frame groups several neighboring sample values.
+
+Teaching script and check question
+
+Point at the time axis, then the rate×duration box. Ask whether passing48,000 original values as16kHz preserves a one-second clip: no, it would be interpreted as three seconds. Use the processor and rate required by the chosen checkpoint.
+14
+
+## Slide 15
+
+Frame the waveform without losing transitions
+
+                         Schematic waveform; supplied 16 kHz, 25 ms window, 10 ms hop; no padding or centering. Window = 400 samples; hop = 160. Frames = 1 + floor((16,000−400)/160) = 98. floor rounds down: 97.5 → 97; add the first frame.
+15
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+The frame diagram makes window length and hop concrete on a shared time axis. Show why overlapping windows preserve transitions rather than treating them as disconnected observations.
+
+Origins of values
+
+The synthetic waveform is only a visual anchor. Supplied settings are16,000Hz, one second of audio,25ms windows and10ms hop, with no padding or centering. The exact count uses a400-sample frame/FFT. These are conventional teaching settings from Chapter14, not universally correct settings for all models.
+
+Step-by-step reasoning
+
+Window length=16,000×0.025=400 samples. Hop=16,000×0.010=160 samples. The first frame spans indices0–399; the next160–559. Overlap=400−160=240 samples=15ms. Number of complete frames=1+floor((16000−400)/160)=1+floor(97.5)=98. floor means round down, and the first frame contributes the added1.
+
+Teaching script and check question
+
+Point at the two offset intervals and ask which samples are reused. Ask why97.5 is rounded down: the final partial frame is excluded without padding. A centered extractor or different FFT size can yield a different frame count.
+15
+
+## Slide 16
+
+From frequency bins to one log-mel feature
+
+                         FFT (fast Fourier transform) exposes frequency bins; square magnitudes to obtain power. One mel-band energy = 0.25×2 + 1×4 + 0.25×2 = 5; log₁₀(5) ≈ 0.699. MFCC = mel-frequency cepstral coefficients: cosine-transform log-mel values.
+16
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Turn a mel filter into a reproducible weighted-band calculation. The three panels distinguish raw bin power, weights and weighted contribution. This demonstrates one filter rather than claiming a full filterbank consists of three bins.
+
+Origins of values
+
+Powers[2,4,2] and filter weights[0.25,1,0.25] are supplied teaching values. Their units are arbitrary power units. The triangular weights express one example band. The logarithm shown is base10; actual checkpoint preprocessors may use natural logs or decibels.
+
+Step-by-step reasoning
+
+Multiply each power by its corresponding weight:2×0.25=0.5,4×1=4,2×0.25=0.5. Sum to get one band energy5. Log10(5)=0.69897≈0.699. A complete mel bank repeats this for each band and time frame. MFCC applies a discrete cosine transform to the log-mel vector, commonly retaining fewer coefficients.
+
+Teaching script and check question
+
+Ask students to name the origin of5: it is a weighted sum, not a probability. Ask whether the log base can be changed in a pretrained model without consequence: no, its processor defines its expected scaling. Use its processor for model inference.
+16
+
+## Slide 17
+
+Run a front end and inspect its shape
+
+import librosa
+y, sr = librosa.load("clip.wav", sr=16000, mono=True)
+m = librosa.feature.melspectrogram(
+y=y, sr=sr, n_fft=400, hop_length=160,
+n_mels=80, center=False)
+logm = librosa.power_to_db(m)
+print(logm.shape)
+
+For exactly 1 second: (80, 98) = mel bands × frames.
+Setup: pip install librosa; supply clip.wav. These are teaching settings.
+17
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show an executable local feature extraction recipe rather than a schematic command. The script uses one local WAV file and prints dimensions, establishing a repeatable preprocessing baseline.
+
+Origins of values
+
+Requires Python packages librosa and numpy plus readable clip.wav. sr=16000, n_fft=400, hop_length=160, n_mels=80 and n_mfcc=13 are deliberately chosen teaching settings. They are not a claim about a particular pretrained checkpoint.
+
+Step-by-step reasoning
+
+librosa.load resamples the decoded waveform to the requested sampling rate and mixes to mono. center=False avoids padding around the signal; n_fft400 also sets the frame length. melspectrogram defaults to a power spectrum. power_to_db converts power to decibels. For exactly16000 samples the mel array is(80,98); MFCC applied to that log-mel matrix is(13,98). Shape varies with duration; count frames by the formula from the preceding slide.
+
+Teaching script and check question
+
+Ask students to predict which dimension changes for a two-second file: the time dimension. Do not promise exact transcript text or audio quality from this code: it creates features only. Explain that directly feeding these custom settings into Whisper would be wrong; its processor implements its own required settings.
+17
+
+## Slide 18
+
+GMM-HMM: score the sound before choosing a path
+
+                         GMM = Gaussian mixture model; HMM = hidden Markov model. q is a hidden sound state. At observed feature x=0, supplied component densities are 0.20 and 0.05; weights are 0.6 and 0.4. Weighted density = 0.12+0.02 = 0.14. The HMM also scores state transitions.
+18
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show a Gaussian mixture model as weighted density evaluations at an observed feature value. Avoid confusing density with a calibrated phone posterior. The two actual bell curves provide the geometric context behind the numbers.
+
+Origins of values
+
+Observed scalar feature x=0, example hidden sound-state q, weights0.6/0.4 and component densities0.20/0.05 are supplied instructional values. For exact consistency, both constructed Gaussian curves have standard deviation1; their means are−sqrt(−2ln(0.2sqrt(2π)))≈−1.1752 and+sqrt(−2ln(0.05sqrt(2π)))≈2.0380. These means are chosen to match the supplied point densities at zero, not estimated from a recording.
+
+Step-by-step reasoning
+
+At x=0, Gaussian1 density is0.20 and Gaussian2 density0.05. Multiply by mixture weights:0.6×0.20=0.12 and0.4×0.05=0.02. Add to obtain state-q emission likelihood density0.14. The weights sum to1. Densities need not sum to1 over states and are not probabilities of the state given the observation.
+
+Teaching script and check question
+
+Point at each dashed x=0 slice, then each weighted contribution, then the sum. Ask what a component means: one Gaussian within a mixture. Ask what q is: an example hidden sound state in an HMM. A real trained model learns component parameters from its training data.
+18
+
+## Slide 19
+
+Viterbi: choose the strongest incoming path
+
+                         A/B are example hidden states. Arrow labels = transition probabilities; right multipliers = frame-2 likelihoods. A: 0.1×max(0.8×0.7,0×0) = 0.056. B: 0.9×max(0.8×0.3,0×1) = 0.216. max selects the larger incoming score. Backtrack from B: the best path is A→B.
+19
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Follow the time-indexed state graph and choose the strongest incoming path at each node. This is Viterbi dynamic programming on two frames, with a backpointer selecting the winning path.
+
+Origins of values
+
+A/B are illustrative hidden states. Initial probabilities are A1/B0. Frame1 emission likelihood densities are A0.8/B0.2; frame2 densities are A0.1/B0.9. Arrow labels are transition probabilities A→A0.7,A→B0.3,B→A0,B→B1. The emissions are continuous-observation density values, not a probability distribution across the two observed frames.
+
+Step-by-step reasoning
+
+First scores: A=1×0.8=0.8, B=0×0.2=0. At frame2, score(A)=0.1×max(0.8×0.7,0×0)=0.1×0.56=0.056. score(B)=0.9×max(0.8×0.3,0×1)=0.9×0.24=0.216. max chooses the stronger incoming route. Backtracking from the best final state B yields A→B. These are path scores, not normalized confidence.
+
+Teaching script and check question
+
+Have students compare0.56 versus0 at the upper node, then0.24 versus0 at the lower. Only after multiplying by the frame2 likelihood compare final states. Explain that real long sequences use log scores and retained predecessor pointers.
+19
+
+## Slide 20
+
+Slide a learned pattern across audio frames
+
+                         Supplied input/kernel; no padding or bias. Stride 2 advances the window by two positions. The same kernel multiplies each three-value window; sum its products to get one output. Output length = floor((5−3)/2)+1 = 2. Neural libraries use this unflipped-kernel convention.
+20
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Motivate convolution as a local learned feature detector and a way to shorten long audio sequences. Connect it to neighboring time frames rather than image pixels.
+
+Origins of values
+
+Input values[1,2,0,3,1], fixed kernel[1,0,-1], stride2, padding0 and bias0 are chosen to make the calculation transparent. They are not learned model weights. PyTorch Conv1d performs cross-correlation, so the kernel is not flipped.
+
+Step-by-step reasoning
+
+Window[1,2,0] dot[1,0,-1]=1. Move by stride2 to window[0,3,1]: dot product=-1. Output length=floor((5+2×0−3)/2)+1=2. Batched Conv1d input is[batch,channels,time]=[1,1,5]; weight is[out_channels,in_channels,kernel]=[1,1,3]; output[1,1,2]. With learned channels the same calculation sums across input channels.
+
+Teaching script and check question
+
+Ask which original frames each output observes: indices0–2 and2–4. Ask why time shrinks: stride. Show that using every frame would give3 outputs, whereas stride2 gives2. This is a mechanics check, not recognition training.
+20
+
+## Slide 21
+
+Attention: combine the frames that matter now
+
+                         The encoder converts audio into vectors; the decoder predicts text one token at a time. Here the supplied values are scalar: 0.75×2=1.5; 0.25×10=2.5; context=4. Real vectors use the same weighted sum in every dimension; the weights change at each decoder step.
+21
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Make an attention context vector reproducible with a one-dimensional example. This illustrates weighted aggregation, not learned attention performance.
+
+Origins of values
+
+Supplied scalar encoder values are[2,10]; supplied normalized attention weights[0.75,0.25] sum to1. Real vectors have many dimensions and weights are produced by learned queries/keys and a softmax.
+
+Step-by-step reasoning
+
+Context=0.75×2+0.25×10=1.5+2.5=4. The same operation happens independently to every vector dimension. The decoder then combines this context with its text state to predict a vocabulary distribution. In transformer cross-attention, queries come from decoder states, keys/values from the encoded audio.
+
+Teaching script and check question
+
+Ask what context would be under weights[1,0]:2. Then ask if attention alone is the transcript: no, the decoder still predicts tokens. Explain that an attention visualization is not automatically a reliable explanation of causality.
+21
+
+## Slide 22
+
+Beam search can rescue a weaker first choice
+
+                         All probabilities are supplied. Each next-token distribution sums to 1. Greedy keeps A because 0.6>0.4, then chooses 0.4: path score 0.24. Beam width 2 retains both A and B. B’s best continuation gives 0.36, the larger complete-path score.
+22
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Explain why retaining alternatives can change the best complete two-token output. The example explicitly gives normalized conditional distributions so each displayed continuation really is the best next-token choice.
+
+Origins of values
+
+Supplied first-token probabilities are P(A)=0.6 and P(B)=0.4. After A the next-token probabilities are[0.4,0.3,0.3]; after B they are[0.9,0.05,0.05]. These are chosen instructional distributions and each sums to1. Paths have equal length, with no length penalty or external language model.
+
+Step-by-step reasoning
+
+Greedy first chooses A because0.6>0.4, then chooses its highest-probability continuation0.4, giving0.6×0.4=0.24. Beam width2 retains A and B at the first step. At the second step the best B continuation scores0.4×0.9=0.36. Remaining A paths score0.18 each and remaining B paths0.02 each, so0.36 is the best displayed complete path. All complete path probabilities sum to0.24+0.18+0.18+0.36+0.02+0.02=1.
+
+Teaching script and check question
+
+Reveal the first-token probabilities and ask for the greedy choice. Then reveal all continuation distributions and compare the path products. Ask whether wider beam guarantees lower WER: no, it optimizes model score, not the evaluation metric. Tune beam settings on development data and freeze before testing.
+22
+
+## Slide 23
+
+HuBERT: create targets from untranscribed audio
+
+                         Self-supervised learning (SSL) uses audio-derived targets before ASR fine-tuning on transcripts. k-means assigns each frame to its nearest center, then replaces each center with its group’s mean. HuBERT predicts masked cluster IDs. wav2vec 2.0 learns to distinguish a target audio representation from distractors.
+23
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Motivate self-supervision by abundant untranscribed audio and scarce labeled transcripts. Distinguish learning representations from producing a recognizer ready to run.
+
+Origins of values
+
+HuBERT and wav2vec2 are pretrained audio encoder families. HuBERT predicts cluster targets obtained from audio; wav2vec2 uses a contrastive objective against quantized latent targets. These targets are learned acoustic categories, not guaranteed human phonemes. Source Ch15 explains HuBERT. The point plot adds supplied scalar frame values[1,2,8,9], initial centers[1,8] and cluster IDs[0,0,1,1]. These are illustrative, not measured audio features.
+
+Step-by-step reasoning
+
+For HuBERT, compute acoustic features, assign each frame a cluster label, mask some encoder-input frames, and train prediction of their assigned labels. Recluster improved hidden representations in later stages. Then attach a text-token output layer and fine-tune on paired audio/transcripts, commonly with CTC. A base pretrained checkpoint without this ASR head cannot directly transcribe. Assign each point to its nearest center. New centers are(1+2)/2=1.5 and(8+9)/2=8.5. Cluster IDs are arbitrary labels; they do not name words.
+
+Teaching script and check question
+
+Ask which phase needs transcripts: ASR fine-tuning, not the initial SSL objective. Ask whether random clusters are the same as words: no. Compare wav2vec2 and HuBERT at objective level without claiming they use identical loss functions.
+23
+
+## Slide 24
+
+CTC: remove timing without losing repeated letters
+
+                         Connectionist temporal classification (CTC) maps many acoustic frames to fewer transcript tokens. The two n runs need the intervening blank. Removing blanks before merging would produce diner.
+24
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Explain the alignment problem: many input frames correspond to fewer transcript tokens, and boundaries are not labeled. Connectionist temporal classification, CTC, permits frame-level label paths that collapse to text.
+
+Origins of values
+
+The displayed source figure is Jurafsky and Martin Ch15 Fig15.13. It contains14 input frames with path d,i,blank,n,n,blank,n,e,r,r,r,r,blank,blank. Blank is a special no-output alignment symbol, not a written space. The figure illustrates one possible alignment, not a reported model inference.
+
+Step-by-step reasoning
+
+First merge adjacent identical symbols in the14-frame source path: d,i,blank,n,blank,n,e,r,blank. Then remove every blank: d,i,n,n,e,r, yielding dinner. The two n runs remain separate because blank lies between them. Removing blanks before merging would incorrectly combine both n runs. The independent study code example intentionally uses a different, shorter11-frame path and labels its supplied data separately.
+
+Teaching script and check question
+
+Ask students to collapse the path in the two stages. Call the special symbol blank each time, not space. The order matters. In subword CTC the same collapse rule applies to token IDs, but visible repeated letters are not necessarily repeated subword tokens.
+24
+
+## Slide 25
+
+CTC: add every path that gives the same text
+
+                         ∅ = blank (no output). X is fixed audio; a is the one-token target. The frame distributions are supplied. CTC multiplies frame-label probabilities along a path, conditioned on X. P(a | X) = 0.18+0.42+0.12 = 0.72. The remaining empty path has probability 0.28.
+25
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Explain the difference between the most probable path and the most probable transcript. This is the central reason CTC sums over alignments during training and prefix decoding.
+
+Origins of values
+
+There are two time steps with label alphabet{a,blank}. Supplied per-frame distributions are[0.6,0.4] at frame1 and[0.3,0.7] at frame2. Each sums to1. The acoustic encoder already uses context; CTC factorizes output labels conditioned on that encoded input.
+
+Step-by-step reasoning
+
+P(a,a)=0.6×0.3=0.18; P(a,blank)=0.6×0.7=0.42; P(blank,a)=0.4×0.3=0.12. All three collapse to transcript a. Therefore P(a|X)=0.18+0.42+0.12=0.72. The remaining path blank,blank has probability0.28 and collapses to empty output. Total0.72+0.28=1. CTC loss for target a is−ln(0.72)=0.3285, using natural logarithm.
+
+Teaching script and check question
+
+Ask whether the score0.42 alone is the transcript probability: no, it is one path. Point to all three routes. For long sequences dynamic programming sums alignments without enumerating them; greedy decoding is only an approximation.
+25
+
+## Slide 26
+
+Break · 10 minutes
+
+Pause
+Return in 10 minutes.
+
+Keep one question
+Which step in your proposed experiment still needs a clear contract?
+26
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Pause the timed instruction and preserve a full break in the two-hour plan. This slide contains a reflection prompt but does not require work during the break.
+
+Origins of values
+
+Ten minutes is a chosen schedule allocation, not instructional content or a measured result. It is included in the total 120-minute class.
+
+Step-by-step reasoning
+
+The plan allocates 95 minutes of teaching, 10 minutes for a break, and 15 minutes for discussion and project coordination: 95 + 10 + 15 = 120 minutes. Move the break to the designated mid-method transition when assembling the final sequence.
+
+Teaching script and check question
+
+Announce the return time. After the break, take one brief contract question and continue the method sequence; longer questions can be parked for the discussion slot.
+26
+
+## Slide 27
+
+RNN-T: track audio time and emitted tokens
+
+                         RNN-T = recurrent neural network transducer. t counts audio steps; u counts emitted tokens. The joint network combines audio state h(t) with token-history state g(u), then scores token or blank. A token increases u; blank increases t. Streaming also requires limited look-ahead and buffering.
+27
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Motivate a transducer by conditioning on previous emitted tokens while retaining an alignment mechanism over streaming audio. Distinguish model architecture from an implementation that merely chunks offline audio.
+
+Origins of values
+
+RNN-T stands for recurrent neural network transducer; modern transducers may use nonrecurrent encoders. The source shows an acoustic encoder, prediction network for token history, and joint network. No universal chunk length or latency is assumed.
+
+Step-by-step reasoning
+
+At position(t,u), acoustic state h(t) summarizes permitted audio context and prediction state g(u) summarizes the u already emitted tokens. The joint network maps both to a distribution over next tokens plus blank. Emitting a token advances u; emitting blank advances the audio time index t. Scores sum over possible alignments in training. Streaming requires a causal or limited-lookahead encoder and measured buffering, not just an RNN-T label.
+
+Teaching script and check question
+
+Trace audio and text-history arrows into the joint network. Ask whether blank adds a visible space: no. Ask whether an offline bidirectional encoder becomes streaming because the head is transducer: no. This prepares students to compare first-token delay and endpoint latency in addition to throughput.
+27
+
+## Slide 28
+
+Train one encoder with two complementary losses
+
+                         Supplied losses: CTC 2, attention-decoder 1. Chosen CTC weight 0.3; decoder weight 1−0.3=0.7. Weighted training loss = 0.3×2 + 0.7×1 = 0.6+0.7 = 1.3. Both branches update the shared encoder. This optimization value is not an error rate.
+28
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Preserve the hybrid CTC/attention method from the source while keeping the lecture practical. A shared encoder can learn from two complementary training objectives.
+
+Origins of values
+
+Illustrative losses are Lctc=2 and Laed=1; weight lambda=0.3 on CTC is a chosen development hyperparameter, not a measured optimum. The source uses the complementary weighting convention; this slide defines its own explicitly.
+
+Step-by-step reasoning
+
+L=lambda×Lctc+(1−lambda)×Laed=0.3×2+0.7×1=1.3. Backpropagation updates the shared encoder from both branches. At inference a chosen recipe can combine decoder/CTC scores and an optional language model; the training mixture weight need not equal the decoding interpolation weights.
+
+Teaching script and check question
+
+Point at the common encoder branching into two losses. Ask what lambda=0 does: only attention loss trains. Ask if loss1.3 is WER: no, it is an optimization objective. Tune weights on development data and preserve the exact convention in reports.
+28
+
+## Slide 29
+
+Fine-tune, select on development data, then test
+
+                         An epoch is one pass through the training set. The plotted development scores are illustrative. Train updates weights; development chooses the checkpoint and settings; test is held out. Keep speaker/recording splits separate. Save model revision, configuration and per-clip predictions.
+29
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Make model selection visible as a decision on development results, with the test set still locked. This adds a concrete validation example to the practical adaptation workflow.
+
+Origins of values
+
+Three development WER values32%,25%,27% at epochs1,2,3 are explicitly invented instructional values. They are not results of any trained checkpoint. An epoch is one pass through the training data. WER is lower-better. Training examples and development examples remain separate.
+
+Step-by-step reasoning
+
+The lowest supplied development WER is25% at epoch2. Select that checkpoint rather than the last epoch, freeze weights, preprocessing, normalizer, decoding and any rescoring coefficient, and then evaluate on the held-out test set. The test scores are deliberately absent because they must not be used to select a model.
+
+Teaching script and check question
+
+Ask which checkpoint should be kept: epoch2. Ask whether the figure shows overfitting proof: it shows worsening development WER in this illustrative sequence, but real interpretation needs repeated/uncertainty analysis. Ask whether beam width can still be tuned using the final test score: no.
+29
+
+## Slide 30
+
+Rescore ASR candidates without hiding the tradeoff
+
+                         Supplied natural-log scores: first term = acoustics; second = language model; 0.8 is the chosen weight. The weight 0.8 is chosen for this example; larger scores win. Tune the weight on development data. A fluent name can still be wrong. Compare WER and inspect rare names before accepting rescoring.
+30
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Replace the removed topic with a practical ASR decoding technique: language-model rescoring of an acoustic N-best list. Show when the additional score changes a name, and distinguish model preference from truth.
+
+Origins of values
+
+The same audio has two supplied candidate strings: call Anna and call Hannah. Natural-log acoustic scores are−2 and−1; natural-log language-model scores are−0.2 and−2. Chosen interpolation weight0.8 is a demonstration setting. These scores are supplied, not measured, and the candidates are only part of the total possible transcript space.
+
+Step-by-step reasoning
+
+Combined score=acoustic log score+weight×language-model log score. Anna:−2+0.8×(−0.2)=−2.16. Hannah:−1+0.8×(−2)=−2.60. Larger, less-negative values rank higher, so acoustics alone choose Hannah but rescoring chooses Anna. Tune the weight on development data. To isolate effect, compare the same candidate list and clips with weight0 versus the chosen value.
+
+Teaching script and check question
+
+Ask which name was actually spoken: the example does not provide enough evidence to know. A language model can correct implausible text or overwrite a valid rare name. Log both versions and inspect names/numbers/negation, not just aggregate WER. Do not feed test reference text into a context prompt.
+30
+
+## Slide 31
+
+Run the family that matches the experiment
+
+Method
+What you configure
+What you inspect
+
+GMM-HMM
+Features + acoustic model + lexicon + search
+State alignment and word path
+
+CTC encoder
+Language checkpoint + processor + collapse/beam
+Frame scores and transcript
+
+Encoder-decoder
+Language/task tokens + generation settings
+Generated tokens and transcript
+
+Transducer
+Streaming encoder + chunk/look-ahead + decoder
+Partial/final text and latency
+
+All families need a fixed test set, saved predictions and a documented evaluation policy.
+31
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Consolidate the practical choice among families around what is input, what must be configured and what artifact is saved. This is a bridge from mechanisms to modern checkpoint comparison.
+
+Origins of values
+
+Each row describes a method family already introduced, not a claim that one universally wins. All model weights, processors, token vocabularies and language support are external state that must be recorded.
+
+Step-by-step reasoning
+
+GMM-HMM: features and acoustic models plus lexicon/language model feed a search decoder. CTC: waveform processor and encoder output frame-label scores, then collapse or prefix-beam search. Encoder-decoder: audio features plus language/task control tokens feed autoregressive generation. Transducer: audio-state and token-state updates proceed with blank-controlled alignment. 
+
+Teaching script and check question
+
+Ask students to name the saved result common to all ASR rows: a transcript for each clip plus configuration and runtime. Then ask which differences could confound WER: preprocessing, language, vocabulary, decoding, normalization, test data. No architecture is evaluated fairly by a vendor headline alone.
+31
+
+## Slide 32
+
+Check the pipeline before trusting the transcript
+
+Symptom
+Likely mistake
+Fix
+
+Speech sounds slowed
+48 kHz samples relabeled as 16 kHz
+Actually resample
+
+dinner becomes diner
+Blank removed before repeat merging
+Collapse in the right order
+
+No usable transcript
+Bare SSL encoder or wrong language head
+Use a matched ASR checkpoint
+
+A successful function call is not proof of a valid speech experiment.
+32
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Use a short retrieval task to check the mechanisms before moving to current systems. Students should diagnose an incorrect preprocessing/decoding sequence without training a large model.
+
+Origins of values
+
+The three scenarios reuse the earlier supplied settings and CTC path. There are no new empirical numbers. A 48kHz source relabeled16kHz changes apparent duration by3; blank separates repeated n tokens; a bare SSL checkpoint lacks a transcription head.
+
+Step-by-step reasoning
+
+Correct answers: actually resample48kHz audio to16kHz using a signal-processing library; merge adjacent CTC repeats before removing blanks; choose an ASR-fine-tuned checkpoint for the intended language, with its matching processor/tokenizer. In all three, a model can run without throwing an error while producing an invalid experiment.
+
+Teaching script and check question
+
+Pause for predictions and have students justify each fix. If time is tight, discuss one case and leave all three visible in the study deck. This is an operational check rather than a new derivation.
+32
+
+## Slide 33
+
+Run the metric: align words and count edits
+
+Setup: install jiwer. Inputs below are supplied reference and predicted strings.
+
+import jiwer
+ref = "the cat sat on the mat"
+hyp = "the cat sit on the"
+out = jiwer.process_words(ref, hyp)
+print(out.substitutions, out.deletions, out.insertions)
+
+Expected S, D, I counts: 1 1 0
+process_words returns the minimum-edit alignment. Source: JiWER documentation.
+33
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Trace strings → alignment object → counts → metrics. This code evaluates supplied text, so it does not need a downloaded ASR model. Documentation: https://jitsi.github.io/jiwer/usage/
+
+Origins of values
+
+Inputs are the same teaching strings as the preceding metric example. round(...,4) selects four decimal places for readable output. The three printed counts are S,D,I in that exact order.
+
+Step-by-step reasoning
+
+process_words returns the minimum-edit alignment. Its counts give S=1,D=1,I=0 and WER=2/6. cer aligns characters including spaces by default and returns 5/22. Rounding produces .3333 and .2273. visualize_alignment produces diagnostic text, not a different metric.
+
+Teaching script and check question
+
+Ask students to add please to the beginning of the prediction and predict the insertion count before rerunning. Do not hand-edit a transcript to improve its test score. Save the original prediction and metric settings.
+33
+
+## Slide 34
+
+Inspect the scores and alignment
+
+Continue with ref, hyp, and out from the preceding JiWER example.
+
+wer = round(out.wer, 4)
+cer = round(jiwer.cer(ref, hyp), 4)
+print(wer, cer)
+print(jiwer.visualize_alignment(out))
+
+Expected ratios: 0.3333 0.2273
+Then the word alignment is printed.
+Scores are ratios; multiply by 100 when reporting percentages. Source: JiWER documentation.
+34
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Trace strings → alignment object → counts → metrics. This code evaluates supplied text, so it does not need a downloaded ASR model. Documentation: https://jitsi.github.io/jiwer/usage/
+
+Origins of values
+
+Inputs are the same teaching strings as the preceding metric example. round(...,4) selects four decimal places for readable output. The three printed counts are S,D,I in that exact order.
+
+Step-by-step reasoning
+
+process_words returns the minimum-edit alignment. Its counts give S=1,D=1,I=0 and WER=2/6. cer aligns characters including spaces by default and returns 5/22. Rounding produces .3333 and .2273. visualize_alignment produces diagnostic text, not a different metric.
+
+Teaching script and check question
+
+Ask students to add please to the beginning of the prediction and predict the insertion count before rerunning. Do not hand-edit a transcript to improve its test score. Save the original prediction and metric settings.
+34
+
+## Slide 35
+
+Measure throughput and streaming delays separately
+
+                         RTF = real-time factor: compute seconds/audio seconds. RTFx is its inverse. Report hardware, batching and timing boundaries.
+35
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Separate the upper throughput experiment from the lower streaming experiment. The latter identifies stream start, first partial output, speech end and final output so each delay has two endpoints.
+
+Origins of values
+
+100 audio seconds and 10 compute seconds are supplied examples. The streaming timestamps 0,0.5,3.0,3.5 seconds are a separate illustrative sequence, not measurements of the same clip or any model.
+
+Step-by-step reasoning
+
+RTF=processing seconds/audio seconds=10/100=0.1; RTFx=100/10=10. First partial delay=0.5−0=0.5 seconds. Finalization delay=3.5−3.0=0.5 seconds. Throughput is unitless while streaming delays are durations.
+
+Teaching script and check question
+
+Ask whether high RTFx ensures immediate captions. No; batching/buffering can add delay. Report hardware, precision, batch size, warm-up, network/loading inclusion and the exact timestamp definitions. Source for throughput definitions: https://huggingface.co/learn/audio-course/en/chapter5/evaluation
+35
+
+## Slide 36
+
+Coordinate the multilingual experiments
+
+Use this 15-minute discussion to turn proposals into a workable class-wide plan.
+
+Discuss
+Leave with
+
+Language coverage
+Eligible language choices, with overlaps visible.
+
+Data and models
+Trusted references, split, and supported checkpoints.
+
+Evaluation
+A fixed protocol and one next experiment.
+
+Update the tracker; prioritize unclaimed languages while keeping each experiment credible.
+36
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Use the tracker to coordinate proposals and resolve feasibility problems. The aim is a workable class-wide distribution rather than invented results.
+
+Origins of values
+
+Fifteen minutes is the chosen discussion budget. The three rows are agenda topics, not grading weights.
+
+Step-by-step reasoning
+
+Check eligibility, trusted reference availability, dataset splits and exact model support for each proposal. Confirm feasible language choices and record specific revisions for the others. Count confirmed languages across the class.
+
+Teaching script and check question
+
+Ask each group to leave with one next experiment and an updated status. Prioritize unclaimed eligible languages while retaining sufficient data and reliable labels.
+36
+
+## Slide 37
+
+Whisper ASR: acoustic evidence → next text token
+
+                         Log-mel columns represent time; rows represent mel-frequency bands. Features and probabilities are illustrative, not measured checkpoint values.
+37
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Trace the acoustic waveform through log-mel features and the audio encoder into the decoder. The decoder consults encoded audio and previously produced text to choose the next token. Source: https://github.com/openai/whisper and https://arxiv.org/abs/2212.04356
+
+Origins of values
+
+The signal and colored matrix cells are schematic, not measurements. The probabilities gato 0.6, perro 0.3, other 0.1 are supplied teaching assumptions; they are not a real checkpoint output. The input task is same-language recognition.
+
+Step-by-step reasoning
+
+The front end transforms time samples into log-mel frame features; the encoder contextualizes frames; decoder cross-attention reads those representations while conditioning on the text prefix. A greedy illustrative choice selects gato because 0.6 is the largest candidate probability. The supplied distribution sums 0.6+0.3+0.1=1. The selected token is appended before the next step.
+
+Teaching script and check question
+
+Ask whether decoder attention weights are the same as vocabulary probabilities. No: one distribution weights audio representations, while the output head scores text tokens. Pretrained weights make this a runnable baseline, but its quality still needs measurement on the chosen languages.
+37
+
+## Slide 38
+
+Run Whisper for a Spanish transcript
+
+Setup: openai-whisper + FFmpeg. Input: an existing Spanish speech file, sample.wav.
+
+whisper sample.wav --model small --language Spanish \
+--task transcribe --output_format json \
+--output_dir transcript
+
+Output: a Spanish transcript saved under transcript/.
+Exact text depends on the supplied recording.
+Setup: openai-whisper + FFmpeg. Use a multilingual checkpoint; avoid .en. Source: official Whisper CLI.
+38
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Trace the waveform path, multilingual checkpoint, known language and recognition task into a saved transcript file. This is a documented command pattern, not a claimed executed audio experiment. Source: https://github.com/openai/whisper
+
+Origins of values
+
+small is the chosen approachable checkpoint. Spanish is a supplied example language, sample.wav an existing recording, and transcript the selected output folder. These choices are not measured best settings.
+
+Step-by-step reasoning
+
+The CLI decodes the recording using the multilingual small checkpoint and a Spanish language hint. The transcribe task requests text in the spoken language. JSON preserves structured output for later inspection. The original prediction must be saved before any scoring transformation.
+
+Teaching script and check question
+
+Ask whether a .en checkpoint is suitable for a multilingual project. No; use a checkpoint supporting the selected languages. Exact output words depend on the recording. Pin library and checkpoint revisions, and evaluate all held-out items rather than a single successful file.
+38
+
+## Slide 39
+
+Keep boundary words when recognizing long audio
+
+                         Schematic chunking example. Preserve source timestamps and freeze the overlap/merge policy before evaluating complete transcripts.
+39
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show a long recording divided into overlapping input windows. The marked overlap can retain a word crossing the boundary, but the final transcript must merge duplicate context consistently.
+
+Origins of values
+
+The timeline and windows are schematic with no imposed number of seconds. The overlap is a chosen preprocessing design, not a measured optimal setting or a universal Whisper window configuration.
+
+Step-by-step reasoning
+
+Cutting speech midword can remove context; overlapping windows provide shared acoustic evidence to adjacent predictions. Merging then uses documented timestamps or overlap rules to retain the word once. Keep original audio positions so scoring can use the full reference in its correct order.
+
+Teaching script and check question
+
+Ask what goes wrong if window outputs are simply concatenated. Words in the overlap may be duplicated, and boundary words may be omitted. Compare complete outputs under one declared chunk/merge policy, not individually cherry-picked windows.
+39
+
+## Slide 40
+
+Adapt only after measuring the baseline
+
+Zero-shot baseline
+Use pretrained weights without task-specific training.
+→
+
+Diagnose
+Inspect development errors: audio, references, domain, decoding.
+→
+
+Fine-tune
+Train on labeled training speech; select settings on development data.
+
+Freeze model, preprocessing and decoding; evaluate once on the held-out test set. Compare the same clips before and after.
+40
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Explain why fine-tuning exists: model training data may differ from the project's language variety, acoustic conditions or domain. Avoid treating adaptation as a guaranteed improvement. Practical background: https://huggingface.co/learn/audio-course/en/chapter5/fine-tuning
+
+Origins of values
+
+The three stages are an experimental workflow rather than measured results. No training hours or hyperparameters are asserted; those depend on data and hardware.
+
+Step-by-step reasoning
+
+The baseline establishes performance before any project-specific gradient updates. Training updates parameters from labeled examples; development data guides settings; test data estimates generalization after the choices are frozen. Splits must avoid speaker/session leakage where possible.
+
+Teaching script and check question
+
+Ask: Should a changed normalizer be credited as acoustic model improvement? No; report it as a separate pipeline change. Keep an ablation record so the effect of fine-tuning is distinguishable from decoding, segmentation or normalization changes.
+40
+
+## Slide 41
+
+Choose an ASR checkpoint by coverage and evidence
+
+13 Nov 2026 snapshot. TDT = token-and-duration transduction.
+
+Checkpoint family
+Useful capability
+Check before running
+
+Canary 1B v2
+25 European languages
+Check language/formatting support
+
+Parakeet TDT 0.6B v3
+25-language ASR + timestamps
+v3 is multilingual; v2 is English
+
+Qwen3-ASR 1.7B / 0.6B
+30 languages + 22 Chinese dialects
+Check data, hardware and decoding
+
+Compare the same held-out clips. Newer is not automatically better for your language or recording conditions.
+41
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Use the table to filter candidate recognizers by supported language and operational constraints before benchmarking. TDT means token-and-duration transduction.
+
+Origins of values
+
+Names, sizes and language coverage are source-reported identifiers from the model cards. Qwen’s count combines languages and dialects and must not be described as 52 distinct languages. Snapshot:13 November 2026.
+
+Step-by-step reasoning
+
+Choose candidates supporting the same ASR task and language, then hold the test data, normalization and timing boundary fixed. Canary, Parakeet and Qwen have different architectures and coverage, so benchmark position is not transferable across datasets.
+
+Teaching script and check question
+
+Ask whether Parakeet v2 is a drop-in multilingual substitute for v3. No. Verify the exact identifier. Sources: https://huggingface.co/nvidia/canary-1b-v2 ; https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3 ; https://huggingface.co/Qwen/Qwen3-ASR-1.7B
+41
+
+## Slide 42
+
+Load a newer multilingual ASR baseline
+
+Setup: qwen-asr + compatible PyTorch; CUDA GPU with bfloat16 support. Input: spanish.wav.
+
+import torch
+from qwen_asr import Qwen3ASRModel
+model = Qwen3ASRModel.from_pretrained(
+"Qwen/Qwen3-ASR-1.7B", dtype=torch.bfloat16,
+device_map="cuda:0", max_new_tokens=256)
+
+Creates a Qwen3-ASR model on CUDA device 0.
+bfloat16 is a 16-bit numeric format requiring a compatible GPU. 256 caps generated tokens, not audio duration. Source: Qwen3-ASR.
+42
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show that comparing a newer architecture still ends with the same evaluation contract: audio in, transcript out, aligned against a trusted reference. Official interface: https://github.com/QwenLM/Qwen3-ASR
+
+Origins of values
+
+1.7B identifies the chosen model family size. cuda:0 selects the first CUDA device. bfloat16 is a numerical precision requiring compatible hardware. 256 is a chosen generation-token ceiling for this short-file demonstration, not a benchmark finding.
+
+Step-by-step reasoning
+
+from_pretrained loads the checkpoint. transcribe decodes the given audio with a Spanish language constraint. result is a list of result objects; result[0] accesses the first file's output, and .language/.text expose its language and text.
+
+Teaching script and check question
+
+Ask: What if the output stops early? Check whether the token cap truncated it before concluding the recognizer failed acoustically. Longer recordings need suitable configuration. None of this code has been presented as an executed quality benchmark.
+42
+
+## Slide 43
+
+Transcribe the audio with Qwen3-ASR
+
+Continue with the model loaded on the previous slide. Input: existing spanish.wav.
+
+result = model.transcribe(
+audio="spanish.wav", language="Spanish")
+print(result[0].language, result[0].text)
+
+Returns the selected/detected language and transcript.
+Actual text must be evaluated against trusted references.
+Keep checkpoint/library versions and score the same test clips as other models.
+43
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show that comparing a newer architecture still ends with the same evaluation contract: audio in, transcript out, aligned against a trusted reference. Official interface: https://github.com/QwenLM/Qwen3-ASR
+
+Origins of values
+
+1.7B identifies the chosen model family size. cuda:0 selects the first CUDA device. bfloat16 is a numerical precision requiring compatible hardware. 256 is a chosen generation-token ceiling for this short-file demonstration, not a benchmark finding.
+
+Step-by-step reasoning
+
+from_pretrained loads the checkpoint. transcribe decodes the given audio with a Spanish language constraint. result is a list of result objects; result[0] accesses the first file's output, and .language/.text expose its language and text.
+
+Teaching script and check question
+
+Ask: What if the output stops early? Check whether the token cap truncated it before concluding the recognizer failed acoustically. Longer recordings need suitable configuration. None of this code has been presented as an executed quality benchmark.
+43
+
+## Slide 44
+
+Test silence instead of silently dropping it
+
+Trusted reference
+Audio contains no speech.
+Reference text: ""
+Reference words N = 0.
+
+Failure to record
+Prediction contains words.
+Count emitted words and affected clips.
+Keep silent duration visible.
+
+Report silence separately. A conventional all-silent WER denominator is zero; a library may define special behavior.
+44
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Treat silence and non-speech as a separate failure condition. A fluent recognizer can emit words when the recording provides no speech evidence.
+
+Origins of values
+
+No empty-reference WER percentage is asserted. The reference is the empty string because this supplied case contains no speech; a candidate with words demonstrates an insertion failure.
+
+Step-by-step reasoning
+
+For conventional corpus WER, N is the number of reference words. An all-silent case givesN = 0, so a conventional ratio cannot be interpreted as an ordinary percentage. Keep these clips and separately count emitted words, affected clips and silent duration, with the library convention documented.
+
+Teaching script and check question
+
+Ask why deleting every empty-reference clip can make the evaluation misleading. It hides non-speech hallucinations. Review the audio label, report a separate silence result and test whether voice-activity filtering trades false words for missed quiet speech.
+44
+
+## Slide 45
+
+Make two recognizers comparable
+
+Hold fixed
+Record for each model
+
+Identical clip IDs and references
+Checkpoint/revision; language hint
+
+One text normalization policy
+Decoder settings; chunk/merge policy
+
+One timing boundary
+Hardware; precision; batch size
+
+Save raw predictions before scoring. Change one pipeline component at a time when diagnosing an improvement.
+45
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show a reproducible comparison row so that a score can be traced back to its inputs and settings.
+
+Origins of values
+
+Fields are required records, not fabricated measurements. No specific checkpoint revision or runtime is invented in the slide.
+
+Step-by-step reasoning
+
+Freeze the dataset item IDs, model revision, preprocessing and decoding settings before running the test. Save raw predictions keyed by item ID, then compute metrics under the shared scoring policy. Separate preprocessing, model and decoding changes when interpreting differences.
+
+Teaching script and check question
+
+Ask what a model name alone fails to capture. It misses the revision, language hint, chunking, beam size, precision and runtime context. Keep a manifest so another group can repeat the comparison.
+45
+
+## Slide 46
+
+The 2026 frontier serves different timing needs
+
+                         Nemotron 3.5 Transcribe: offline, 40 languages. Nemotron 3.5 ASR: 32 ready-to-run locales + 8 needing adaptation. Snapshot: 13 Nov 2026.
+46
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Contrast the information available to offline and streaming systems at prediction time. Offline recognition can wait for the complete input, whereas streaming produces partial text while new chunks arrive.
+
+Origins of values
+
+Six numbered chunks are schematic units, not six seconds or six model layers. Model capability snapshot:13 November 2026. The latest offline and streaming NVIDIA products are different models. Sources: https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B ; https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b
+
+Step-by-step reasoning
+
+A cache-aware streaming encoder reuses prior state while consuming new audio, reducing repeated work. Smaller chunks expose less future context but permit earlier responses. The streaming card lists 19 transcription-ready + 13 broad-coverage = 32 ready-to-run locales plus 8 adaptation-ready locales; the latter require fine-tuning. The offline model lists40 languages.
+
+Teaching script and check question
+
+Ask whether the same throughput score compares these operating modes. Not without matching the workload and timing definitions. Report WER with first-partial and finalization delay for streaming. Vendor benchmark ranks are conditional, not a universal model ordering.
+46
+
+## Slide 47
+
+Make the final model choice from evidence
+
+Decision
+Evidence to put in the report
+
+Eligible?
+Non-English; no group member’s mother tongue
+
+Supported?
+Exact language, variety, checkpoint and revision
+
+Accurate?
+Per-language WER+CER and important error examples
+
+Practical?
+Hardware, runtime, latency and repeatable settings
+
+Register languages to broaden class coverage. A state-of-the-art claim needs a dataset, metric, date and comparable setup.
+47
+                         
+Notes:
+
+Purpose and visual walkthrough
+
+Show a reproducible comparison row so that a score can be traced back to its inputs and settings.
+
+Origins of values
+
+Fields are required records, not fabricated measurements. No specific checkpoint revision or runtime is invented in the slide.
+
+Step-by-step reasoning
+
+Freeze the dataset item IDs, model revision, preprocessing and decoding settings before running the test. Save raw predictions keyed by item ID, then compute metrics under the shared scoring policy. Separate preprocessing, model and decoding changes when interpreting differences.
+
+Teaching script and check question
+
+Ask what a model name alone fails to capture. It misses the revision, language hint, chunking, beam size, precision and runtime context. Keep a manifest so another group can repeat the comparison.
+47

@@ -1,0 +1,1150 @@
+# Extracted text of materials/external-lectures/stanford-cs224s-2025-lect02-phonetics.pdf (57 pages). Page markers: '=== page N ==='.
+
+=== page 1 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / Linguist 285
+Spoken Language Processing
+Lecture 2: Phonetics
+Andrew Maas | Stanford University | Spring 2025
+
+=== page 2 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Announcements
+●
+Homework 1 Available on the website
+○
+Due on Monday April 14 at 11:59pm Paciﬁc
+●
+Homework is Colab and written section 
+○
+Today’s lecture will help with phonetic transcription!
+○
+Phonetic transcription can be ambiguous
+■
+In Homework 1 we give points for multiple correct answers when there is ambiguity
+●
+If in doubt, pick a reasonable pronunciation and include in your answer what phoneme(s) 
+you are uncertain about 
+■
+Use only the restricted set of phonemes in ARPAbet (not full IPA) 
+●
+Oﬃce hours start in full next week:
+○
+Both in person and on Zoom. Please use Andrew + Tolulope mostly for project + research questions
+○
+Ed post will announce full times. 
+■
+Please let us know if any remote students are unable to make Zoom times
+2
+
+=== page 3 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Course topics
+1.
+Speech synthesis. We start today with basics of phonetics and human speech production
+2.
+Overview of end-to-end spoken dialog systems.
+3.
+Speech recognition.
+4.
+Developing spoken language applications & advanced dialog systems.
+Lecture types in this class:
+-
+Survey a topic to understand the problem: What makes spoken language and audio different? Goal 
+is to provide starting point for deeper reading, or leave you with basic awareness.
+-
+Tools/models lectures: Dive into more details on how modern tools work. Build your understanding 
+of model architectures so you can debug and innovate with these tools in hands-on projects.
+3
+
+=== page 4 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Some basic ethics when working on speech technologies
+Don’t record someone 
+without their consent
+In California, all parties to any 
+conﬁdential conversation must 
+give their consent to be recorded. 
+For calls occurring over cellular or 
+cordless phones, all parties must 
+consent before a person can 
+record, regardless of 
+conﬁdentiality. 
+Don’t use someone’s speech 
+data without consent. 
+Especially with speech 
+synthesizers / voice cloning 
+It might be fun, but it’s a little 
+creepy. People get upset.
+Okay to use existing speech 
+datasets (we’ll provide some).
+Do consider subgroup and 
+language bias in systems
+Poor performance on subgroups 
+e.g. non-native speakers. Many 
+languages are under-served 
+relative to English/Mandarin.
+Social meaning extraction task 
+supervision labels can create bias
+4
+
+=== page 5 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Outline for today
+●
+Phonetics Overview
+●
+ARPAbet Phonetic Transcription
+●
+Articulatory Phonetics: How we produce sounds
+●
+Acoustic Phonetics: How we produce and visualize sound waves
+●
+Overview of Prosody: Conveying meaning beyond just the words we say
+5
+
+=== page 6 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Phonetics Overview
+6
+
+=== page 7 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Phonetics: Some initial terms and concepts
+Phonetics is the study of speech sounds, focusing on their production, acoustic properties, and 
+perception. Phonetics helps describe language variation and speech system issues.
+●
+ARPAbet: An alphabet for transcribing American English phonetic sounds
+●
+Articulatory Phonetics: How speech sounds are made by articulators (moving organs) in mouth
+●
+Acoustic Phonetics: Acoustic properties of speech sounds
+●
+Some vocabulary:
+○
+Phone: Any distinct speech sound or gesture
+○
+Phoneme: A speech sound that conveys meaning (a syllable or word would change if the phoneme 
+were swapped)
+○
+Allophone: A distinct speech sound that does not affect word meaning (i.e. variations of sounds within 
+the same phoneme category)
+●
+See Stanford’s LING 105 and LING 157 courses for full phonetics introduction!
+7
+
+=== page 8 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Do we need phonetics to build systems that accurately 
+process spoken language?
+●
+Modern systems (based on deep learning) are far less reliant on encoding phonetic domain 
+knowledge directly into speech processing algorithm steps
+○
+Allowing deep learning models to learn letter-sound mappings from data can perform much better than 
+hand engineering phonetic structure into a recognition or synthesis system
+●
+However …
+●
+Basic understanding of phonetics and speech production helps with describing and 
+debugging spoken language systems
+○
+E.g. how does an accent change the sound of pronunciations?
+●
+Phonetic categories are not arbitrary. They model the biology of how humans produce speech
+○
+Understanding the space of possible speech sounds gives a nice perspective on comparing spoken 
+languages across the world, and how they evolve
+8
+
+=== page 9 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+ARPAbet Transcription
+9
+●
+An alphabet for transcribing American English phonetic sounds. Developed for early 
+English-focused ASR research.
+●
+We limit ourselves to ARPAbet in homework tasks to simplify the problem 
+●
+Inadequate for modern multi-lingual systems. ARPAbet does not contain many sounds that occur in 
+languages other than English
+
+=== page 10 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+English Vowels
+10
+In ARPAbet
+b_d
+ARPA
+b_d
+ARPA
+1
+bead
+iy
+9
+bode
+ow
+2
+bid
+ih
+10
+booed
+uw
+3
+bayed
+ey
+11
+bud
+ah
+4
+bed
+eh
+12
+bird
+er
+5
+bad
+ae
+13
+bide
+ay
+6
+bod(y)
+aa
+14
+bowed
+aw
+7
+bawd
+ao
+15
+Boyd
+oy
+8
+Budd(hist)
+uh
+Note: Many speakers pronounce 
+Buddhist with the vowel [uw] as in 
+booed.
+So for them [uh] is instead the vowel 
+in “put” or “book”
+https://corpus.linguistics.berkeley.e
+du/acip/
+
+=== page 11 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Articulatory Parameters for English Consonants
+11
+Place of articulation
+bilabial
+labiodental
+inter-dental
+alveolar
+palatal
+velar
+glottal
+stop
+ p
+ b
+ t
+ d
+ k
+ g
+ q
+fric.
+ f
+ v
+th
+dh
+ s
+ z
+sh
+zh
+ h
+affric.
+ch
+jh
+nasal
+ m
+ n
+ng
+approx
+ w
+l/r
+ y
+ﬂap
+dx
+Manner of articulation
+In ARPAbet
+Voiceless
+Voiced
+Table 1: Jennifer Venditti
+
+=== page 12 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Articulatory Phonetics
+How speech sounds are made by articulators 
+(biology in motion)
+12
+
+=== page 13 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Speech Production
+●
+Flow: we (normally) speak while breathing out. Respiration provides airﬂow. 
+“Pulmonic egressive airstream”
+○
+Airstream sets vocal folds in motion. Vibration of vocal folds produces sounds.  Sound is then 
+modulated by:
+●
+Resonance: shape of vocal tract causing harmonics
+●
+Articulation: manipulation of airﬂow
+○
+Oral tract: uvula, soft palate (velum), hard palate, tongue, lips, teeth
+○
+Nasal tract
+13
+
+=== page 14 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Sagittal Section 
+of the Vocal 
+Tract
+14
+Nasal Cavity
+Pharynx
+Vocal Folds 
+(within the Larynx)
+Trachea
+Lungs
+
+=== page 15 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+15
+Sagittal Section 
+of the Vocal 
+Tract
+
+=== page 16 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+USC’s SAIL Lab
+Shri Narayanan
+16
+
+=== page 17 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Tamil
+17
+
+=== page 18 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Larynx and Vocal Folds
+●
+The Larynx (voice box)
+○
+A structure made of cartilage and 
+muscle
+○
+Located above the trachea (windpipe) 
+and below the pharynx (throat)
+○
+Contains the vocal folds
+○
+Adjective for larynx: laryngeal)
+●
+Vocal Folds (older term: vocal cords)
+○
+Two bands of muscle and tissue in the 
+larynx
+○
+Can be set in motion to produce sound 
+(voicing)
+18
+
+=== page 19 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Voicing
+19
+●
+Air comes up from lungs
+●
+Forces its way through vocal cords, 
+pushing open (2,3,4)
+●
+This causes air pressure in glottis to 
+fall, since:
+○
+when gas runs through constricted 
+passage, its velocity increases (Venturi 
+tube effect)
+○
+ this increase in velocity results in a drop 
+in pressure (Bernoulli principle)
+●
+Because of drop in pressure, vocal 
+cords snap together again (6-10)
+●
+Single cycle: ~1/100 of a second
+
+=== page 20 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Vocal Fold Vibration
+20
+●
+Air comes up from lungs
+●
+Forces its way through vocal cords, 
+pushing open (2,3,4)
+●
+This causes air pressure in glottis to 
+fall, since:
+○
+when gas runs through constricted 
+passage, its velocity increases (Venturi 
+tube effect)
+○
+ this increase in velocity results in a drop 
+in pressure (Bernoulli principle)
+●
+Because of drop in pressure, vocal 
+cords snap together again (6-10)
+●
+Single cycle: ~1/100 of a second
+
+=== page 21 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+21
+Sound is compression waves of air particles
+Image: Dan Russell (2011)
+
+=== page 22 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+22
+Sound Waves are Longitudinal Waves
+Particle 
+Displacement
+Pressure
+Image: Dan Russell 
+(2011)
+
+=== page 23 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Consonants and Vowels
+23
+Consonants: 
+phonetically, sounds with 
+audible noise produced by a 
+constriction
+Vowels:
+ phonetically, sounds with no 
+audible noise produced by a 
+constriction
+(it’s more complicated than this, since we have to consider syllabic function, but this will do for now)
+
+=== page 24 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+24
+Tongue Position for Vowels
+Middle
+Back
+Close
+Mid
+Open
+iy
+ih
+uh
+uw
+ey
+ow
+eh
+ao
+ax
+aa
+ah
+ae
+Front
+
+=== page 25 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+USC: Soprano Singing
+25
+
+=== page 26 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Articulatory Parameters for English Consonants
+26
+Place of articulation
+bilabial
+labiodental
+inter-dental
+alveolar
+palatal
+velar
+glottal
+stop
+ p
+ b
+ t
+ d
+ k
+ g
+ q
+fric.
+ f
+ v
+th
+dh
+ s
+ z
+sh
+zh
+ h
+affric.
+ch
+jh
+nasal
+ m
+ n
+ng
+approx
+ w
+l/r
+ y
+ﬂap
+dx
+Manner of articulation
+In ARPAbet
+Voiceless
+Voiced
+Table 1: Jennifer Venditti
+
+=== page 27 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+27
+●
+Consonants are classiﬁed according to 
+the location where the airﬂow is most 
+constricted
+●
+This is called place of articulation
+●
+Three major kinds of place articulation:
+○
+Labial (with lips)
+○
+Coronal (using tip or blade of tongue)
+○
+Dorsal (using back of tongue)
+Labial
+Dental
+Alveolar
+Post-alveolar / 
+Palatal
+Velar
+Uvular
+Pharyngeal
+Laryngeal 
+/ Glottal
+Place of Articulation
+
+=== page 28 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+28
+Manner of Articulation:
+Stopping air flow
+●
+Stop: complete closure of articulators, 
+so no air escapes through mouth
+●
+Oral stop: palate is raised, no air 
+escapes through nose. Air pressure 
+builds up behind closure, explodes when 
+released
+○
+p, t, k, b, d, g
+●
+Nasal stop: oral closure, but palate is 
+lowered, air escapes through nose
+○
+m, n, ng
+Stop
+Oral Stop
+Nasal Stop
+
+=== page 29 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+29
+Oral vs Nasal Sounds
+
+=== page 30 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+30
+●
+Fricatives: close approximation of two 
+articulators, resulting in turbulent 
+airﬂow between them, producing a 
+hissing sound
+○
+f, v, s, z, th, dh
+●
+Approximant: not quite-so-close 
+approximation of two articulators, 
+so no turbulence
+○
+y, r
+●
+Lateral approximant: obstruction of 
+airstream along center of oral tract, with 
+opening around sides of tongue
+○
+l
+Fricative
+Approximant
+Lateral Approximant
+Lecture 2: 
+Articulatory Phonetics
+Manner of Articulation: 
+Partial obstructions
+
+=== page 31 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Voicelessness
+●
+When vocal cords are open, air passes through unobstructed
+●
+Voiceless sounds: 
+○
+p
+○
+t
+○
+k
+○
+s
+●
+If the air moves very quickly, the turbulence causes a different kind of phonation: whisper
+31
+○
+f
+○
+sh
+○
+th
+○
+ch
+
+=== page 32 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+International 
+Phonetic 
+Alphabet (IPA)
+32
+Wikipedia IPA (with sounds)
+
+=== page 33 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+33
+The Art of Language 
+Invention
+●
+Fun, informative book on phonetics and 
+phonotactics across languages.
+●
+Great audio book!
+●
+Talk Video 
+
+=== page 34 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Acoustic Phonetics
+Acoustic properties of speech sounds
+34
+
+=== page 35 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Back to Waves: Fundamental Frequency
+●
+Waveform of the vowel [iy]
+●
+Frequency: 10 repetitions / .03875 seconds = 258 Hz
+●
+This is speed that vocal folds move, hence voicing
+●
+Each peak corresponds to an opening of the vocal folds
+●
+The low frequency of the complex wave is called the fundamental frequency of the wave or F0
+35
+
+=== page 36 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+She Just Had a Baby
+●
+Note that vowels all have regular amplitude peaks
+●
+Stop consonant
+●
+Closure followed by release
+●
+Notice the silence followed by slight bursts of emphasis: very clear for [b] of “baby”
+●
+Fricative: noisy.  [sh] of “she” at beginning
+36
+
+=== page 37 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Spectrogram: Spectrum + Time Dimension
+37
+
+=== page 38 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Source Filter Model of Vowels
+●
+Any body of air will vibrate in a way that depends on its size and shape
+●
+Vocal tract as "ampliﬁer"; ampliﬁes certain harmonics
+●
+Formants are result of different shapes of vocal tract
+38
+
+=== page 39 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Source Filter Model of Vowels
+●
+Source and ﬁlter are independent, so:
+○
+Different vowels can have same pitch
+○
+The same vowel can have different pitch
+39
+Input
+Glottal Spectrum
+Filter
+Glottal Spectrum
+Vocal Tract Frequency
+Response Function
+Output
+Figures: Ratree Wayland
+
+=== page 40 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Resonances of 
+the Vocal Tract
+40
+The human vocal tract as an 
+open tube
+Figure: Ladefoged (1996) p.117
+
+=== page 41 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Resonances of the 
+Vocal Tract
+41
+Figure:  Mark Liberman
+
+=== page 42 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Spectrogram examples
+●
+bab: closure of lips lowers all formants: 
+so rapid increase in all formants at 
+beginning of "bab”
+●
+dad: ﬁrst formant increases, but F2 and 
+F3 slight fall
+●
+gag: F2 and F3 come together: this is a 
+characteristic of velars. 
+Formant transitions take longer in velars 
+than in alveolars or labials
+42
+
+=== page 43 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Prosody Overview:
+Conveying meaning with speech beyond the 
+words spoken
+43
+
+=== page 44 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+ Three Aspects of Prosody
+●
+Prominence: some syllables/words are more prominent than others
+●
+Structure/boundaries: sentences have prosodic structure
+○
+Some words group naturally together
+○
+Others have a noticeable break or disjuncture between them
+●
+Tune: the intonational melody of an utterance.
+44
+
+=== page 45 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Defining Intonation
+●
+Ladd (1996) “Intonational phonology”
+●
+“The use of suprasegmental phonetic features [...]
+○
+Suprasegmental = above & beyond the segment/phone
+■
+F0 (pitch)
+■
+Intensity (energy)
+■
+Duration
+●
+to convey sentence-level pragmatic meanings”
+○
+i.e. meanings that apply to phrases or utterances as a whole, not lexical stress, not lexical tone.
+45
+
+=== page 46 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Pitch Track
+46
+
+=== page 47 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Pitch is not Frequency
+●
+Pitch is the mental sensation or perceptual correlate of F0
+●
+Relationship between pitch and F0 is not linear;
+○
+human pitch perception is most accurate between 100Hz and 1000Hz. 
+■
+Linear in this range
+■
+Logarithmic above 1000Hz
+●
+Mel scale is one model of this F0-pitch mapping
+○
+A mel is a unit of pitch deﬁned so that pairs of sounds which are perceptually 
+equidistant  in pitch are separated by an equal number of mels
+○
+Frequency in mels = 1127 ln (1 + f/700) 
+47
+
+=== page 48 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Plot of Intensity
+48
+
+=== page 49 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Prosodic Boundaries
+49
+I met Mary and Elena’s mother 
+at the mall yesterday.
+I met Mary, and Elena’s mother 
+at the mall yesterday.
+French [bread and cheese]
+[French bread] and [cheese]
+
+=== page 50 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Thank you. Questions?
+50
+
+=== page 51 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Appendix
+51
+
+=== page 52 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Useful Links
+●
+The ARPAbet
+○
+http://www.stanford.edu/class/cs224s/arpabet.html
+●
+The CMU Pronouncing Dictionary 
+○
+http://www.speech.cs.cmu.edu/cgi-bin/cmudict
+●
+International Phonetic Alphabet:
+○
+http://en.wikipedia.org/wiki/International_Phonetic_Alphabet
+52
+
+=== page 53 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+She Came Back and 
+Started Again
+●
+Lots of high-freq energy
+●
+Closure for k
+●
+Burst of aspiration for k
+●
+[ey] faint 1100 Hz formant is 
+nasalization
+●
+Bilabial nasal
+●
+Short b closure, voicing barely visible. 
+●
+[ae] note upward transitions after 
+bilabial stop at beginning
+●
+Note F2 and F3 coming together for "k
+53
+
+=== page 54 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+Vowels
+54
+
+=== page 55 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+The Oral Cavity Amplifies Some Harmonics
+55
+
+=== page 56 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+The Speech Chain (Denes and Pinson)
+56
+Speaker 
+Hearer
+
+=== page 57 ===
+CS 224S / LINGUIST 285
+Spoken Language Processing
+Lecture 2: 
+Phonetics
+More on Manner of Articulation of Consonants
+●
+Tap or ﬂap: tongue makes a single tap against the alveolar ridge
+○
+dx in “butter”
+●
+Affricate: stop immediately followed by a fricative
+○
+ch, jh
+57
+

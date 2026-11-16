@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+# Large/local data and model caches (keep manifests + predictions in git, not raw audio)
+data/raw/
+data/cache/
+*.ckpt
+*.safetensors
+.cache/
+# OS
+.DS_Store
+Thumbs.db
