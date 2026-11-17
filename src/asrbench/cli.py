@@ -46,6 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--checkpoints-dir", default="checkpoints", help="where weights go (gitignored)")
     p.add_argument("--runs-dir", default="runs", help="where the training manifest + log go (commit these)")
     p.add_argument("--policy", default="configs/scoring.yaml", help="scoring policy for dev selection")
+    p.add_argument("--resume", help="checkpoint dir of an interrupted run (checkpoints/<name>_<ts>) to continue")
 
     p = sub.add_parser("score", help="Score a run directory per language")
     p.add_argument("run_dir")
@@ -93,7 +94,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Run directory: {out}\nNext: asrbench score {out.as_posix()}")
     elif a.cmd == "train":
         from .train import train
-        final = train(a.config, a.checkpoints_dir, a.runs_dir, a.policy)
+        final = train(a.config, a.checkpoints_dir, a.runs_dir, a.policy, resume=a.resume)
         print(f"Saved {final.as_posix()}\nNext: set model.id to this path in a run config and `asrbench run` it "
               "on dev, then on the frozen test set alongside the baselines.")
     elif a.cmd == "score":

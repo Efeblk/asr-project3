@@ -67,6 +67,21 @@ def test_ctc_training_end_to_end(tmp_path, toy_corpus, tiny_ctc):
     assert rec.local_training()["trained_by_us"] is True
 
 
+def test_training_resumes_from_checkpoint(tmp_path, toy_corpus, tiny_ctc):
+    first = train(_cfg(tmp_path, toy_corpus, tiny_ctc), tmp_path / "ckpt", tmp_path / "runs", None,
+                  log=lambda *_: None)
+    over = _cfg(tmp_path, toy_corpus, tiny_ctc)  # same run, longer budget: continues at step 2, not from scratch
+    cfg = yaml.safe_load(over.read_text(encoding="utf-8"))
+    cfg["training"]["max_steps"] = 3
+    over.write_text(yaml.safe_dump(cfg), encoding="utf-8")
+    final = train(over, tmp_path / "ignored", tmp_path / "runs", None, log=lambda *_: None, resume=first.parent)
+    assert final == first
+    m = json.loads((final / "train_manifest.json").read_text(encoding="utf-8"))
+    assert m["global_steps"] == 3 and m["resumed"] is True
+    with pytest.raises(ValueError):
+        train(over, tmp_path / "c", tmp_path / "runs", None, resume=tmp_path / "runs")
+
+
 def test_training_refuses_test_split_and_english(tmp_path, toy_corpus, tiny_ctc):
     with pytest.raises(ValueError, match="test split"):
         train(_cfg(tmp_path, toy_corpus, tiny_ctc, dev_split="test"), tmp_path / "c", tmp_path / "r", None)

@@ -141,7 +141,9 @@ def _load_config(path: str | Path) -> dict:
 
 
 def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", runs_dir: str | Path = "runs",
-          policy_path: str | None = "configs/scoring.yaml", log=print) -> Path:
+          policy_path: str | None = "configs/scoring.yaml", log=print, resume: str | Path | None = None) -> Path:
+    """`resume`: an interrupted run's checkpoint directory (checkpoints/<name>_<stamp>); training continues from
+    its latest checkpoint-N with the same config, data, optimizer and scheduler state, and writes to the same dirs."""
     cfg = _load_config(config_path)
     lang = cfg["language"]
     check_run_languages([lang], bool(cfg.get("eligibility_confirmed")))
@@ -195,8 +197,15 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     from transformers import set_seed
     set_seed(seed)
 
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     name = cfg.get("name", "train")
+    if resume:
+        resume = Path(resume)
+        if not resume.name.startswith(f"{name}_") or not any(resume.glob("checkpoint-*")):
+            raise ValueError(f"--resume {resume} is not a checkpoint directory of '{name}' with a saved checkpoint-N.")
+        checkpoints_dir, stamp = resume.parent, resume.name[len(name) + 1:]
+        log(f"Resuming {resume.as_posix()} from its latest checkpoint.")
+    else:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     ckpt_dir = Path(checkpoints_dir) / f"{name}_{stamp}"
     run_dir = Path(runs_dir) / f"train_{name}_{stamp}"
     ckpt_dir.mkdir(parents=True, exist_ok=True)
@@ -290,7 +299,7 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     t0 = time.perf_counter()
-    trainer.train()
+    trainer.train(resume_from_checkpoint=bool(resume))
     train_sec = time.perf_counter() - t0
     final = ckpt_dir / "final"
     trainer.save_model(str(final))
@@ -318,6 +327,7 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
                       "best_metric": trainer.state.best_metric, "final_eval": best_eval},
         "training_args": {k: v for k, v in args_kw.items() if k != "output_dir"},
         "seed": seed,
+        "resumed": bool(resume),
         "train_sec": round(train_sec, 1),
         "global_steps": trainer.state.global_step,
         "peak_gpu_memory_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2) if torch.cuda.is_available() else None,
