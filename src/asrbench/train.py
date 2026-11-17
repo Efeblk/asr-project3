@@ -49,7 +49,8 @@ _FAMILY_DEFAULTS = {
                        per_device_eval_batch_size=16, eval_steps=500, save_steps=500, bf16=True,
                        predict_with_generate=True, generation_max_length=225),
     "hf-ctc": dict(learning_rate=3e-4, warmup_steps=500, max_steps=6000, per_device_train_batch_size=4,
-                   gradient_accumulation_steps=4,  # batch 8 peaked at 10.9 GB on a 12 GB GPU (XLS-R-300M) per_device_eval_batch_size=8, eval_steps=500, save_steps=500,
+                   gradient_accumulation_steps=4,  # batch 8 peaked at 10.9 GB on a 12 GB GPU (XLS-R-300M)
+                   per_device_eval_batch_size=8, eval_steps=500, save_steps=500,
                    bf16=True, weight_decay=0.005),
 }
 
