@@ -1,0 +1,14 @@
+# Kazakh, OURS: Whisper-small fine-tuned by us on the KSC2 3 % train sample (A1 contribution). Dev run: select settings here, test runs once later.
+name: whisper-small-ft-ksc2_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl   # language-filtered (asrbench filter-lang)
+split: dev
+languages: [kk]
+eligibility_confirmed: true   # confirmed by the student 2026-11-17 (never record why)
+batch_size: 16
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-small-ft_ksc2-sample_20261117T174319Z/final   # best dev checkpoint (selected on 300 dev items)
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints: {kk: kazakh}
