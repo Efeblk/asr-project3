@@ -259,9 +259,15 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
         args_kw.pop("generation_max_length", None)
         to_target = (lambda t: t) if spec.get("raw_targets") else policy.normalize
         train_texts = [to_target(i.reference) for i in train_items]
+        target_lang = spec.get("target_lang")  # MMS (facebook/mms-1b-all): start from this language's adapter
+        if target_lang and not spec.get("reuse_vocab"):
+            raise ValueError("model.target_lang (MMS adapter) needs reuse_vocab: true (the adapter's own vocabulary).")
         if spec.get("reuse_vocab"):
             processor = AutoProcessor.from_pretrained(spec["id"], revision=spec.get("revision", "main"))
-            vocab_info = {"source": "checkpoint", "size": len(processor.tokenizer)}
+            if target_lang:
+                processor.tokenizer.set_target_lang(target_lang)
+            vocab_info = {"source": "checkpoint" + (f" (MMS adapter '{target_lang}')" if target_lang else ""),
+                          "size": len(processor.tokenizer)}
         else:
             vocab = build_ctc_vocab(train_texts)
             vocab_path = ckpt_dir / "vocab.json"
@@ -275,10 +281,20 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
         model_kw = dict(ctc_loss_reduction="mean", pad_token_id=processor.tokenizer.pad_token_id)
         if not spec.get("reuse_vocab"):
             model_kw.update(vocab_size=len(processor.tokenizer), ignore_mismatched_sizes=True)
+        if target_lang:
+            model_kw.update(target_lang=target_lang, ignore_mismatched_sizes=True)
         model_kw.update(spec.get("model_kwargs") or {})  # e.g. mask_time_prob, layerdrop, *_dropout
         model = AutoModelForCTC.from_pretrained(spec["id"], revision=spec.get("revision", "main"), **model_kw)
-        if spec.get("freeze_feature_encoder", True) and hasattr(model, "freeze_feature_encoder"):
+        if spec.get("adapter_only"):  # MMS recipe: freeze the 1B base, train only the adapter layers + LM head
+            if not target_lang:
+                raise ValueError("adapter_only needs model.target_lang (an MMS adapter checkpoint).")
+            model.freeze_base_model()
+            for p in model._get_adapters().values():
+                p.requires_grad = True
+        elif spec.get("freeze_feature_encoder", True) and hasattr(model, "freeze_feature_encoder"):
             model.freeze_feature_encoder()
+        n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        log(f"Trainable parameters: {n_train / 1e6:.1f} M of {sum(p.numel() for p in model.parameters()) / 1e6:.1f} M")
         train_ds = AudioTextDataset(paths(train_items), train_texts)
         dev_ds = AudioTextDataset(paths(dev_items), [to_target(r) for r in dev_refs])
         collator = CTCCollator(processor)
@@ -307,6 +323,12 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     final = ckpt_dir / "final"
     trainer.save_model(str(final))
     processor.save_pretrained(str(final))
+    if family == "hf-ctc" and spec.get("target_lang"):
+        # Also write our trained adapter where `load_adapter(target_lang)` looks, so the run config can keep
+        # `target_lang` and still get our weights (not the original adapter).
+        from safetensors.torch import save_file
+        save_file({k: v.detach().cpu().contiguous() for k, v in trainer.model._get_adapters().items()},
+                  str(final / f"adapter.{spec['target_lang']}.safetensors"))
     best_eval = trainer.evaluate()
 
     manifest = {
