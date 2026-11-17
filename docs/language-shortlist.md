@@ -4,6 +4,12 @@ This is a neutral list of candidates. **Cross out any language that is ineligibl
 
 Constraints assumed: one MAIN language (zero-shot baselines plus our own fine-tune of Whisper-small and/or XLS-R-300M / MMS CTC on one RTX 4070 SUPER 12 GB), and 1–3 EXTRA languages (baselines only, maybe a second fine-tune).
 
+## Decision (2026-11-17)
+
+- **Main: Kazakh (kk).** Baselines + our own fine-tune. Training data: a fixed 3 % sample of KSC2 Train (≈35 h, sha1-hashed utterance IDs) plus FLEURS `kk_kz`. Test sets: KSC2 Test (in-domain, numbers written as words) and FLEURS `kk_kz` test (read Wikipedia, with digits and punctuation).
+- **Extra: Georgian (ka).** Baselines on FLEURS `ka_ge`; optional second fine-tune on FLEURS train (≈5 h) or Common Voice via MDC.
+- Eligibility confirmed by the student (reasons not recorded). Neither language is in the class register yet (claimed so far: Turkish, Basque, Hungarian, Uzbek, Icelandic).
+
 ## Summary table
 
 "Trusted train h" counts human-transcribed training audio we can actually obtain. FLEURS is about 10 h per language everywhere ([card](https://huggingface.co/datasets/google/fleurs)), so it is left out of that column. CV = Common Voice v27 **validated** hours. W-s = Whisper-small FLEURS WER from the Whisper paper, Table 13 ([arXiv 2212.04356](https://arxiv.org/abs/2212.04356)).

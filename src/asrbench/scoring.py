@@ -67,6 +67,10 @@ def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 200
             m["orthographic"] = {"wer": o.get("wer"), "cer": o.get("cer")}
             m["silence"] = silence_report(scores)
             m["top_substitutions"] = top_substitutions(scores)
+            groups = sorted({p.get("subcorpus") for p, _ in speech} - {None})
+            if groups:  # per-domain breakdown for error analysis (e.g. KSC2 tv_news vs crowdsourced)
+                m["by_subcorpus"] = {g: {k: v for k, v in corpus_metrics([s for p, s in speech if p.get("subcorpus") == g]).items()
+                                         if k in ("items", "wer", "cer")} for g in groups}
             worst = sorted(speech, key=lambda r: -(r[1].words.errors if r[1].words else r[1].chars.errors))[:10]
             m["worst_items"] = [{"id": s.id, "ref": s.ref_norm, "hyp": s.hyp_norm,
                                  "errors": (s.words or s.chars).as_dict()} for _, s in worst]
@@ -117,7 +121,12 @@ def render_report(results: dict, manifest: dict) -> str:
               "over sessions/speakers. RTFx = audio seconds / compute seconds. No cross-language average is shown "
               "on purpose (S19).", ""]
     for lang, m in results["languages"].items():
-        lines += [f"## {lang}", "", f"Word counts: {m.get('word_counts')}  ", f"Char counts: {m['char_counts']}", "",
+        lines += [f"## {lang}", "", f"Word counts: {m.get('word_counts')}  ", f"Char counts: {m['char_counts']}", ""]
+        if m.get("by_subcorpus"):
+            lines += ["| Subcorpus | Items | WER | CER |", "|---|---|---|---|"]
+            lines += [f"| {g} | {r['items']} | {_pct(r.get('wer'))} | {_pct(r.get('cer'))} |" for g, r in m["by_subcorpus"].items()]
+            lines.append("")
+        lines += [
                   "Top substitutions (ref → hyp × n): " + ", ".join(f"{r}→{h}×{n}" for r, h, n in m["top_substitutions"][:10]),
                   "", "Worst items:", ""]
         for w in m["worst_items"][:5]:

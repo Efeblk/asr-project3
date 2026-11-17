@@ -20,6 +20,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--language", help="code stored in the manifest (default: prefix of config)")
     p.add_argument("--out", default="data", help="data root (default: data/)")
 
+    p = sub.add_parser("import-ksc2", help="Stream ISSAI KSC2 (Kazakh): all of dev/test + a fixed train fraction")
+    p.add_argument("--train-fraction", type=float, default=0.03, help="share of Train kept (default 0.03 ~ 35 h)")
+    p.add_argument("--out", default="data", help="data root (default: data/)")
+
     p = sub.add_parser("import-tsv", help="Write a manifest from a local TSV (id, audio, reference, split, speaker, session)")
     p.add_argument("tsv")
     p.add_argument("--language", required=True)
@@ -56,6 +60,12 @@ def main(argv: list[str] | None = None) -> int:
         from .dataset import load_manifest, summary
         from .importers import import_fleurs
         path = import_fleurs(a.config, a.splits, Path(a.out), language=a.language)
+        print(f"Wrote {path}")
+        print(json.dumps(summary(load_manifest(path)), indent=2))
+    elif a.cmd == "import-ksc2":
+        from .dataset import load_manifest, summary
+        from .importers import import_ksc2
+        path = import_ksc2(Path(a.out), a.train_fraction)
         print(f"Wrote {path}")
         print(json.dumps(summary(load_manifest(path)), indent=2))
     elif a.cmd == "import-tsv":

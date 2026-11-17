@@ -1,0 +1,14 @@
+name: mms-1b-all-kaz_fleurs-kk_dev
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: main
+  device: cuda
+  dtype: float16
+  target_lang: kaz

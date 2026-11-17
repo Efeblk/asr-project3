@@ -1,0 +1,16 @@
+name: whisper-small_fleurs-kk_dev
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: openai/whisper-small
+  revision: main
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh

@@ -91,3 +91,107 @@ def _relpath(path: Path, start: Path) -> str:
         return os.path.relpath(path, start)
     except ValueError:  # different drive on Windows
         return str(path)
+
+
+# --- KSC2 (ISSAI Kazakh Speech Corpus 2) -------------------------------------------------------
+KSC2_REPO = "issai/Kazakh_Speech_Corpus_2"
+KSC2_PARTS = [f"ISSAI_KSC2.tar.gz.parta{c}" for c in "abcdefghij"]
+KSC2_SPLITS = {"Train": "train", "Dev": "dev", "Test": "test"}
+
+
+class _ConcatHTTPStream:
+    """Read the split tar.gz parts as one byte stream, resuming a part with a Range request on errors."""
+
+    def __init__(self, urls: list[str], log=print):
+        self.urls, self.log = urls, log
+        self.i, self.offset, self.resp, self.total = 0, 0, None, 0
+
+    def _open(self):
+        import urllib.request
+        req = urllib.request.Request(self.urls[self.i], headers={"Range": f"bytes={self.offset}-"} if self.offset else {})
+        self.resp = urllib.request.urlopen(req, timeout=60)
+
+    def read(self, n: int = -1) -> bytes:
+        import time
+        while self.i < len(self.urls):
+            if self.resp is None:
+                self._open()
+            for attempt in range(5):
+                try:
+                    b = self.resp.read(n)
+                    break
+                except Exception as e:  # dropped connection: reopen at the current offset
+                    self.log(f"  read error on part {self.i} at {self.offset}: {e}; retry {attempt + 1}")
+                    time.sleep(5 * (attempt + 1))
+                    self._open()
+            else:
+                raise RuntimeError("KSC2 download failed repeatedly")
+            if b:
+                self.offset += len(b)
+                self.total += len(b)
+                return b
+            self.i, self.offset, self.resp = self.i + 1, 0, None
+            if self.i < len(self.urls):
+                self.log(f"  part {self.i + 1}/{len(self.urls)} ({self.total / 1e9:.1f} GB streamed)")
+        return b""
+
+
+def _keep_train(stem: str, fraction: float) -> bool:
+    import hashlib
+    return int(hashlib.sha1(stem.encode()).hexdigest()[:8], 16) / 0xFFFFFFFF < fraction
+
+
+def import_ksc2(out_dir: Path, train_fraction: float = 0.03, revision: str | None = None, log=print) -> Path:
+    """Stream KSC2 (~81 GB, CC BY 4.0) once without storing the archive. Keeps all of Dev and Test and a
+    deterministic `train_fraction` of Train (sha1 of the utterance ID), so the subset is reproducible.
+
+    KSC2 has no speaker IDs, so bootstrap clusters fall back to items; its own Train/Dev/Test split is kept.
+    Transcripts are lowercase, unpunctuated, with numbers written as words.
+    """
+    import soundfile as sf
+    from huggingface_hub import HfApi
+
+    check_language("kk")
+    sha = revision or HfApi().dataset_info(KSC2_REPO).sha
+    urls = [f"https://huggingface.co/datasets/{KSC2_REPO}/resolve/{sha}/{p}" for p in KSC2_PARTS]
+    root = out_dir / "ksc2"
+    texts: dict[tuple[str, str, str], str] = {}
+    audio: dict[tuple[str, str, str], str] = {}
+    seen = {"train": 0, "dev": 0, "test": 0}
+    with tarfile.open(fileobj=_ConcatHTTPStream(urls, log), mode="r|gz") as tf:
+        for m in tf:
+            parts = m.name.split("/")
+            if not m.isfile() or len(parts) != 4 or parts[1] not in KSC2_SPLITS:
+                continue
+            split, sub, fname = KSC2_SPLITS[parts[1]], parts[2], parts[3]
+            stem, ext = fname.rsplit(".", 1)
+            key = (split, sub, stem)
+            if ext == "flac":
+                seen[split] += 1
+                if seen[split] % 20000 == 0:
+                    log(f"  {seen}")
+            if split == "train" and not _keep_train(stem, train_fraction):
+                continue
+            if ext == "txt":
+                texts[key] = tf.extractfile(m).read().decode("utf-8").strip()
+            elif ext == "flac":
+                dest = root / split / sub
+                dest.mkdir(parents=True, exist_ok=True)
+                m.name = fname
+                tf.extract(m, dest, filter="data")
+                audio[key] = f"{split}/{sub}/{fname}"
+    items = []
+    for key in sorted(audio):
+        if key not in texts:
+            log(f"  no transcript for {key}; skipped")
+            continue
+        split, sub, stem = key
+        try:
+            duration = sf.info(str(root / audio[key])).duration
+        except Exception:
+            duration = None
+        items.append(Item(id=f"ksc2-{split}-{sub}-{stem}", audio=audio[key], reference=texts[key], language="kk",
+                          split=split, duration=duration, source=f"{KSC2_REPO}@{sha[:12]}",
+                          extra={"subcorpus": sub, "train_fraction": train_fraction if split == "train" else 1.0}))
+    log(f"Utterances in the corpus: {seen}; kept {len(items)}")
+    return write_manifest(items, root / "manifest.jsonl")

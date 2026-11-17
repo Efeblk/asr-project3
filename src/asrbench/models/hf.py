@@ -62,7 +62,14 @@ class HFCTC(Recognizer):
         self.processor = AutoProcessor.from_pretrained(self.model_id, revision=self.revision)
         self.model = AutoModelForCTC.from_pretrained(
             self.model_id, revision=self.revision, dtype=_torch_dtype(self.dtype)
-        ).to(self.device).eval()
+        )
+        # MMS (facebook/mms-1b-all): one shared encoder + per-language adapters and vocabularies.
+        # `target_lang` is the ISO 639-3 adapter code from the model card, e.g. kaz, kat.
+        self.target_lang = self.settings.get("target_lang")
+        if self.target_lang:
+            self.processor.tokenizer.set_target_lang(self.target_lang)
+            self.model.load_adapter(self.target_lang)
+        self.model = self.model.to(self.device, dtype=_torch_dtype(self.dtype)).eval()
         self.model_language = self.settings.get("model_language")
 
     def transcribe(self, audios: list[np.ndarray], language: str) -> list[str]:

@@ -1,0 +1,14 @@
+name: xlsr-kazakh-aismlv_fleurs-kk_dev
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: aismlv/wav2vec2-large-xlsr-kazakh
+  revision: main
+  device: cuda
+  dtype: float16
+  model_language: kk

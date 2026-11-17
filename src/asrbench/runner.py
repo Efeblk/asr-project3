@@ -114,6 +114,8 @@ def run(config_path: str | Path, runs_dir: str | Path = "runs", resume: str | Pa
                     row = {"id": it.id, "language": it.language, "reference": it.reference, "hypothesis": hyp,
                            "audio_sec": round(s, 3), "compute_sec": round(elapsed * s / total, 4),
                            "speaker": it.speaker, "session": it.session}
+                    if it.extra.get("subcorpus"):
+                        row["subcorpus"] = it.extra["subcorpus"]
                     f.write(json.dumps(row, ensure_ascii=False) + "\n")
                 f.flush()
                 log(f"[{lang}] {min(b + bs, len(lang_items))}/{len(lang_items)}  batch {elapsed:.2f}s")

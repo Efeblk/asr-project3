@@ -1,0 +1,63 @@
+{
+  "name": "xlsr-kazakh-aismlv_fleurs-kk_dev",
+  "created_utc": "2026-11-17T15:46:49+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "kk"
+  ],
+  "dataset": {
+    "path": "data/fleurs/kk_kz/manifest.jsonl",
+    "sha256": "470888dafd5b3eff5071e98498ae7ff00c15cdc132b6de8c367af609a4e0c42d",
+    "items": 369,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "aismlv/wav2vec2-large-xlsr-kazakh",
+    "revision_requested": "main",
+    "revision_resolved": "b277ef85de7bbd28302d570062feb196cc4e9107",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "model_language": "kk"
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": "696ac99a717c621f65447054d60b947bac0c434f",
+    "git_dirty": true,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "AMD64",
+      "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+      "python": "3.12.11",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_gb": 12.0
+    }
+  },
+  "model_load_sec": 68.35,
+  "completed_utc": "2026-11-17T15:46:59+00:00",
+  "totals": {
+    "items": 369,
+    "audio_sec": 5494.8,
+    "compute_sec": 8.53,
+    "rtf": 0.0016
+  }
+}
