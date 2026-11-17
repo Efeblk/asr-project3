@@ -52,5 +52,12 @@
       "gpu_memory_gb": 12.0
     }
   },
-  "model_load_sec": 8.65
+  "model_load_sec": 8.65,
+  "completed_utc": "2026-11-17T16:36:32+00:00",
+  "totals": {
+    "items": 8524,
+    "audio_sec": 52068.51,
+    "compute_sec": 63.05,
+    "rtf": 0.0012
+  }
 }
