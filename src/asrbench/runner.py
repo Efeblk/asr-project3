@@ -59,7 +59,7 @@ def run(config_path: str | Path, runs_dir: str | Path = "runs", resume: str | Pa
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         out = Path(runs_dir) / f"{cfg.get('name', 'run')}_{stamp}"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True), encoding="utf-8")
+    (out / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True), encoding="utf-8", newline="\n")
 
     pred_path = out / "predictions.jsonl"
     done = set()
@@ -91,7 +91,7 @@ def run(config_path: str | Path, runs_dir: str | Path = "runs", resume: str | Pa
         "env": envinfo.capture(),
         "model_load_sec": round(load_sec, 2),
     }
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
 
     warmed = False
     with pred_path.open("a", encoding="utf-8", newline="\n") as f:
@@ -126,6 +126,6 @@ def run(config_path: str | Path, runs_dir: str | Path = "runs", resume: str | Pa
     manifest["completed_utc"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     manifest["totals"] = {"items": len(preds), "audio_sec": round(audio_sec, 2), "compute_sec": round(compute_sec, 2),
                           "rtf": round(compute_sec / audio_sec, 4) if audio_sec else None}
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     log(f"Wrote {pred_path}")
     return out

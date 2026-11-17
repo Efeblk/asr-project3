@@ -80,8 +80,8 @@ def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 200
                                     "words": s.words.as_dict() if s.words else None,
                                     "chars": s.chars.as_dict()}, ensure_ascii=False) + "\n")
 
-    (run_dir / "scores.json").write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
-    (run_dir / "report.md").write_text(render_report(results, manifest), encoding="utf-8")
+    (run_dir / "scores.json").write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    (run_dir / "report.md").write_text(render_report(results, manifest), encoding="utf-8", newline="\n")
     return results
 
 

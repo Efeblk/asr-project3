@@ -192,8 +192,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     run_dir = Path(runs_dir) / f"train_{name}_{stamp}"
     ckpt_dir.mkdir(parents=True, exist_ok=True)
     run_dir.mkdir(parents=True, exist_ok=True)
-    (run_dir / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True), encoding="utf-8")
-    (run_dir / "train_ids.txt").write_text("\n".join(sorted(i.id for i in train_items)) + "\n", encoding="utf-8")
+    (run_dir / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True), encoding="utf-8", newline="\n")
+    (run_dir / "train_ids.txt").write_text("\n".join(sorted(i.id for i in train_items)) + "\n", encoding="utf-8", newline="\n")
 
     args_kw = {**_COMMON_DEFAULTS, **_FAMILY_DEFAULTS[family], **(cfg.get("training") or {})}
     args_kw.update(output_dir=str(ckpt_dir), seed=seed, metric_for_best_model=metric)
@@ -244,7 +244,7 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
         else:
             vocab = build_ctc_vocab(train_texts)
             vocab_path = ckpt_dir / "vocab.json"
-            vocab_path.write_text(json.dumps(vocab, ensure_ascii=False, indent=1), encoding="utf-8")
+            vocab_path.write_text(json.dumps(vocab, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
             tok = Wav2Vec2CTCTokenizer(str(vocab_path), unk_token="[UNK]", pad_token="[PAD]",
                                        word_delimiter_token="|")
             fe = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=SR, padding_value=0.0, do_normalize=True,
@@ -317,8 +317,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
         "env": envinfo.capture(),
     }
     text = json.dumps(manifest, indent=2, ensure_ascii=False, default=str)
-    (final / "train_manifest.json").write_text(text, encoding="utf-8")
-    (run_dir / "train_manifest.json").write_text(text, encoding="utf-8")
-    (run_dir / "log_history.json").write_text(json.dumps(trainer.state.log_history, indent=1), encoding="utf-8")
+    (final / "train_manifest.json").write_text(text, encoding="utf-8", newline="\n")
+    (run_dir / "train_manifest.json").write_text(text, encoding="utf-8", newline="\n")
+    (run_dir / "log_history.json").write_text(json.dumps(trainer.state.log_history, indent=1), encoding="utf-8", newline="\n")
     log(f"Best dev {metric}: {trainer.state.best_metric}. Model: {final.as_posix()}  Log: {run_dir.as_posix()}")
     return final
