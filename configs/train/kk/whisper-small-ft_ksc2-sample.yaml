@@ -17,8 +17,9 @@ training:
   learning_rate: 1.0e-5
   warmup_steps: 500
   max_steps: 4000
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
+  per_device_train_batch_size: 8   # x2 accumulation = effective batch 16; 16x1 overflowed 12 GB VRAM into
+  gradient_accumulation_steps: 2   # shared memory on Windows (~5x slower). Changed when resuming at step 1000.
+  per_device_eval_batch_size: 8
   eval_steps: 500
   save_steps: 500
   dataloader_num_workers: 4
