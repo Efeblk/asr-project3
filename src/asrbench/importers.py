@@ -141,9 +141,11 @@ def _keep_train(stem: str, fraction: float) -> bool:
     return int(hashlib.sha1(stem.encode()).hexdigest()[:8], 16) / 0xFFFFFFFF < fraction
 
 
-def import_ksc2(out_dir: Path, train_fraction: float = 0.03, revision: str | None = None, log=print) -> Path:
+def import_ksc2(out_dir: Path, train_fraction: float = 0.03, full_train: tuple[str, ...] = (),
+                revision: str | None = None, log=print) -> Path:
     """Stream KSC2 (~81 GB, CC BY 4.0) once without storing the archive. Keeps all of Dev and Test and a
     deterministic `train_fraction` of Train (sha1 of the utterance ID), so the subset is reproducible.
+    Subcorpora named in `full_train` (e.g. parliament, for a domain experiment) keep all of their Train.
 
     KSC2 has no speaker IDs, so bootstrap clusters fall back to items; its own Train/Dev/Test split is kept.
     Transcripts are lowercase, unpunctuated, with numbers written as words.
@@ -164,22 +166,25 @@ def import_ksc2(out_dir: Path, train_fraction: float = 0.03, revision: str | Non
             if not m.isfile() or len(parts) != 4 or parts[1] not in KSC2_SPLITS:
                 continue
             split, sub, fname = KSC2_SPLITS[parts[1]], parts[2], parts[3]
-            stem, ext = fname.rsplit(".", 1)
+            stem, ext = fname.split(".", 1)[0], fname.rsplit(".", 1)[1]  # tv_news audio is "<id>.flac.flac"
             key = (split, sub, stem)
             if ext == "flac":
                 seen[split] += 1
                 if seen[split] % 20000 == 0:
                     log(f"  {seen}")
-            if split == "train" and not _keep_train(stem, train_fraction):
+            in_sample = _keep_train(stem, train_fraction)
+            if split == "train" and not in_sample and sub not in full_train:
                 continue
+            dest = root / split / sub
+            dest.mkdir(parents=True, exist_ok=True)
             if ext == "txt":
                 texts[key] = tf.extractfile(m).read().decode("utf-8").strip()
+                (dest / f"{stem}.txt").write_text(texts[key], encoding="utf-8")  # kept so re-imports are cheap
             elif ext == "flac":
-                dest = root / split / sub
-                dest.mkdir(parents=True, exist_ok=True)
-                m.name = fname
-                tf.extract(m, dest, filter="data")
-                audio[key] = f"{split}/{sub}/{fname}"
+                if not (dest / f"{stem}.flac").exists():
+                    m.name = f"{stem}.flac"
+                    tf.extract(m, dest, filter="data")
+                audio[key] = f"{split}/{sub}/{stem}.flac"
     items = []
     for key in sorted(audio):
         if key not in texts:
@@ -192,6 +197,6 @@ def import_ksc2(out_dir: Path, train_fraction: float = 0.03, revision: str | Non
             duration = None
         items.append(Item(id=f"ksc2-{split}-{sub}-{stem}", audio=audio[key], reference=texts[key], language="kk",
                           split=split, duration=duration, source=f"{KSC2_REPO}@{sha[:12]}",
-                          extra={"subcorpus": sub, "train_fraction": train_fraction if split == "train" else 1.0}))
+                          extra={"subcorpus": sub, "in_train_sample": split == "train" and _keep_train(stem, train_fraction)}))
     log(f"Utterances in the corpus: {seen}; kept {len(items)}")
     return write_manifest(items, root / "manifest.jsonl")

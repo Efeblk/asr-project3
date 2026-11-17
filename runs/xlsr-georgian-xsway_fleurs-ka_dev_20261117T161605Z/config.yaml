@@ -1,0 +1,14 @@
+name: xlsr-georgian-xsway_fleurs-ka_dev
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: xsway/wav2vec2-large-xlsr-georgian
+  revision: main
+  device: cuda
+  dtype: float16
+  model_language: ka
