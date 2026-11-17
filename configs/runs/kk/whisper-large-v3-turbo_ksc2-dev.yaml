@@ -1,0 +1,15 @@
+# Kazakh baseline (pretrained, no training by us). Dev run: select settings here, test runs once later.
+name: whisper-large-v3-turbo_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl   # language-filtered (asrbench filter-lang)
+split: dev
+languages: [kk]
+eligibility_confirmed: true   # confirmed by the student 2026-11-17 (never record why)
+batch_size: 8
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: main
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints: {kk: kazakh}
