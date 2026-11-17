@@ -217,6 +217,9 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     args_kw.update(output_dir=str(ckpt_dir), seed=seed, metric_for_best_model=metric)
     if args_kw.get("use_cpu") or not torch.cuda.is_available():
         args_kw.update(bf16=False, fp16=False)
+    elif args_kw.get("bf16") and not torch.cuda.is_bf16_supported():  # e.g. Colab T4 (Turing): fall back to fp16
+        log("This GPU has no bf16; training in fp16 mixed precision instead.")
+        args_kw.update(bf16=False, fp16=True)
 
     paths = lambda items: [str(dataset.audio_path(i)) for i in items]  # noqa: E731
     dev_refs = [i.reference for i in dev_items]

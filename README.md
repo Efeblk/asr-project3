@@ -38,7 +38,10 @@ uv run asrbench compare runs/<run-a> runs/<run-b>
 uv run asrbench train configs/train/my-train.yaml             # -> checkpoints/<name>_<ts>/final (weights, gitignored)
                                                               #    runs/train_<name>_<ts>/ (manifest + log, commit)
 # then run the saved model like any baseline: model.id = checkpoints/<name>_<ts>/final
+uv run asrbench train configs/train/my-train.yaml --resume checkpoints/<name>_<ts>   # continue an interrupted run
 ```
+
+To train on a Google Colab GPU instead of the local one, open `notebooks/colab_train.ipynb` (data via a tar on Google Drive; checkpoints on Drive; auto-resume; fp16 on T4).
 
 Pretrained checkpoints run as they are count as **baselines**; a model trained by `asrbench train` counts as **ours**. The run manifest and `report.md` label every system as one or the other, so the two can be reported separately on the same test set (A1). Training supports `hf-whisper` (full fine-tune, orthographic targets) and `hf-ctc` (wav2vec2/XLS-R/MMS with a new character head, or `reuse_vocab: true`). `train_hours` subsamples the train split for learning curves; `train_filter`/`dev_filter` keep only items whose fields match (e.g. `{in_train_sample: true}`, `{subcorpus: parliament}`). MMS-1b-all baselines take `target_lang` (e.g. `kaz`) to load the language adapter. Example configs are in `configs/train/`.
 
