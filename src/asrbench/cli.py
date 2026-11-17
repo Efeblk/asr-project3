@@ -30,6 +30,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--language", required=True)
     p.add_argument("--out", required=True, help="output manifest .jsonl")
 
+    p = sub.add_parser("filter-lang", help="Kazakh manifests: label transcripts kk/mixed/ru and drop Russian (rule 3)")
+    p.add_argument("manifest")
+
     p = sub.add_parser("validate", help="Check a manifest: duplicate IDs, missing audio, speaker/session leakage")
     p.add_argument("manifest")
 
@@ -72,6 +75,9 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "import-tsv":
         from .importers import import_tsv
         print(f"Wrote {import_tsv(Path(a.tsv), a.language, Path(a.out))}")
+    elif a.cmd == "filter-lang":
+        from .langfilter import filter_manifest
+        print(json.dumps(filter_manifest(a.manifest), indent=1, ensure_ascii=False))
     elif a.cmd == "validate":
         from .dataset import load_manifest, summary, validate
         m = load_manifest(a.manifest)

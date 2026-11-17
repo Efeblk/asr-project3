@@ -168,6 +168,10 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
         raise ValueError(f"Need train and dev items for '{lang}' in {cfg['dataset']} "
                          f"(found {len(train_items)} train, {len(dev_items)} dev).")
 
+    for key, want in (cfg.get("train_filter") or {}).items():  # e.g. {in_train_sample: true} or {subcorpus: parliament}
+        want = want if isinstance(want, list) else [want]
+        train_items = [i for i in train_items if (getattr(i, key, None) if key in Item.__dataclass_fields__
+                                                  else i.extra.get(key)) in want]
     max_sec = float(cfg.get("max_audio_sec", 30))
     durations = {i.id: _duration(i, dataset.audio_path(i)) for i in train_items + dev_items}
     too_long = [i.id for i in train_items if (durations[i.id] or 0) > max_sec]
@@ -175,6 +179,10 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     train_items = subsample_hours(train_items, durations, cfg.get("train_hours"), seed)
     if family == "hf-ctc":  # an empty CTC target teaches nothing useful; Whisper keeps them (anti-hallucination)
         train_items = [i for i in train_items if i.reference.strip()]
+    for key, want in (cfg.get("dev_filter") or {}).items():
+        want = want if isinstance(want, list) else [want]
+        dev_items = [i for i in dev_items if (getattr(i, key, None) if key in Item.__dataclass_fields__
+                                              else i.extra.get(key)) in want]
     dev_items = sorted((i for i in dev_items if i.reference.strip()), key=lambda i: i.id)
     if cfg.get("dev_limit"):
         dev_items = random.Random(seed).sample(dev_items, min(int(cfg["dev_limit"]), len(dev_items)))
@@ -303,7 +311,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
                     "train_split": cfg.get("train_split", "train"), "dev_split": cfg.get("dev_split", "dev"),
                     "train_items": len(train_items), "train_hours": round(train_hours, 3),
                     "train_hours_requested": cfg.get("train_hours"), "dropped_too_long": len(too_long),
-                    "dev_items_for_selection": len(dev_items), "dev_limit": cfg.get("dev_limit")},
+                    "dev_items_for_selection": len(dev_items), "dev_limit": cfg.get("dev_limit"),
+                    "train_filter": cfg.get("train_filter"), "dev_filter": cfg.get("dev_filter")},
         "selection": {"metric": f"dev {metric} under the scoring policy", "best_checkpoint": trainer.state.best_model_checkpoint,
                       "best_metric": trainer.state.best_metric, "final_eval": best_eval},
         "training_args": {k: v for k, v in args_kw.items() if k != "output_dir"},

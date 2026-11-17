@@ -49,3 +49,38 @@ Not directly comparable with our normalized WER (different normalization, ~1,200
 ## Parliament subcorpus (legal/legislative domain candidate)
 20 plenary sessions of both chambers (Senate and Mazhilis) from the Parliament's official YouTube channel,
 mostly read prepared scripts. Train 19.5 h / 9,508 utts, Dev 1.48 h / 723, Test 1.76 h / 865 (Table 1).
+
+## Language filter results (`asrbench filter-lang data/ksc2/manifest.jsonl`, 2026-11-17)
+Classifier: `src/asrbench/langfilter.py` (Kazakh letters + word-level char n-gram naive Bayes, trained on train
+transcripts only). Removed 10,245 Russian utterances into `manifest.removed_ru.jsonl`: parliament train 9,910,
+dev 161, test 155; 19 elsewhere (TTS 7, talk show 6, podcasts 3, radio 1, tv_news 2). A random audit of 12
+non-parliament removals found 10 clearly Russian and 2 borderline code-switched tv_news lines (1 of them in test).
+Code-switched lines (`text_lang: mixed`, 50-80 % Russian-looking words) are kept and analysed as an error category.
+
+## What we use (after filtering)
+
+| Split | Subcorpus | Set | Utterances | Hours |
+|---|---|---|---|---|
+| dev | crowdsourced | all | 3281 | 7.1 |
+| dev | parliament | all | 620 | 1.2 |
+| dev | podcasts | all | 1082 | 1.9 |
+| dev | radio | all | 696 | 0.8 |
+| dev | talkshow | all | 419 | 0.5 |
+| dev | tv_news | all | 2426 | 3.0 |
+| test | crowdsourced | all | 3328 | 7.0 |
+| test | parliament | all | 618 | 1.2 |
+| test | podcasts | all | 1547 | 2.9 |
+| test | radio | all | 702 | 0.9 |
+| test | talkshow | all | 383 | 0.6 |
+| test | tv_news | all | 2617 | 3.0 |
+| train | crowdsourced | 3 % sample | 7997 | 16.7 |
+| train | parliament | 3 % sample | 407 | 0.8 |
+| train | parliament | rest (domain experiment only) | 13085 | 24.9 |
+| train | podcasts | 3 % sample | 937 | 1.5 |
+| train | radio | 3 % sample | 1014 | 1.4 |
+| train | talkshow | 3 % sample | 950 | 1.4 |
+| train | tts | 3 % sample | 4732 | 9.5 |
+| train | tv_news | 3 % sample | 2407 | 2.9 |
+
+The general fine-tunes train on the 3 % sample only (`train_filter: {in_train_sample: true}`, ≈34 h), so the
+corpus mix stays proportional; the full parliament train (≈25.7 h of Kazakh) is reserved for the domain experiment.
