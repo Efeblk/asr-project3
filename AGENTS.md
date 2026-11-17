@@ -4,15 +4,16 @@ This file holds context for any coding agent (Claude Code, Codex, Cursor, …) w
 
 ## What this repo is
 
-This repo is for a university **ASR (automatic speech recognition) course project**, done **solo** (a "group" of one, so commit straight to `main`). The students call it "Project 3"; the slides only ever say "the project". The task is to evaluate speech recognizers that output a **same-language transcript** on several **non-English** languages, against trusted reference transcripts, and to produce a reproducible, per-language evaluation.
+This repo is for a university **ASR (automatic speech recognition) course project**, done **solo** (a "group" of one, so commit straight to `main`). The students call it "Project 3"; the slides only ever say "the project". The task is to evaluate speech recognizers that output a **same-language transcript** on a **non-English** language, against trusted reference transcripts, and to produce a reproducible, per-language evaluation. Per the instructor's announcement (A1, 2026-11-17), pretrained models are only **baselines**: the graded **contribution is our own training or fine-tuning**, reported separately on the same test set.
 
 The repo holds the course materials, their digests, and `asrbench`, the evaluation harness in `src/asrbench/`. **No languages have been chosen yet.** Swahili appears in the example config only as a test of the pipeline.
 
-## Status (paused 2026-11-16)
+## Status (updated 2026-11-17)
 
-- **Done:** materials digested; evaluation harness built and verified on the GPU (Whisper-small smoke run on 40 FLEURS Swahili dev clips; 22 tests pass).
-- **Waiting on:** the instructor's project details, expected around the week of 2026-11-23: deadline, grading, report format, how many languages and models. Update `docs/project-requirements.md` when they arrive.
-- **Next:** choose eligible languages → check FLEURS and model support → register them in the class tracker → dev runs with 2–3 models → one frozen test run → error analysis and report. Optional: install and verify the NeMo and Qwen extras.
+- **Done:** materials digested; evaluation harness built and verified on the GPU (Whisper-small smoke run on 40 FLEURS Swahili dev clips; 22 tests pass). Announcement A1 ("Project 3 Baselines and Bonus Points") recorded in `materials/course/` and folded into `docs/project-requirements.md` §0.
+- **Still waiting on:** deadline, grading breakdown, report format. Presentations are out of scope for now.
+- **Next:** choose one eligible language that no other group has (low-resource and/or domain-specific earn bonus, but need enough train data + trusted refs) → check data and model support → register it in the class tracker → zero-shot baselines on dev → **train/fine-tune our own model** (needs a training module in the harness) → one frozen test run of baselines + ours → error analysis, report and presentation.
+- **Harness gaps from A1:** no training/fine-tuning code yet; scoring reports only normalised WER (add orthographic WER) and RTF (add RTFx = 1/RTF).
 
 ## Harness quick reference
 
@@ -32,17 +33,20 @@ Full detail, with slide citations, is in `docs/project-requirements.md`.
 2. **No language that is the mother tongue of any group member.** Never ask for or record anyone's mother tongue in this repo. Record only "eligibility confirmed".
 3. The speech and the reference must be in the **same language** (ASR, not translation).
 4. **Use trusted, independent references only.** A model's output is never ground truth, and you must not invent labels.
-5. **Cover as many eligible languages as you can evaluate adequately.** There is no minimum. Prefer languages no other group has claimed. The class shares a register where each entry goes from Proposed to **Confirmed** (instructor) or Needs revision.
+5. **Pick a language no other group has** (A1); coordinate first. Extra languages are welcome (confirmed 2026-11-17). Bonus for low-resource languages (if data and references suffice) and for domain-specific ASR (legal, medical, financial, …). The class shares a register where each entry goes from Proposed to **Confirmed** (instructor) or Needs revision.
 6. Each chosen checkpoint must **explicitly support** the exact language and variety. Check the model card.
 7. **Deliverables:**
    - a run manifest
    - a prediction file (item ID + reference + raw prediction)
    - per-language results (WER and CER, runtime, hardware)
    - an error analysis
+   - **baseline results and our trained/fine-tuned system as clearly separate rows**, same test set and scoring rules (A1)
+   - a justification of WER, CER and any extra metrics from the HF audio course evaluation page (orthographic vs normalised WER, RTFx)
 
    Don't average away weak languages.
+8. **Running a pretrained model is never the contribution** (A1). Whisper, Canary, Parakeet, Qwen3-ASR, wav2vec2/HuBERT ASR, CTC, enc-dec, transducers and MFCC+GMM-HMM in standard form are all baselines. Our own training or fine-tuning is the contribution; implementing and training a simpler method ourselves also counts.
 
-**Still unknown:** deadline, group size, grading, and report format. No material so far specifies them, so ask the user rather than guessing.
+**Still unknown:** deadline, grading breakdown, and report format. Presentations: ignore for now. Group size is one (solo). Ask the user rather than guessing.
 
 ## Evaluation conventions to follow when writing code
 
@@ -59,7 +63,7 @@ Full digest: `docs/asr-methods-cheatsheet.md`.
 - **Comparable runs** hold fixed: clip IDs, references, normalization, chunk/merge policy, and timing boundary. Log for every model: checkpoint and **revision**, language hint, decoder settings, hardware, precision, batch size, and library versions.
 - **Silence:** keep clips with empty references and report them separately (emitted words, affected clips).
 - **Speed:** report RTF/RTFx for throughput. Streaming latency, if measured, is a separate metric.
-- **Fine-tuning** is optional and comes only after a zero-shot baseline. Ablate normalizer or decoder changes separately from model changes.
+- **Fine-tuning/training** is required as the contribution (A1) and comes only after the zero-shot baselines; train on train, select on dev. Ablate normalizer or decoder changes separately from model changes.
 - **Hosted or paid APIs are not required.** Prefer local checkpoints.
 - **Do not use** `.en` Whisper checkpoints, `parakeet-tdt-0.6b-v2` (English-only), or `google/medasr` (English-only).
 

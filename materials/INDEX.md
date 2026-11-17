@@ -10,8 +10,9 @@ The **Relevance** column means relevance to the project: ★★★ = primary, �
 |---|---|---|
 | `week09-asr-lecture.pptx` | "W9 · Automatic Speech Recognition" lecture, 47 slides, with speaker notes. Covers project rules (L6–L8, L36), metrics (L9–L13, L33–L35), front end (L14–L17), model families (L18–L30), model choice (L31–L47). Snapshot 13 Nov 2026. | ★★★ |
 | `week09-asr-study.pptx` | Expanded study version, 93 slides, with worked calculations, runnable code and a self-check (S64–S65). Project rules: S9–S11. Deliverables: S11. Model recipes: S66–S81. | ★★★ |
+| `announcement-2026-11-17-baselines-and-bonus.md` | **A1**, the course announcement "Project 3 Baselines and Bonus Points" (verbatim). Pretrained models are baselines; own training/fine-tuning is the contribution; one unique language per group; bonus for low-resource and domain-specific ASR; justify metrics. **Overrides the decks where they disagree.** | ★★★ |
 
-Both text copies include every slide's speaker notes, which are organised as "Purpose", "Origins of values", "Step-by-step reasoning" and "Teaching script". Slides are delimited by `## Slide N`.
+The two deck text copies include every slide's speaker notes, which are organised as "Purpose", "Origins of values", "Step-by-step reasoning" and "Teaching script". Slides are delimited by `## Slide N`.
 
 ## textbook/: Jurafsky & Martin, *Speech and Language Processing* (August 24, 2025 draft)
 
