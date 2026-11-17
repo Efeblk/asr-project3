@@ -33,6 +33,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--runs-dir", default="runs")
     p.add_argument("--resume", help="existing run directory to continue")
 
+    p = sub.add_parser("train", help="Fine-tune a checkpoint on the train split, select on dev (our contribution)")
+    p.add_argument("config")
+    p.add_argument("--checkpoints-dir", default="checkpoints", help="where weights go (gitignored)")
+    p.add_argument("--runs-dir", default="runs", help="where the training manifest + log go (commit these)")
+    p.add_argument("--policy", default="configs/scoring.yaml", help="scoring policy for dev selection")
+
     p = sub.add_parser("score", help="Score a run directory per language")
     p.add_argument("run_dir")
     p.add_argument("--policy", default="configs/scoring.yaml")
@@ -68,6 +74,11 @@ def main(argv: list[str] | None = None) -> int:
         from .runner import run
         out = run(a.config, a.runs_dir, a.resume)
         print(f"Run directory: {out}\nNext: asrbench score {out.as_posix()}")
+    elif a.cmd == "train":
+        from .train import train
+        final = train(a.config, a.checkpoints_dir, a.runs_dir, a.policy)
+        print(f"Saved {final.as_posix()}\nNext: set model.id to this path in a run config and `asrbench run` it "
+              "on dev, then on the frozen test set alongside the baselines.")
     elif a.cmd == "score":
         from .scoring import score
         policy = a.policy if Path(a.policy).exists() else None

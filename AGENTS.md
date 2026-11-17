@@ -10,20 +10,20 @@ The repo holds the course materials, their digests, and `asrbench`, the evaluati
 
 ## Status (updated 2026-11-17)
 
-- **Done:** materials digested; evaluation harness built and verified on the GPU (Whisper-small smoke run on 40 FLEURS Swahili dev clips; 22 tests pass). Announcement A1 ("Project 3 Baselines and Bonus Points") recorded in `materials/course/` and folded into `docs/project-requirements.md` §0.
+- **Done:** materials digested; evaluation harness built and verified on the GPU; `asrbench train` (Whisper and CTC fine-tuning) verified on the GPU with a scratch split of Swahili dev clips (pipeline test only); orthographic WER/CER and RTFx added to scoring; 25 tests pass. Announcement A1 ("Project 3 Baselines and Bonus Points") recorded in `materials/course/` and folded into `docs/project-requirements.md` §0.
 - **Still waiting on:** deadline, grading breakdown, report format. Presentations are out of scope for now.
-- **Next:** choose one eligible language that no other group has (low-resource and/or domain-specific earn bonus, but need enough train data + trusted refs) → check data and model support → register it in the class tracker → zero-shot baselines on dev → **train/fine-tune our own model** (needs a training module in the harness) → one frozen test run of baselines + ours → error analysis, report and presentation.
-- **Harness gaps from A1:** no training/fine-tuning code yet; scoring reports only normalised WER (add orthographic WER) and RTF (add RTFx = 1/RTF).
+- **Next:** choose one eligible language that no other group has (low-resource and/or domain-specific earn bonus, but need enough train data + trusted refs) → check data and model support → register it in the class tracker → zero-shot baselines on dev → **fine-tune our own model** with `asrbench train` (plus a `train_hours` learning curve) → one frozen test run of baselines + ours → error analysis and report. Candidate languages: `docs/language-shortlist.md`.
 
 ## Harness quick reference
 
 - **Environment:** `uv` with Python 3.12. Install with `uv sync --extra hf --group dev`. Run commands as `uv run asrbench …` and `uv run pytest`. torch 2.14 is pinned, with CUDA 13 wheels on Windows/Linux.
-- **Pipeline:** `import-fleurs`/`import-tsv` → `validate` → `run <config>` → `score <run>` → `compare <a> <b>`. Usage is in README.md.
+- **Pipeline:** `import-fleurs`/`import-tsv` → `validate` → `run <config>` → `score <run>` → `compare <a> <b>`; contribution: `train <config>` → run the saved checkpoint like a baseline. Usage is in README.md.
+- **Training** (`train.py`, configs in `configs/train/`): train split only, checkpoint selected by dev WER under the scoring policy, test refused. Weights go to `checkpoints/` (gitignored); `runs/train_*/` holds the train manifest, log and train IDs (commit). Checkpoints with a `train_manifest.json` are labelled **ours** in run manifests and reports; everything else is **baseline**. On 12 GB: Whisper-small batch 16 ≈ 1.3 s/step; XLS-R-300M CTC batch 8 peaks at 10.9 GB.
 - **Data format** (`dataset.py`): manifests are JSONL with `id, audio, reference, language, split[, speaker, session, duration]`. An empty `reference` means the clip contains no speech. Bootstrap clusters use session, then speaker, then the item ID.
 - **Models** (`models/`): to add a family, subclass `Recognizer`, implement `load()` and `transcribe(list[np.ndarray 16 kHz], language) -> list[str]`, and register it in `models/__init__.py`. `hf-whisper` and `hf-ctc` have been verified on the GPU. `nemo` and `qwen` follow the slide APIs but have **not been run yet**.
-- **Scoring policy:** `configs/scoring.yaml`, with per-language overrides. Normalization is applied only at scoring time, and `predictions.jsonl` stays raw.
+- **Scoring policy:** `configs/scoring.yaml`, with per-language overrides. Normalization is applied only at scoring time, and `predictions.jsonl` stays raw. Reports normalized WER/CER (primary) plus orthographic WER/CER (case + punctuation kept) and RTFx.
 - **Tests:** `tests/test_metrics.py` encodes the slide examples (S13, S18, S20–S23, S26, S76). Keep them passing.
-- **Where things live:** `data/` is gitignored and can be regenerated. `runs/<name>_<ts>/` holds real runs and is committed. `runs/_*/` holds scratch or smoke runs and is ignored.
+- **Where things live:** `data/` and `checkpoints/` are gitignored. `runs/<name>_<ts>/` holds real runs and is committed. `runs/_*/` holds scratch or smoke runs and is ignored.
 
 ## Project rules (hard constraints, so check every proposal against them)
 

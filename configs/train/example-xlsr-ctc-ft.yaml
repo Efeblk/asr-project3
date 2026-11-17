@@ -1,0 +1,25 @@
+# CTC fine-tune of a pretrained wav2vec2 / XLS-R encoder with a new character head (our contribution, A1).
+# Targets are the references after the declared scoring normalization (lowercase, no punctuation), so
+# orthographic WER is not meaningful for this system - say so in the report.
+# A fresh CTC head emits only blanks for the first several hundred steps; budget thousands of steps.
+# Smoke-tested on an RTX 4070 SUPER 12 GB: batch 8 peaked at 10.9 GB, so the default is 4 x 4 accumulation.
+name: xlsr300m-ctc-ft_fleurs-xx
+dataset: data/fleurs/xx/manifest.jsonl
+language: xx
+eligibility_confirmed: false
+dev_limit: 300
+train_hours: null
+max_audio_sec: 20                          # long clips are the main memory risk for CTC
+seed: 42
+model:
+  family: hf-ctc
+  id: facebook/wav2vec2-xls-r-300m         # or an existing CTC fine-tune for the language + reuse_vocab: true
+  revision: main
+  freeze_feature_encoder: true
+  model_kwargs: {mask_time_prob: 0.05, layerdrop: 0.0, attention_dropout: 0.0, hidden_dropout: 0.0}
+training:                                  # passed to TrainingArguments
+  learning_rate: 3.0e-4
+  warmup_steps: 500
+  max_steps: 6000
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4

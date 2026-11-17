@@ -10,6 +10,8 @@ data/*
 # Scratch / smoke-test runs (prefix with _). Real runs under runs/ are deliverables: commit them.
 runs/_*/
 *.ckpt
+# Fine-tuned weights from `asrbench train` (the small train manifests go to runs/train_*/ and are committed)
+checkpoints/
 *.safetensors
 .cache/
 # OS

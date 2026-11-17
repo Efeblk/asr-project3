@@ -50,6 +50,13 @@ class Policy:
     def to_dict(self) -> dict:
         return asdict(self)
 
+    def orthographic(self) -> "Policy":
+        """Same Unicode form, word unit and CER unit, but case and punctuation kept: the
+        "orthographic WER" of the HF audio course (ch.5), reported next to the normalized one."""
+        return Policy(unicode_form=self.unicode_form, lowercase=False, remove_punctuation=False,
+                      strip_diacritics=False, word_unit=self.word_unit, cer_unit=self.cer_unit,
+                      note="orthographic: Unicode form + whitespace only")
+
 
 @dataclass
 class PolicySet:

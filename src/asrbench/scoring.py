@@ -59,6 +59,12 @@ def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 200
             compute = sum(p["compute_sec"] for p, _ in rows)
             m["audio_sec"] = round(audio, 2)
             m["rtf"] = compute / audio if audio else None
+            m["rtfx"] = audio / compute if compute else None   # inverse RTF, higher = faster (HF audio course ch.5)
+            # Orthographic WER/CER (case + punctuation kept) on the same speech items, so the effect of the
+            # declared normalization is visible (HF audio course ch.5). Normalized WER stays the primary metric.
+            ortho = policies.for_language(lang).orthographic()
+            o = corpus_metrics([score_item(p["id"], p["reference"], p["hypothesis"], ortho) for p, _ in speech])
+            m["orthographic"] = {"wer": o.get("wer"), "cer": o.get("cer")}
             m["silence"] = silence_report(scores)
             m["top_substitutions"] = top_substitutions(scores)
             worst = sorted(speech, key=lambda r: -(r[1].words.errors if r[1].words else r[1].chars.errors))[:10]
@@ -83,12 +89,16 @@ def render_report(results: dict, manifest: dict) -> str:
         "",
         f"- Model: `{model.get('model_id')}` @ `{model.get('revision_resolved') or model.get('revision_requested')}` "
         f"({model.get('family')}, {model.get('dtype')}, {model.get('device')})",
+        "- System: " + (f"**ours**: fine-tuned by us from `{model['trained_by_us']['base_model']['model_id']}` "
+                        f"on {model['trained_by_us']['train_hours']} h ({model['trained_by_us']['train_run']})"
+                        if model.get("trained_by_us") else "**baseline**: pretrained checkpoint, no training by us (A1)"),
         f"- Hardware: {hw.get('gpu', 'CPU')}; batch size {manifest.get('batch_size')}",
         f"- Dataset: `{manifest['dataset']['path']}` sha256 `{manifest['dataset']['sha256'][:12]}`",
         f"- Timing boundary: {manifest.get('timing_boundary')}",
         "",
-        "| Language | Items | Audio (s) | WER | WER 95% CI | Mean clip WER | CER | CER 95% CI | MER | WIL | RTF | Silent clips w/ output |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| Language | Items | Audio (s) | WER | WER 95% CI | Mean clip WER | CER | CER 95% CI | Ortho WER | Ortho CER "
+        "| MER | WIL | RTF | RTFx | Silent clips w/ output |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for lang, m in results["languages"].items():
         wci, cci = m.get("wer_ci"), m.get("cer_ci")
@@ -97,11 +107,15 @@ def render_report(results: dict, manifest: dict) -> str:
             lang, str(m["items"]), f"{m['audio_sec']:.0f}", _pct(m.get("wer")),
             f"{_pct(wci['low'])} – {_pct(wci['high'])}" if wci else "—", _pct(m.get("mean_clip_wer")),
             _pct(m.get("cer")), f"{_pct(cci['low'])} – {_pct(cci['high'])}" if cci else "—",
+            _pct(m.get("orthographic", {}).get("wer")), _pct(m.get("orthographic", {}).get("cer")),
             _pct(m.get("mer")), _pct(m.get("wil")), f"{m['rtf']:.3f}" if m.get("rtf") else "—",
+            f"{m['rtfx']:.1f}" if m.get("rtfx") else "—",
             f"{sil['items_with_output']}/{sil['silent_items']}",
         ]) + " |")
-    lines += ["", "WER/CER are corpus rates (pooled edit counts / pooled reference units). CIs: cluster bootstrap "
-              "over sessions/speakers. No cross-language average is shown on purpose (S19).", ""]
+    lines += ["", "WER/CER are corpus rates (pooled edit counts / pooled reference units) after the declared "
+              "scoring policy. Ortho WER/CER keep case and punctuation (Unicode form only). CIs: cluster bootstrap "
+              "over sessions/speakers. RTFx = audio seconds / compute seconds. No cross-language average is shown "
+              "on purpose (S19).", ""]
     for lang, m in results["languages"].items():
         lines += [f"## {lang}", "", f"Word counts: {m.get('word_counts')}  ", f"Char counts: {m['char_counts']}", "",
                   "Top substitutions (ref → hyp × n): " + ", ".join(f"{r}→{h}×{n}" for r, h, n in m["top_substitutions"][:10]),

@@ -38,8 +38,21 @@ class Recognizer(ABC):
         except Exception:
             return None
 
+    def local_training(self) -> dict | None:
+        """For a checkpoint produced by `asrbench train`: what it was trained from and on (A1: ours)."""
+        import json
+        from pathlib import Path
+        tm = Path(self.model_id) / "train_manifest.json"
+        if not tm.is_file():
+            return None
+        m = json.loads(tm.read_text(encoding="utf-8"))
+        return {"trained_by_us": True, "train_run": m.get("run_dir"), "base_model": m.get("base_model"),
+                "train_dataset_sha256": m.get("dataset", {}).get("sha256"),
+                "train_hours": m.get("dataset", {}).get("train_hours"), "global_steps": m.get("global_steps")}
+
     def describe(self) -> dict:
         return {
+            "trained_by_us": self.local_training(),
             "family": type(self).family,
             "model_id": self.model_id,
             "revision_requested": self.revision,
