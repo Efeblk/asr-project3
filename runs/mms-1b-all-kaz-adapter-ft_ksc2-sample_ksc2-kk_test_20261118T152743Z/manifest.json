@@ -1,0 +1,75 @@
+{
+  "name": "mms-1b-all-kaz-adapter-ft_ksc2-sample_ksc2-kk_test",
+  "created_utc": "2026-11-18T15:27:49+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "test",
+  "languages": [
+    "kk"
+  ],
+  "dataset": {
+    "path": "data/ksc2/manifest.jsonl",
+    "sha256": "6acd3f67324f274fdde0eab7ff7535eb39f92c6de766b63dffc8338dcb4257a5",
+    "items": 9195,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "main",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "6acd3f67324f274fdde0eab7ff7535eb39f92c6de766b63dffc8338dcb4257a5",
+      "train_hours": 34.1,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kaz"
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA L4",
+      "gpu_memory_gb": 22.0
+    }
+  },
+  "model_load_sec": 6.2,
+  "completed_utc": "2026-11-18T15:31:36+00:00",
+  "totals": {
+    "items": 9195,
+    "audio_sec": 56300.6,
+    "compute_sec": 203.99,
+    "rtf": 0.0036
+  }
+}

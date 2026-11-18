@@ -1,0 +1,15 @@
+name: xlsr-kazakh-aismlv_ksc2-kk_test
+dataset: data/ksc2/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: aismlv/wav2vec2-large-xlsr-kazakh
+  revision: b277ef85de7bbd28302d570062feb196cc4e9107
+  device: cuda
+  dtype: float16
+  model_language: kk
+frozen: true

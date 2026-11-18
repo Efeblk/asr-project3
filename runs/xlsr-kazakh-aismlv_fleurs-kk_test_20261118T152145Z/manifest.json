@@ -1,0 +1,63 @@
+{
+  "name": "xlsr-kazakh-aismlv_fleurs-kk_test",
+  "created_utc": "2026-11-18T15:21:53+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "test",
+  "languages": [
+    "kk"
+  ],
+  "dataset": {
+    "path": "data/fleurs/kk_kz/manifest.jsonl",
+    "sha256": "470888dafd5b3eff5071e98498ae7ff00c15cdc132b6de8c367af609a4e0c42d",
+    "items": 856,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "aismlv/wav2vec2-large-xlsr-kazakh",
+    "revision_requested": "b277ef85de7bbd28302d570062feb196cc4e9107",
+    "revision_resolved": "b277ef85de7bbd28302d570062feb196cc4e9107",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "model_language": "kk"
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA L4",
+      "gpu_memory_gb": 22.0
+    }
+  },
+  "model_load_sec": 7.88,
+  "completed_utc": "2026-11-18T15:22:22+00:00",
+  "totals": {
+    "items": 856,
+    "audio_sec": 13804.26,
+    "compute_sec": 27.55,
+    "rtf": 0.002
+  }
+}
