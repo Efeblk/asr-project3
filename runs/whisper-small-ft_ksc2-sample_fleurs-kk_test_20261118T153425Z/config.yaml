@@ -1,0 +1,16 @@
+name: whisper-small-ft_ksc2-sample_fleurs-kk_test
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-small-ft_ksc2-sample_20261117T225824Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
+frozen: true

@@ -1,0 +1,15 @@
+name: whisper-large-v3-turbo-ft_ksc2-sample+beam5_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_ksc2-sample_20261117T233337Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 5
+  language_hints:
+    kk: kazakh

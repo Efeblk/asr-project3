@@ -1,0 +1,17 @@
+name: whisper-large-v3-turbo-ft_ksc2-sample+norep3_fleurs-kk_dev
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_ksc2-sample_20261117T233337Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
+  generate_kwargs:
+    no_repeat_ngram_size: 3

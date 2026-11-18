@@ -1,0 +1,18 @@
+# OURS + DECODER (separate row). FROZEN TEST RUN, run once: beam5 was selected on KSC2 dev by the rule committed
+# in 7e36fe2; otherwise identical to whisper-large-v3-turbo-ft_ksc2-sample+beam5_fleurs-dev.yaml.
+name: whisper-large-v3-turbo-ft_ksc2-sample+beam5_fleurs-kk_test
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_ksc2-sample_20261117T233337Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 5
+  language_hints:
+    kk: kazakh
+frozen: true
