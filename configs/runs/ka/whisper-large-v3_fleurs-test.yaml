@@ -1,0 +1,19 @@
+# Georgian baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60, A2): every setting is
+# identical to whisper-large-v3_fleurs-dev.yaml; nothing was chosen on test. Frozen 2026-11-19.
+name: whisper-large-v3_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3
+  revision: 06f233fe06e710322aca913c1bc4249a0d71fce1
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+frozen: true

@@ -1,0 +1,17 @@
+# Georgian baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60, A2): every setting is
+# identical to mms-1b-all-kat_fleurs-dev.yaml; nothing was chosen on test. Frozen 2026-11-19.
+name: mms-1b-all-kat_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+  device: cuda
+  dtype: float16
+  target_lang: kat
+frozen: true

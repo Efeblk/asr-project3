@@ -1,0 +1,19 @@
+# Georgian baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60, A2): every setting is
+# identical to whisper-small_fleurs-dev.yaml; nothing was chosen on test. Frozen 2026-11-19.
+name: whisper-small_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: openai/whisper-small
+  revision: 973afd24965f72e36ca33b3055d56a652f456b4d
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+frozen: true

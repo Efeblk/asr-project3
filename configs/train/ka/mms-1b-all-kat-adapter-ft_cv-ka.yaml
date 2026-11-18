@@ -11,7 +11,7 @@ seed: 42
 model:
   family: hf-ctc
   id: facebook/mms-1b-all
-  revision: main
+  revision: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd  # pinned 2026-11-19 (same SHA as the 2026-11-17 FLEURS ka dev runs)
   target_lang: kat
   reuse_vocab: true
   adapter_only: true

@@ -10,6 +10,6 @@ batch_size: 16
 model:
   family: nemo
   id: nvidia/stt_ka_fastconformer_hybrid_large_pc
-  revision: main
+  revision: bdfd7871e0574001e650e741d6201d40205db6bb  # pinned 2026-11-19 (same SHA as the 2026-11-17 FLEURS ka dev runs)
   device: cuda
   dtype: float32

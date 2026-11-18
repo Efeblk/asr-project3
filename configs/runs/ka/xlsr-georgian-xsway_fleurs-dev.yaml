@@ -8,7 +8,7 @@ batch_size: 8
 model:
   family: hf-ctc
   id: xsway/wav2vec2-large-xlsr-georgian
-  revision: main
+  revision: b29b81945f5fa2e35fbb05da5256815d8cc71e20  # pinned 2026-11-19 (same SHA as the 2026-11-17 FLEURS ka dev runs)
   device: cuda
   dtype: float16
   model_language: ka

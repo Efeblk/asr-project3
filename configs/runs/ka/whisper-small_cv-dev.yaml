@@ -8,7 +8,7 @@ batch_size: 16
 model:
   family: hf-whisper
   id: openai/whisper-small
-  revision: main
+  revision: 973afd24965f72e36ca33b3055d56a652f456b4d  # pinned 2026-11-19 (same SHA as the 2026-11-17 FLEURS ka dev runs)
   device: cuda
   dtype: float16
   beam_size: 1
