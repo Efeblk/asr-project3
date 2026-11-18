@@ -1,0 +1,17 @@
+# SECONDARY scoring policy (ablation only). The primary policy stays configs/scoring.yaml, declared before any
+# comparison. This one additionally drops Kazakh hesitation fillers, applied identically to references and
+# hypotheses, to show how much of the WER comes from filler spelling (KSC2 writes them as ыыы / ы / ііі / і /
+# ммм / м: 1,288 of 91,660 KSC2 dev reference words; ыыы<->ііі are the top substitutions of every system).
+# Chosen from KSC2 dev references only; these tokens are not Kazakh words. Score with:
+#   asrbench score <run> --policy configs/scoring-nofillers.yaml --tag nofillers
+# A reference that is only fillers becomes empty and is then counted as a silence clip.
+default:
+  unicode_form: NFC
+  lowercase: true
+  remove_punctuation: true
+  strip_diacritics: false
+  word_unit: whitespace
+  cer_unit: codepoint
+
+languages:
+  kk: {drop_tokens: "ы+|і+|м+", note: "Secondary policy: hesitation fillers (tokens made only of ы, і or м) removed."}

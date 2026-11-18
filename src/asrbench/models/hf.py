@@ -49,6 +49,9 @@ class HFWhisper(Recognizer):
         )
         if long_form:
             gen.update(return_timestamps=True, condition_on_prev_tokens=False)
+        # Extra decoder settings from the run config (e.g. no_repeat_ngram_size, repetition_penalty), recorded in
+        # the run manifest with the rest of `model:`. Select them on dev only, and report them as a decoder ablation.
+        gen.update(self.settings.get("generate_kwargs") or {})
         with torch.inference_mode():
             ids = self.model.generate(inputs, **gen)
         return [t.strip() for t in self.processor.batch_decode(ids, skip_special_tokens=True)]

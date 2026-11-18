@@ -51,6 +51,7 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("score", help="Score a run directory per language")
     p.add_argument("run_dir")
     p.add_argument("--policy", default="configs/scoring.yaml")
+    p.add_argument("--tag", help="write scores.<tag>.json etc. instead (secondary policy; primary files untouched)")
     p.add_argument("--n-boot", type=int, default=2000)
 
     p = sub.add_parser("compare", help="Paired comparison of two runs on matched items")
@@ -100,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "score":
         from .scoring import score
         policy = a.policy if Path(a.policy).exists() else None
-        res = score(a.run_dir, policy, a.n_boot)
+        res = score(a.run_dir, policy, a.n_boot, tag=a.tag)
         print((Path(a.run_dir) / "report.md").read_text(encoding="utf-8").split("\n## ")[0])
         _ = res
     elif a.cmd == "compare":

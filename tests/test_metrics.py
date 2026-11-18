@@ -47,6 +47,14 @@ def test_case_and_punctuation_policy():
     assert score_item("x", "Je pars.", "je pars", strict).words.errors == 2
 
 
+def test_drop_tokens_removes_whole_fillers_only():
+    nf = Policy(drop_tokens="ы+|і+|м+")
+    assert nf.normalize("Ыыы біз, ііі, бардық м") == "біз бардық"
+    assert nf.normalize("мен ылғи ім") == "мен ылғи ім"  # words that merely contain the letters stay
+    assert score_item("x", "ыыы біз бардық", "ііі біз бардық", P).words.sub == 1
+    assert score_item("x", "ыыы біз бардық", "ііі біз бардық", nf).words.errors == 0
+
+
 def test_empty_hypothesis_is_all_deletions():
     s = score_item("x", "a b c", "", P)
     assert (s.words.dele, s.words.n_ref) == (3, 3)

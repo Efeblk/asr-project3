@@ -73,6 +73,14 @@ def test_end_to_end_run_score_compare(tmp_path, toy_dataset):
     assert sw["silence"]["items_with_output"] == 1 and sw["silence"]["emitted_words"] == 3
     assert (a / "report.md").exists()
 
+    primary = (a / "scores.json").read_text(encoding="utf-8")
+    alt = tmp_path / "alt.yaml"
+    alt.write_text(yaml.safe_dump({"languages": {"sw": {"drop_tokens": "ya"}}}), encoding="utf-8")
+    res_alt = score(a, str(alt), tag="alt")  # secondary policy: written beside, never over, the primary scores
+    assert (a / "scores.alt.json").exists() and (a / "report.alt.md").exists()
+    assert (a / "scores.json").read_text(encoding="utf-8") == primary
+    assert res_alt["languages"]["sw"]["word_counts"]["N"] == 6
+
     assert score(b)["languages"]["sw"]["wer"] == 1.0
     table = compare(a, b)
     assert "| sw | 3 |" in table

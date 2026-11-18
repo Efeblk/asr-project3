@@ -25,6 +25,7 @@ class Policy:
     strip_diacritics: bool = False     # off by default: accents can change meaning (S23)
     word_unit: str = "whitespace"      # whitespace | none (no reliable spaces -> report CER only)
     cer_unit: str = "codepoint"        # codepoint | grapheme
+    drop_tokens: str = ""              # regex; whole tokens matching it are removed (e.g. hesitation fillers)
     note: str = ""
 
     def normalize(self, text: str) -> str:
@@ -39,6 +40,9 @@ class Policy:
             text = "".join(c for c in decomposed if unicodedata.category(c) != "Mn")
             if self.unicode_form != "none":
                 text = unicodedata.normalize(self.unicode_form, text)
+        if self.drop_tokens:
+            drop = regex.compile(self.drop_tokens)
+            text = " ".join(t for t in text.split() if not drop.fullmatch(t))
         return _SPACES.sub(" ", text).strip()
 
     def char_tokens(self, normalized: str) -> list[str]:

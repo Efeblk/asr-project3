@@ -1,6 +1,7 @@
 """`asrbench score` and `asrbench compare`.
 
 score   -> <run>/scores.json, <run>/item_scores.jsonl, <run>/report.md
+          (with --tag T: scores.T.json, item_scores.T.jsonl, report.T.md, e.g. a secondary policy ablation)
 compare -> paired bootstrap on matched item IDs (S24, S77), printed as Markdown.
 """
 
@@ -36,15 +37,16 @@ def _pct(x):
     return "—" if x is None else f"{100 * x:.2f}%"
 
 
-def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 2000) -> dict:
+def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 2000, tag: str | None = None) -> dict:
     run_dir = Path(run_dir)
+    sfx = f".{tag}" if tag else ""
     policies = load_policies(policy_path)
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     by_lang = _score_all(read_predictions(run_dir), policies)
 
     results = {"run": manifest.get("name"), "split": manifest.get("split"), "model": manifest.get("model"),
-               "scoring_policy": policies.to_dict(), "policy_file": policy_path, "languages": {}}
-    with (run_dir / "item_scores.jsonl").open("w", encoding="utf-8", newline="\n") as f:
+               "scoring_policy": policies.to_dict(), "policy_file": policy_path, "tag": tag, "languages": {}}
+    with (run_dir / f"item_scores{sfx}.jsonl").open("w", encoding="utf-8", newline="\n") as f:
         for lang, rows in sorted(by_lang.items()):
             scores = [s for _, s in rows]
             m = corpus_metrics(scores)
@@ -80,8 +82,8 @@ def score(run_dir: str | Path, policy_path: str | None = None, n_boot: int = 200
                                     "words": s.words.as_dict() if s.words else None,
                                     "chars": s.chars.as_dict()}, ensure_ascii=False) + "\n")
 
-    (run_dir / "scores.json").write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
-    (run_dir / "report.md").write_text(render_report(results, manifest), encoding="utf-8", newline="\n")
+    (run_dir / f"scores{sfx}.json").write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
+    (run_dir / f"report{sfx}.md").write_text(render_report(results, manifest), encoding="utf-8", newline="\n")
     return results
 
 
@@ -89,7 +91,7 @@ def render_report(results: dict, manifest: dict) -> str:
     model = manifest.get("model", {})
     hw = manifest.get("env", {}).get("hardware", {})
     lines = [
-        f"# {results['run']} ({results['split']})",
+        f"# {results['run']} ({results['split']})" + (f" — secondary policy `{results['policy_file']}`" if results.get("tag") else ""),
         "",
         f"- Model: `{model.get('model_id')}` @ `{model.get('revision_resolved') or model.get('revision_requested')}` "
         f"({model.get('family')}, {model.get('dtype')}, {model.get('device')})",
