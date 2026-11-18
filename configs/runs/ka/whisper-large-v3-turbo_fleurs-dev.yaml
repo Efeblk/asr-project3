@@ -1,0 +1,15 @@
+# Georgian baseline (pretrained, no training by us). Dev run: select settings here, test runs once later.
+name: whisper-large-v3-turbo_fleurs-ka_dev
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: dev
+languages: [ka]
+eligibility_confirmed: true   # confirmed by the student 2026-11-17 (never record why)
+batch_size: 8
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: main
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints: {ka: georgian}

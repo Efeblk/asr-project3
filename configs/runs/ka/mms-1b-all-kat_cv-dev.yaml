@@ -1,0 +1,14 @@
+# Georgian baseline (pretrained, no training by us). Dev run: select settings here, test runs once later.
+name: mms-1b-all-kat_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl   # Common Voice Scripted Speech 27.0 ka, official split
+split: dev
+languages: [ka]
+eligibility_confirmed: true   # confirmed by the student 2026-11-17 (never record why)
+batch_size: 8
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: main
+  device: cuda
+  dtype: float16
+  target_lang: kat              # MMS adapter (ISO 639-3)
