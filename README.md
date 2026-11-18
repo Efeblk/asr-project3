@@ -2,13 +2,41 @@
 
 This is a course project that evaluates automatic speech recognition on non-English languages. It contains `asrbench`, a harness that runs speech recognition models on a dataset and scores them in a reproducible way, following the course rules in [docs/project-requirements.md](docs/project-requirements.md).
 
+## Language, data and splits
+
+**Our language is Georgian (`ka`).** Eligibility is confirmed; it is unique in the class register (group "stray").
+Kazakh was explored first and is kept only as a pipeline pilot ([docs/results-kazakh.md](docs/results-kazakh.md)),
+because another group registered Kazakh.
+
+| Dataset | Split used | Are speakers separate? |
+|---|---|---|
+| [Common Voice Scripted Speech 27.0 – Georgian](https://mozilladatacollective.com/datasets/cmu5x9qda00fenq07byl8rlc8) (CC0, Mozilla Data Collective) | the official train / dev / test | Yes: Common Voice assigns each speaker (`client_id`) to one split; `asrbench validate` and `scripts/split_audit.py` check it |
+| [FLEURS `ka_ge`](https://huggingface.co/datasets/google/fleurs) (CC BY 4.0), pinned revision | the official train / dev / test | No speaker IDs; sentence-disjoint splits, and the authors state test speakers are not in train |
+
+Per-split speakers, utterances, hours and test sentences that also occur in train are in
+[docs/split-audit.md](docs/split-audit.md) (announcement A2). Dev is used for every choice (checkpoint, decoder,
+normalizer); test is run once with frozen configs.
+
+### Baselines that do not support Georgian (announcement A3)
+
+These course-listed checkpoints were not run, because their model cards do not list Georgian (or Kazakh):
+- [`nvidia/canary-1b-v2`](https://huggingface.co/nvidia/canary-1b-v2): 25 European languages.
+- [`nvidia/parakeet-tdt-0.6b-v3`](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3): the same 25 European languages.
+- [`Qwen/Qwen3-ASR-1.7B`](https://huggingface.co/Qwen/Qwen3-ASR-1.7B) / [`Qwen/Qwen3-ASR-0.6B`](https://huggingface.co/Qwen/Qwen3-ASR-0.6B): 30 languages + 22 Chinese dialects.
+
+Georgian baselines that are run, per family: Whisper (`openai/whisper-small`, `-large-v3`, `-large-v3-turbo`;
+attention encoder-decoder), wav2vec 2.0 + CTC (`xsway/wav2vec2-large-xlsr-georgian`, `facebook/mms-1b-all` with
+the `kat` adapter), transducer (`nvidia/stt_ka_fastconformer_hybrid_large_pc`, FastConformer hybrid
+Transducer-CTC) and our own MFCC + GMM-HMM. No HuBERT + CTC checkpoint for Georgian was found. Exact revisions are
+in every run manifest.
+
 ## Setup
 
 You need [uv](https://docs.astral.sh/uv/) and `ffmpeg` on your PATH.
 
 ```bash
 uv sync --extra hf --group dev        # Whisper + wav2vec2/CTC (CUDA torch on Windows/Linux)
-uv run pytest                         # 28 tests: slide-derived metric checks, pipeline, CPU training, language filter
+uv run pytest                         # 32 tests: slide-derived metric checks, pipeline, CPU training, importers, language filter
 ```
 
 Extras for other model families. Each goes in its own environment, and neither has been tested in this repo yet:
