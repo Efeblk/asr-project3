@@ -1,0 +1,23 @@
+name: whisper-large-v3-turbo-ft_ksc2-sample
+dataset: data/ksc2/manifest.jsonl
+language: kk
+eligibility_confirmed: true
+train_filter:
+  in_train_sample: true
+dev_limit: 300
+max_audio_sec: 30
+seed: 42
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: main
+  language_hint: kazakh
+training:
+  learning_rate: 1.0e-05
+  warmup_steps: 500
+  max_steps: 4000
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  eval_steps: 500
+  save_steps: 500
+  dataloader_num_workers: 8
