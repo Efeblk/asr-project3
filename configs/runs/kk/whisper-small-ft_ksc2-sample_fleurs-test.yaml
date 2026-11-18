@@ -1,0 +1,18 @@
+# Kazakh OURS (A1 contribution). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# whisper-small-ft_ksc2-sample_fleurs-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: whisper-small-ft_ksc2-sample_fleurs-kk_test
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-small-ft_ksc2-sample_20261117T225824Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
+frozen: true

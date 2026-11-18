@@ -1,0 +1,18 @@
+# DECODER ABLATION (dev only), ours turbo: same weights as the main 'ours' row, decoding changed to {'beam_size': 5}.
+# Selection rule, fixed before any test run: the variant with the lowest KSC2 dev WER (greedy included)
+# gets one extra frozen test run, reported as a separate 'ours + decoder' row.
+name: whisper-large-v3-turbo-ft_ksc2-sample+beam5_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_ksc2-sample_20261117T233337Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 5
+  language_hints:
+    kk: kazakh

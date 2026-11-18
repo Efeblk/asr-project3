@@ -1,0 +1,17 @@
+# Kazakh baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# xlsr-kazakh-aismlv_fleurs-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: xlsr-kazakh-aismlv_fleurs-kk_test
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: aismlv/wav2vec2-large-xlsr-kazakh
+  revision: b277ef85de7bbd28302d570062feb196cc4e9107  # resolved by the dev run xlsr-kazakh-aismlv_fleurs-kk_dev_20261117T154541Z
+  device: cuda
+  dtype: float16
+  model_language: kk
+frozen: true

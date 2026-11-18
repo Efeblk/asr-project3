@@ -1,0 +1,17 @@
+# Kazakh baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# mms-1b-all-kaz_ksc2-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: mms-1b-all-kaz_ksc2-kk_test
+dataset: data/ksc2/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd  # resolved by the dev run mms-1b-all-kaz_ksc2-kk_dev_20261117T163636Z
+  device: cuda
+  dtype: float16
+  target_lang: kaz
+frozen: true

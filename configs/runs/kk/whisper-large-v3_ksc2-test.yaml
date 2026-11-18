@@ -1,0 +1,19 @@
+# Kazakh baseline (pretrained, no training by us). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# whisper-large-v3_ksc2-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: whisper-large-v3_ksc2-kk_test
+dataset: data/ksc2/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3
+  revision: 06f233fe06e710322aca913c1bc4249a0d71fce1  # resolved by the dev run whisper-large-v3_ksc2-kk_dev_20261117T170405Z
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
+frozen: true

@@ -1,0 +1,18 @@
+# Kazakh OURS (A1 contribution). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# whisper-large-v3-turbo-ft_ksc2-sample_ksc2-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: whisper-large-v3-turbo-ft_ksc2-sample_ksc2-kk_test
+dataset: data/ksc2/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_ksc2-sample_20261117T233337Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
+frozen: true

@@ -1,0 +1,16 @@
+# Kazakh OURS (A1 contribution). FROZEN TEST RUN, run once (S7, S60): every setting is identical to the dev config
+# mms-1b-all-kaz-adapter-ft_ksc2-sample_fleurs-dev.yaml; nothing below was chosen on test. Frozen 2026-11-18.
+name: mms-1b-all-kaz-adapter-ft_ksc2-sample_fleurs-kk_test
+dataset: data/fleurs/kk_kz/manifest.jsonl
+split: test
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kaz
+frozen: true
