@@ -1,0 +1,15 @@
+name: xlsr-georgian-xsway_cv-ka_test
+dataset: data/cv/ka/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: xsway/wav2vec2-large-xlsr-georgian
+  revision: b29b81945f5fa2e35fbb05da5256815d8cc71e20
+  device: cuda
+  dtype: float16
+  model_language: ka
+frozen: true

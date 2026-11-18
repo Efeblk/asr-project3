@@ -1,0 +1,13 @@
+name: nvidia-stt-ka-fastconformer_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: nemo
+  id: nvidia/stt_ka_fastconformer_hybrid_large_pc
+  revision: bdfd7871e0574001e650e741d6201d40205db6bb
+  device: cuda
+  dtype: float32

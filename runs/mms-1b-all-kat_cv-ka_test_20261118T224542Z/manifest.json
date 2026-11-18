@@ -1,0 +1,63 @@
+{
+  "name": "mms-1b-all-kat_cv-ka_test",
+  "created_utc": "2026-11-18T22:45:53+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "test",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14259,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat"
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA L4",
+      "gpu_memory_gb": 22.0
+    }
+  },
+  "model_load_sec": 10.33,
+  "completed_utc": "2026-11-18T22:51:58+00:00",
+  "totals": {
+    "items": 14259,
+    "audio_sec": 84004.25,
+    "compute_sec": 296.56,
+    "rtf": 0.0035
+  }
+}

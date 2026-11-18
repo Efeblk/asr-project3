@@ -1,0 +1,14 @@
+name: nvidia-stt-ka-fastconformer_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: nemo
+  id: nvidia/stt_ka_fastconformer_hybrid_large_pc
+  revision: bdfd7871e0574001e650e741d6201d40205db6bb
+  device: cuda
+  dtype: float32
+frozen: true

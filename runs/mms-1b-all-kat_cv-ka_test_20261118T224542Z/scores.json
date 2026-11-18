@@ -1,0 +1,325 @@
+{
+  "run": "mms-1b-all-kat_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat"
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 83181,
+        "S": 21367,
+        "D": 3253,
+        "I": 1401,
+        "N": 107801,
+        "M": 105949
+      },
+      "wer": 0.24137995009322732,
+      "mer": 0.23828318162671014,
+      "wil": 0.3942009014356256,
+      "mean_clip_wer": 0.2475909707139543,
+      "char_counts": {
+        "C": 848039,
+        "S": 19413,
+        "D": 13306,
+        "I": 6477,
+        "N": 880758,
+        "M": 873929
+      },
+      "cer": 0.044502576190054474,
+      "wer_ci": {
+        "low": 0.23216170774830977,
+        "high": 0.25175160508230565,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.039659779269466816,
+        "high": 0.05041800479463572,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.0035302786116244976,
+      "rtfx": 283.2637618762443,
+      "orthographic": {
+        "wer": 0.4013828819108914,
+        "cer": 0.06771355767450986
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "საქართველოს",
+          "საქართველო",
+          30
+        ],
+        [
+          "გვხვდება",
+          "გხვდება",
+          17
+        ],
+        [
+          "ოლქში",
+          "ოლგში",
+          14
+        ],
+        [
+          "მათგანი",
+          "მადგანი",
+          11
+        ],
+        [
+          "არამედ",
+          "არამეთ",
+          11
+        ],
+        [
+          "შავი",
+          "შავიზღვის",
+          10
+        ],
+        [
+          "მიიღო",
+          "მიიყო",
+          10
+        ],
+        [
+          "ქვეშ",
+          "ქვეში",
+          10
+        ],
+        [
+          "წევრი",
+          "სწევრი",
+          9
+        ],
+        [
+          "სწორკუთხა",
+          "წორკუთხა",
+          9
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "თბილისში",
+          "თბილიში",
+          8
+        ],
+        [
+          "მმართველობის",
+          "მართველობის",
+          8
+        ],
+        [
+          "ესე",
+          "ესეიგი",
+          8
+        ],
+        [
+          "ღვთისმშობლის",
+          "მშობლის",
+          7
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_39743792",
+          "ref": "მნიშვნელოვანი საქმიანობა იყო ცხენებისა და ძაღლების რეგულარული გასეირნება ასევე საფეხბურთო მატჩები ყინულზე",
+          "hyp": "naconal d afიაnabl cs cn fcn cაn ლeბc reguლarn s neboყ fn safeჭ მუto nაn cen 1nnn",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 0,
+            "I": 5,
+            "N": 12,
+            "M": 17
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760373",
+          "ref": "ამის შემდეგ ერთხანს მსახურობდა მღვდლად ხოლო პირველი მსოფლიო ომის დროს იყო ავსტრია უნგრეთის არმიის კაპელანი",
+          "hyp": "anbicently atensacontafbencas comity bn encucne onbencancaf foucn na a natusalmec anfela",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 4,
+            "I": 0,
+            "N": 15,
+            "M": 11
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40338901",
+          "ref": "სწორედ ამ შენობასთან მოკლეს ფრანც ფერდინანდი რაც შემდგომ პირველი მსოფლიო ომის დაწყების მიზეზი გახდა",
+          "hyp": "soe kensen basangkuvesesabfansaendi anansicenten ewalinsalwa onusonsabisi nencencikafa",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 7,
+            "I": 0,
+            "N": 14,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097233",
+          "ref": "კერძოდ მასთან ერთად იყვენ ჯო ლინ ტერნერი იენს იუჰანსონი და მისი ძმა პატრიკ იუჰანსონი",
+          "hyp": "esas mansack manjon ninternery yec unhansonina mucicna matricc unhanstony",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 5,
+            "I": 0,
+            "N": 14,
+            "M": 9
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40855669",
+          "ref": "ვინაიდან მას მაქსიმილიანის სახით უკვე ჰყავდა უფროსი ძმა ტახტზე ასვლის იმედი არ უნდა ჰქონოდა",
+          "hyp": "ინაიდრამაას მაქსიმილიამი სახდუგა ყავდოლქვერწმა ტახწეასუმედი აუნდა ქუმდა",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 7,
+            "I": 0,
+            "N": 14,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760147",
+          "ref": "საშუალო სკოლის დამთავრების შემდეგ სწავლა განაგრძო ივანე ჯავახიშვილის სახელობის სახელმწიფო უნივერსიტეტში გეოგრაფია გეოლოგიის ფაკულტეტზე",
+          "hyp": "საშაოისოის დორწხერებშებდე სხავლა განდაქწავა იპანე ჯაულიჩვის სახებობის ეხეიმა უნივერსიტეტში გეოგრაფიაგეოლოპიის ბაგლდეზენ",
+          "errors": {
+            "C": 1,
+            "S": 10,
+            "D": 3,
+            "I": 0,
+            "N": 14,
+            "M": 11
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40338759",
+          "ref": "სამოქალაქო ომმა ჩრდილო კავკასიის პოლიტიკურ ლიდერთა საქმიანობა და დამოუკიდებლობისაკენ მიმართული ნაბიჯები დააჩქარა",
+          "hyp": "samcona ko umancntevacaansicpot urubutefta nannsacnenn data mu buryo isiganne nturi na bico bitacker",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 0,
+            "I": 1,
+            "N": 12,
+            "M": 13
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097014",
+          "ref": "ვიტრინაში დაცულია მფრინავის ის კოსტუმი რომელიც მას უკანასკნელი ფრენის დროს ეცვა ასევე გაუხსნელი პარაშუტი",
+          "hyp": "მიტრინაშიდეთურია ფრინავისის კოლტუმი მაnegmen ოკანაcნალ ფრენ როსეწვა ასევე გაურძნენი პარაჟონი",
+          "errors": {
+            "C": 1,
+            "S": 9,
+            "D": 4,
+            "I": 0,
+            "N": 14,
+            "M": 10
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097318",
+          "ref": "ანტისოციალური პიროვნების აშლილობის მქონე ადამიანი ხასიათდება სხვა ადამიანის უფლებების უგულვებელყოფით და მათი დარღვევით",
+          "hyp": "nandinsatsann unanninz ashinehananannnkatsnnak ubera bicuhurwelafite amanitango abire",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 6,
+            "I": 0,
+            "N": 13,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40883367",
+          "ref": "უოლ ი ცდილობს ივა ყოველგვარი საფრთხისგან დაიცვას თუმცა მალე მის წასაყვანად ხომალდი დაბრუნდება",
+          "hyp": "უ ილი თილებდა ივ ყოველ ლარ სამცგან დაეჩადმცა მანა მისკასაყანად ხომალი დაფრულდა",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 1,
+            "I": 0,
+            "N": 13,
+            "M": 12
+          }
+        }
+      ]
+    }
+  }
+}

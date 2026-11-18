@@ -1,0 +1,15 @@
+name: mms-1b-all-kat_cv-ka_test
+dataset: data/cv/ka/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+  device: cuda
+  dtype: float16
+  target_lang: kat
+frozen: true

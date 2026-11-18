@@ -1,0 +1,62 @@
+{
+  "name": "nvidia-stt-ka-fastconformer_fleurs-ka_dev",
+  "created_utc": "2026-11-18T23:00:13+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/fleurs/ka_ge/manifest.jsonl",
+    "sha256": "d95e58e9db459736af88f3ff659dd44a58789e6d04173ef618298ce4b8127aed",
+    "items": 409,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "nemo",
+    "model_id": "nvidia/stt_ka_fastconformer_hybrid_large_pc",
+    "revision_requested": "bdfd7871e0574001e650e741d6201d40205db6bb",
+    "revision_resolved": "bdfd7871e0574001e650e741d6201d40205db6bb",
+    "device": "cuda",
+    "dtype": "float32",
+    "language_hints": {},
+    "settings": {}
+  },
+  "batch_size": 16,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "nemo_toolkit": "3.0.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA L4",
+      "gpu_memory_gb": 22.0
+    }
+  },
+  "model_load_sec": 13.88,
+  "completed_utc": "2026-11-18T23:00:30+00:00",
+  "totals": {
+    "items": 409,
+    "audio_sec": 4392.06,
+    "compute_sec": 16.09,
+    "rtf": 0.0037
+  }
+}

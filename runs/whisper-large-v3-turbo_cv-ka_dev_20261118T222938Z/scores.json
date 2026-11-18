@@ -1,0 +1,327 @@
+{
+  "run": "whisper-large-v3-turbo_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-large-v3-turbo",
+    "revision_requested": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "revision_resolved": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 10,
+        "S": 45048,
+        "D": 63637,
+        "I": 43783,
+        "N": 108695,
+        "M": 88841
+      },
+      "wer": 1.4027140162840976,
+      "mer": 0.9999344167683206,
+      "wil": 0.9999999896443588,
+      "mean_clip_wer": 1.4302030448880312,
+      "char_counts": {
+        "C": 96281,
+        "S": 789023,
+        "D": 6169,
+        "I": 860236,
+        "N": 891473,
+        "M": 1745540
+      },
+      "cer": 1.8569580907105432,
+      "wer_ci": {
+        "low": 1.369367734836446,
+        "high": 1.4347188330664262,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 1.8208793820780982,
+        "high": 1.8929832985969328,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.016985331852273917,
+      "rtfx": 58.87432807891385,
+      "orthographic": {
+        "wer": 1.3813881681128688,
+        "cer": 1.8185460025144449
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "მისი",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          105
+        ],
+        [
+          "და",
+          "ერის",
+          93
+        ],
+        [
+          "ამ",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          88
+        ],
+        [
+          "მდებარეობს",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          80
+        ],
+        [
+          "ეს",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          78
+        ],
+        [
+          "იგი",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          66
+        ],
+        [
+          "მას",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          45
+        ],
+        [
+          "და",
+          "ეს",
+          42
+        ],
+        [
+          "და",
+          "da",
+          38
+        ],
+        [
+          "ის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          37
+        ],
+        [
+          "მის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          37
+        ],
+        [
+          "ამის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          36
+        ],
+        [
+          "მან",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          34
+        ],
+        [
+          "ამ",
+          "ესსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსსს",
+          34
+        ],
+        [
+          "ასევე",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          34
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_37347123",
+          "ref": "ქვეყნის ერთ ერთი საპორტო ქალაქი",
+          "hyp": "q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q q",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 0,
+            "I": 439,
+            "N": 5,
+            "M": 444
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39743816",
+          "ref": "ვინაიდან მას უფროსი ძმა ჰყავდა დაბადებისას მიანიჭეს ნორმანდიის ჰერცოგის წოდება",
+          "hyp": "þín hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að hún er að",
+          "errors": {
+            "C": 0,
+            "S": 10,
+            "D": 0,
+            "I": 255,
+            "N": 10,
+            "M": 265
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_37297651",
+          "ref": "ინგლისის ისტორიის ამ მნიშვნელოვან ნაწილთან ერთად სკოტი მოგვითხრობს რომანის გმირების საოცარ თავგადასავლებზე",
+          "hyp": "english e s s s tory sam national e s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 0,
+            "I": 211,
+            "N": 12,
+            "M": 223
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40084861",
+          "ref": "პირველი რამდენიმე ეპიზოდი გვიჩვენებს საზაფხულო არდადეგების დასკვნით პერიოდს სკოლის დაწყებამდე ერთი კვირით ადრე",
+          "hyp": "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+          "errors": {
+            "C": 0,
+            "S": 13,
+            "D": 0,
+            "I": 209,
+            "N": 13,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_38321955",
+          "ref": "ძიუდო ეს არის სხეულისა და სულის შეთანხმებული ოპტიმალური გამოყენება იგი სპორტთან ერთად ფილოსოფიაა",
+          "hyp": "3 8 0 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6",
+          "errors": {
+            "C": 0,
+            "S": 13,
+            "D": 0,
+            "I": 209,
+            "N": 13,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40369178",
+          "ref": "ადამსს აქვს მიღებული მონაწილეობა რამდენიმე საქველმოქმედო ჩანაწერის გამოცემაში",
+          "hyp": "adam það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 0,
+            "I": 214,
+            "N": 8,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_37560158",
+          "ref": "გვეუბნებიან რომ ცხრამეტი ბურთი გადავარდა ღობის იქით",
+          "hyp": "2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 0,
+            "I": 215,
+            "N": 7,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_36797886",
+          "ref": "შესრულებული აქვს როლები ფილმებში მუმიას შესახებ",
+          "hyp": "6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+          "errors": {
+            "C": 0,
+            "S": 6,
+            "D": 0,
+            "I": 216,
+            "N": 6,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_37362363",
+          "ref": "კუნძული შედის ოდესის ოლქის შემადგენლობაში",
+          "hyp": "q n zuli 7 10 18 6 7 8 6 7 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 0,
+            "I": 217,
+            "N": 5,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_37556638",
+          "ref": "ადამიანი ლინემ მიაკუთვნა ძუძუმწოვრების კლასს პრიმატების რიგს",
+          "hyp": "adamian i linem miya gotfna të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të të",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 0,
+            "I": 214,
+            "N": 7,
+            "M": 221
+          }
+        }
+      ]
+    }
+  }
+}

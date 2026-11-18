@@ -1,0 +1,328 @@
+{
+  "run": "nvidia-stt-ka-fastconformer_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "nemo",
+    "model_id": "nvidia/stt_ka_fastconformer_hybrid_large_pc",
+    "revision_requested": "bdfd7871e0574001e650e741d6201d40205db6bb",
+    "revision_resolved": "bdfd7871e0574001e650e741d6201d40205db6bb",
+    "device": "cuda",
+    "dtype": "float32",
+    "language_hints": {},
+    "settings": {}
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 102820,
+        "S": 4311,
+        "D": 670,
+        "I": 251,
+        "N": 107801,
+        "M": 107382
+      },
+      "wer": 0.04853387259858443,
+      "mer": 0.04842113056676415,
+      "wil": 0.0867263634796257,
+      "mean_clip_wer": 0.05027320114464174,
+      "char_counts": {
+        "C": 871441,
+        "S": 3603,
+        "D": 5714,
+        "I": 1835,
+        "N": 880758,
+        "M": 876879
+      },
+      "cer": 0.012661820840684955,
+      "wer_ci": {
+        "low": 0.04491044185122435,
+        "high": 0.052338400342904386,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.01118691437386088,
+        "high": 0.014289783132711628,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.003657276951041809,
+      "rtfx": 273.4274744260592,
+      "orthographic": {
+        "wer": 0.09529125894792145,
+        "cer": 0.017373676469447267
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 1,
+        "emitted_words": 1,
+        "examples": [
+          {
+            "id": "cv-ka-test-common_voice_ka_38257760",
+            "hyp": "ეკლესია"
+          }
+        ]
+      },
+      "top_substitutions": [
+        [
+          "წმიდა",
+          "წმინდა",
+          7
+        ],
+        [
+          "არა",
+          "არ",
+          4
+        ],
+        [
+          "ჩრდილო",
+          "ჩრდილოეთ",
+          4
+        ],
+        [
+          "აქვთ",
+          "აქვს",
+          4
+        ],
+        [
+          "აბსიდის",
+          "აფსიდის",
+          4
+        ],
+        [
+          "მსოფლიოს",
+          "მსოფლიო",
+          3
+        ],
+        [
+          "რომლებიც",
+          "რომელიც",
+          3
+        ],
+        [
+          "არა",
+          "არამარტო",
+          3
+        ],
+        [
+          "ბარბარე",
+          "ბარბარა",
+          3
+        ],
+        [
+          "თუ",
+          "და",
+          3
+        ],
+        [
+          "აფსიდით",
+          "აბსიდით",
+          3
+        ],
+        [
+          "ქართული",
+          "ქართულ",
+          3
+        ],
+        [
+          "ტურისტებისათვის",
+          "ტურისტებისთვის",
+          3
+        ],
+        [
+          "პლიუს",
+          "პლუს",
+          3
+        ],
+        [
+          "ჯეიმს",
+          "ჯეიმზ",
+          3
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_39930460",
+          "ref": "მთელი ეს ამბავი მალე გავრცელდა იტალიაში და კატერინას ბიძის ლუდოვიკო სფორცას ყურამდეც მივიდა",
+          "hyp": "გილერმა გავრცელდა ეკატერინა დიდი სუდოლიკოს პოსტას ყურამდე",
+          "errors": {
+            "C": 1,
+            "S": 6,
+            "D": 6,
+            "I": 0,
+            "N": 13,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41819001",
+          "ref": "გარდამოიხილე ზეცით ღმერთო იხილე მოხედე ვენახსა მას და განამტკიცე ესე რომელ დაასხა მარჯვენამან შენმან",
+          "hyp": "გარდა მოიხილე ზეცით ღმერთო იხილე მოხეტვენ ახლა მას და განამტკიცა ეს ეროვნულმა და ასა მარჯვე მაშენ მან",
+          "errors": {
+            "C": 5,
+            "S": 9,
+            "D": 0,
+            "I": 3,
+            "N": 14,
+            "M": 17
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49325466",
+          "ref": "რა ჭირი კაცსა სოფელმან მოუთმოს მოუთმინამან ქაცვი ლერწამმან ზაფრანა იმსგავსოს ფერად მინამან",
+          "hyp": "რაჭა სოფელმა მოუწმოს მოუთმინათ ცაცმი მან საფრენ და მსგავს ფერად მინარეთი",
+          "errors": {
+            "C": 1,
+            "S": 10,
+            "D": 1,
+            "I": 0,
+            "N": 12,
+            "M": 11
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760360",
+          "ref": "იგი მიემგზავრება სან ფრანცისკოში სადაც იგებს რომ ის კაცი თვითონ არის ოღონდ მომავალში",
+          "hyp": "იგი მდებარეობს სამას ხუშტაჟი როკის გასიფორმა მომავალში",
+          "errors": {
+            "C": 2,
+            "S": 5,
+            "D": 6,
+            "I": 0,
+            "N": 13,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40340115",
+          "ref": "კლასიცისტური ელემენტების მქონე შენობები ხის და რკინის აივნებით არის შემკული",
+          "hyp": "კლასიცი კლასიცისტი",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 8,
+            "I": 0,
+            "N": 10,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40855669",
+          "ref": "ვინაიდან მას მაქსიმილიანის სახით უკვე ჰყავდა უფროსი ძმა ტახტზე ასვლის იმედი არ უნდა ჰქონოდა",
+          "hyp": "ვინაიდან მას მარქსი მილიონი სახსრდა ჰყავდა უფროსმა ტახტზე ასვლა ჰქონდა",
+          "errors": {
+            "C": 4,
+            "S": 6,
+            "D": 4,
+            "I": 0,
+            "N": 14,
+            "M": 10
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41201123",
+          "ref": "კარიერის არჩევა მას არ გაჭირვებია განსაკუთრებით როდესაც ექვსი წლის ასაკში მოისმინა მაიქალ ჯექსონის კრებული",
+          "hyp": "კარიერის არჩევა მას არ დასჭირებია",
+          "errors": {
+            "C": 4,
+            "S": 1,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40178373",
+          "ref": "დაჯილდოებულია ლატვიის საფრანგეთის შვედეთის პოლონეთის ლიტვისა და ესტონეთის საპატიო სახელმწიფო ჯილდოებით",
+          "hyp": "დაჯილდოებია სარჩელის ლიტვა და ივანე კარისხელთა ჯუჯებით",
+          "errors": {
+            "C": 1,
+            "S": 6,
+            "D": 4,
+            "I": 0,
+            "N": 11,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39666364",
+          "ref": "ამავე პერიოდში ნილ ტენანტი უფრო ღიად საუბრობდა თავის სექსუალურ ორიენტაციაზე",
+          "hyp": "სამი ერთეული",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 8,
+            "I": 0,
+            "N": 10,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49293584",
+          "ref": "აკა სიტყვას ორხვალი კოც ქაარაგადაფუანანია ერთ სიტყვას დასახვრეტ კაცსაც ათქმევინებენო",
+          "hyp": "ორხანკოს ქარაგა დაფუანია ერთ სიტყვას და სახვრეტ კაცსას ათქმევინებენ",
+          "errors": {
+            "C": 2,
+            "S": 6,
+            "D": 2,
+            "I": 1,
+            "N": 10,
+            "M": 9
+          }
+        }
+      ]
+    }
+  }
+}
