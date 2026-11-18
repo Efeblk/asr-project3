@@ -4,7 +4,7 @@ dataset: data/cv/ka/manifest.jsonl   # Common Voice Scripted Speech 27.0 ka, off
 split: dev
 languages: [ka]
 eligibility_confirmed: true   # confirmed by the student 2026-11-17 (never record why)
-batch_size: 16
+batch_size: 32   # 32 for throughput (Georgian is token-expensive for Whisper); same in dev and test
 model:
   family: hf-whisper
   id: openai/whisper-small
