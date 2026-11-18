@@ -1,0 +1,24 @@
+# Our contribution (A1), Georgian: full fine-tune of Whisper-large-v3-turbo (809M) on the official Common Voice 27.0
+# ka train split (139 speakers, 147.5 h; speaker-disjoint from dev/test). Checkpoint selected on 300 random CV dev
+# items; test never read. ~1 epoch (6000 steps x batch 16 = 96k of 99.8k clips). Colab A100, bf16.
+name: whisper-large-v3-turbo-ft_cv-ka
+dataset: data/cv/ka/manifest.jsonl
+language: ka
+eligibility_confirmed: true      # confirmed by the student (never record why)
+dev_limit: 300
+max_audio_sec: 30
+seed: 42
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: main
+  language_hint: georgian
+training:
+  learning_rate: 1.0e-5
+  warmup_steps: 500
+  max_steps: 6000
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  eval_steps: 500
+  save_steps: 500
+  dataloader_num_workers: 8

@@ -1,0 +1,15 @@
+# Georgian baseline (pretrained, no training by us): NVIDIA FastConformer hybrid Transducer-CTC (~115M), decoded
+# with its default transducer head (as on the model card). Trained by NVIDIA on CV 17.0 train/dev/other + FLEURS
+# train/dev (see docs/data-notes-cv-ka.md for the contamination caveat). Dev run.
+name: nvidia-stt-ka-fastconformer_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl   # Common Voice Scripted Speech 27.0 ka, official split
+split: dev
+languages: [ka]
+eligibility_confirmed: true   # confirmed by the student (never record why)
+batch_size: 16
+model:
+  family: nemo
+  id: nvidia/stt_ka_fastconformer_hybrid_large_pc
+  revision: main
+  device: cuda
+  dtype: float32

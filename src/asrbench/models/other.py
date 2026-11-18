@@ -39,16 +39,27 @@ class NeMoASR(Recognizer):
         if "parakeet" in self.model_id and "-v2" in self.model_id:
             raise ValueError("parakeet-tdt v2 is English-only; use v3 (S73, L41).")
         from nemo.collections.asr.models import ASRModel
-        self.model = ASRModel.from_pretrained(self.model_id).to(self.device).eval()
+        if Path(self.model_id).exists():
+            path = self.model_id
+        else:  # download the .nemo file at the pinned Hub revision (from_pretrained cannot pin one)
+            from huggingface_hub import hf_hub_download, list_repo_files
+            name = next(f for f in list_repo_files(self.model_id, revision=self.revision) if f.endswith(".nemo"))
+            path = hf_hub_download(self.model_id, name, revision=self.revision)
+        self.model = ASRModel.restore_from(path, map_location=self.device).eval()
+        # Hybrid Transducer-CTC checkpoints decode with the transducer by default; `decoder_type: ctc` switches.
+        if self.settings.get("decoder_type") and hasattr(self.model, "change_decoding_strategy"):
+            self.model.change_decoding_strategy(decoder_type=self.settings["decoder_type"])
         self.is_canary = "canary" in self.model_id
 
     def transcribe(self, audios: list[np.ndarray], language: str) -> list[str]:
         with tempfile.TemporaryDirectory() as tmp:
             paths = _write_wavs(audios, self.sample_rate, Path(tmp))
-            kw = {"batch_size": len(paths)}
+            kw = {"batch_size": len(paths), "verbose": False}
             if self.is_canary:
                 kw.update(source_lang=self.hint(language), target_lang=self.hint(language))
             out = self.model.transcribe(paths, **kw)
+        if isinstance(out, tuple):  # older NeMo RNNT models return (best_hypotheses, all_hypotheses)
+            out = out[0]
         return [_text(r) for r in out]
 
 
