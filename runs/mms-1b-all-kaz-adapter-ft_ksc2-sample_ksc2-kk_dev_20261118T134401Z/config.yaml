@@ -1,0 +1,13 @@
+name: mms-1b-all-kaz-adapter-ft_ksc2-sample_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kaz

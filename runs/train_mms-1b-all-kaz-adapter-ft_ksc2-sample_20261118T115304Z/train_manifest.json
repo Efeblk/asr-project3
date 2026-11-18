@@ -1,0 +1,118 @@
+{
+  "name": "mms-1b-all-kaz-adapter-ft_ksc2-sample",
+  "created_utc": "2026-11-18T13:43:59+00:00",
+  "kind": "training (our contribution, A1)",
+  "language": "kk",
+  "base_model": {
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "main",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+  },
+  "language_hint": null,
+  "targets": "references normalized with the scoring policy",
+  "vocab": {
+    "source": "checkpoint (MMS adapter 'kaz')",
+    "size": 108
+  },
+  "dataset": {
+    "path": "data/ksc2/manifest.jsonl",
+    "sha256": "6acd3f67324f274fdde0eab7ff7535eb39f92c6de766b63dffc8338dcb4257a5",
+    "train_split": "train",
+    "dev_split": "dev",
+    "train_items": 18444,
+    "train_hours": 34.1,
+    "train_hours_requested": null,
+    "dropped_too_long": 0,
+    "dev_items_for_selection": 300,
+    "dev_limit": 300,
+    "train_filter": {
+      "in_train_sample": true
+    },
+    "dev_filter": null
+  },
+  "selection": {
+    "metric": "dev wer under the scoring policy",
+    "best_checkpoint": "checkpoints/mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z/checkpoint-2500",
+    "best_metric": 0.2919383521043272,
+    "final_eval": {
+      "eval_loss": 0.25153619050979614,
+      "eval_wer": 0.2919383521043272,
+      "eval_cer": 0.06879229459874621,
+      "eval_runtime": 6.26,
+      "eval_samples_per_second": 47.923,
+      "eval_steps_per_second": 6.07,
+      "epoch": 5.199479618386817
+    }
+  },
+  "training_args": {
+    "eval_strategy": "steps",
+    "save_strategy": "steps",
+    "logging_steps": 25,
+    "save_total_limit": 2,
+    "load_best_model_at_end": true,
+    "greater_is_better": false,
+    "report_to": [],
+    "remove_unused_columns": false,
+    "label_names": [
+      "labels"
+    ],
+    "dataloader_num_workers": 8,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_kwargs": {
+      "use_reentrant": false
+    },
+    "learning_rate": 0.001,
+    "warmup_steps": 100,
+    "max_steps": 3000,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "per_device_eval_batch_size": 8,
+    "eval_steps": 500,
+    "save_steps": 500,
+    "bf16": true,
+    "weight_decay": 0.005,
+    "seed": 42,
+    "metric_for_best_model": "wer"
+  },
+  "seed": 42,
+  "resumed": false,
+  "train_sec": 6616.3,
+  "global_steps": 3000,
+  "peak_gpu_memory_gb": 10.4,
+  "scoring_policy": {
+    "unicode_form": "NFC",
+    "lowercase": true,
+    "remove_punctuation": true,
+    "strip_diacritics": false,
+    "word_unit": "whitespace",
+    "cer_unit": "codepoint",
+    "note": ""
+  },
+  "checkpoint_dir": "checkpoints/mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z/final",
+  "run_dir": "runs/train_mms-1b-all-kaz-adapter-ft_ksc2-sample_20261118T115304Z",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "gpu_memory_gb": 39.5
+    }
+  }
+}
