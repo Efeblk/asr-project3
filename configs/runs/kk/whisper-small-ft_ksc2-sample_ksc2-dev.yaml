@@ -1,0 +1,17 @@
+# Kazakh, OURS (A1 contribution): whisper-small-ft_ksc2-sample, fine-tuned by us; decoding settings identical to the
+# baseline config whisper-small_ksc2-dev.yaml. Dev run.
+name: whisper-small-ft_ksc2-sample_ksc2-kk_dev
+dataset: data/ksc2/manifest.jsonl
+split: dev
+languages:
+- kk
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-small-ft_ksc2-sample_20261117T225824Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    kk: kazakh
