@@ -30,6 +30,11 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--language", required=True)
     p.add_argument("--out", required=True, help="output manifest .jsonl")
 
+    p = sub.add_parser("import-cv", help="Common Voice locale dir (train/dev/test.tsv + clips/) -> manifest; official split")
+    p.add_argument("locale_dir")
+    p.add_argument("--language", required=True)
+    p.add_argument("--out", required=True, help="output manifest .jsonl")
+
     p = sub.add_parser("filter-lang", help="Kazakh manifests: label transcripts kk/mixed/ru and drop Russian (rule 3)")
     p.add_argument("manifest")
 
@@ -77,6 +82,9 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "import-tsv":
         from .importers import import_tsv
         print(f"Wrote {import_tsv(Path(a.tsv), a.language, Path(a.out))}")
+    elif a.cmd == "import-cv":
+        from .importers import import_cv
+        print(f"Wrote {import_cv(Path(a.locale_dir), a.language, Path(a.out))}")
     elif a.cmd == "filter-lang":
         from .langfilter import filter_manifest
         print(json.dumps(filter_manifest(a.manifest), indent=1, ensure_ascii=False))

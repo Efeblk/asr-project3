@@ -4,6 +4,9 @@
   splits. Files are fetched at a pinned dataset revision so manifests are reproducible.
   FLEURS has no speaker IDs; the same sentence is read by several speakers, so the sentence ID
   is used as the bootstrap cluster (`session`).
+- Common Voice (Mozilla Data Collective, CC0): `import-cv <extracted locale dir>` keeps the official
+  train/dev/test split, whose speakers (`client_id`) are disjoint by design (checked by `validate`), and uses the
+  client_id as the speaker / bootstrap cluster. Durations come from `clip_durations.tsv`.
 - TSV: any local corpus (your own recordings with independently made transcripts, Common Voice
   exports, ...). Columns: id, audio, reference, split, and optionally speaker, session.
 """
@@ -82,6 +85,35 @@ def import_tsv(tsv_path: Path, language: str, out_path: Path, source: str | None
                 split=row["split"], speaker=row.get("speaker") or None, session=row.get("session") or None,
                 duration=duration, source=source or tsv_path.name,
             ))
+    return write_manifest(items, out_path)
+
+
+CV_SPLITS = ("train", "dev", "test")
+
+
+def import_cv(locale_dir: Path, language: str, out_path: Path, source: str | None = None,
+              splits: tuple[str, ...] = CV_SPLITS) -> Path:
+    """Common Voice scripted speech: <locale_dir>/{train,dev,test}.tsv + clips/*.mp3 (official split kept)."""
+    check_language(language)
+    locale_dir, out_path = Path(locale_dir), Path(out_path)
+    durations: dict[str, float] = {}
+    dur_tsv = locale_dir / "clip_durations.tsv"
+    if dur_tsv.exists():
+        with open(dur_tsv, encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f, delimiter="	", quoting=csv.QUOTE_NONE):
+                durations[row["clip"]] = int(row["duration[ms]"]) / 1000
+    items: list[Item] = []
+    for split in splits:
+        with open(locale_dir / f"{split}.tsv", encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f, delimiter="	", quoting=csv.QUOTE_NONE):
+                clip = row["path"]
+                audio = Path(_relpath((locale_dir / "clips" / clip).resolve(), out_path.parent.resolve()))
+                items.append(Item(
+                    id=f"cv-{language}-{split}-{Path(clip).stem}", audio=audio.as_posix(), reference=row["sentence"],
+                    language=language, split=split, speaker=row["client_id"][:16], duration=durations.get(clip),
+                    source=source or locale_dir.parent.name,
+                    extra={k: row[k] for k in ("sentence_id", "gender", "age") if row.get(k)},
+                ))
     return write_manifest(items, out_path)
 
 
