@@ -30,6 +30,7 @@ uv run asrbench run configs/runs/my-run.yaml                  # -> runs/<name>_<
 
 # 3. Score each language with the declared policy (configs/scoring.yaml)
 uv run asrbench score runs/<run-dir>                          # -> scores.json, item_scores.jsonl, report.md
+uv run asrbench score runs/<run-dir> --policy configs/scoring-nofillers.yaml --tag nofillers   # secondary policy -> scores.nofillers.json (ablation; primary files untouched)
 
 # 4. Compare two systems on the same items (paired bootstrap)
 uv run asrbench compare runs/<run-a> runs/<run-b>
@@ -41,9 +42,9 @@ uv run asrbench train configs/train/my-train.yaml             # -> checkpoints/<
 uv run asrbench train configs/train/my-train.yaml --resume checkpoints/<name>_<ts>   # continue an interrupted run
 ```
 
-To train on a Google Colab GPU instead of the local one, open `notebooks/colab_train.ipynb` (data via a tar on Google Drive; checkpoints on Drive; auto-resume; fp16 on T4).
+To train on a Google Colab GPU instead of the local one, open `notebooks/colab_train.ipynb` (data via a tar on Google Drive; checkpoints on Drive; auto-resume; fp16 on T4), or drive a VM with the `colab` CLI (`colab new --gpu A100`, `colab exec`, `colab upload/download`): rebuild the data with the import commands and check the manifest sha256 against the local one. Keep the local machine on while a Colab VM runs, copy checkpoints off the VM as they appear, and do not `colab download` multi-GB files (stream big uploads over `colab ssh` in 100 MB parts instead).
 
-Pretrained checkpoints run as they are count as **baselines**; a model trained by `asrbench train` counts as **ours**. The run manifest and `report.md` label every system as one or the other, so the two can be reported separately on the same test set (A1). Training supports `hf-whisper` (full fine-tune, orthographic targets) and `hf-ctc` (wav2vec2/XLS-R/MMS with a new character head, or `reuse_vocab: true`). `train_hours` subsamples the train split for learning curves; `train_filter`/`dev_filter` keep only items whose fields match (e.g. `{in_train_sample: true}`, `{subcorpus: parliament}`). MMS-1b-all baselines take `target_lang` (e.g. `kaz`) to load the language adapter. Example configs are in `configs/train/`.
+Pretrained checkpoints run as they are count as **baselines**; a model trained by `asrbench train` counts as **ours**. The run manifest and `report.md` label every system as one or the other, so the two can be reported separately on the same test set (A1). Training supports `hf-whisper` (full fine-tune, orthographic targets) and `hf-ctc` (wav2vec2/XLS-R/MMS with a new character head, or `reuse_vocab: true`). `train_hours` subsamples the train split for learning curves; `train_filter`/`dev_filter` keep only items whose fields match (e.g. `{in_train_sample: true}`, `{subcorpus: parliament}`). MMS-1b-all baselines take `target_lang` (e.g. `kaz`) to load the language adapter; for training, `target_lang` + `reuse_vocab` + `adapter_only: true` trains only the adapter layers and LM head and also saves `adapter.<lang>.safetensors`. Whisper run configs accept `generate_kwargs` (e.g. `{no_repeat_ngram_size: 3}`) for decoder ablations, selected on dev only. Policies accept `drop_tokens` (a regex of whole tokens to remove, e.g. hesitation fillers). Example configs are in `configs/train/`.
 
 Each run directory holds the deliverables the course asks for (slide S11):
 
