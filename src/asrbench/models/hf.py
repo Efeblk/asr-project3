@@ -100,14 +100,27 @@ class HFCTC(Recognizer):
     def load(self) -> None:
         from transformers import AutoModelForCTC, AutoProcessor
         self.processor = AutoProcessor.from_pretrained(self.model_id, revision=self.revision)
-        self.model = AutoModelForCTC.from_pretrained(
-            self.model_id, revision=self.revision, dtype=_torch_dtype(self.dtype)
-        )
         # MMS (facebook/mms-1b-all): one shared encoder + per-language adapters and vocabularies.
         # `target_lang` is the ISO 639-3 adapter code from the model card, e.g. kaz, kat.
         self.target_lang = self.settings.get("target_lang")
         if self.target_lang:
             self.processor.tokenizer.set_target_lang(self.target_lang)
+        self.decoder = None
+        lm = self.settings.get("lm")
+        if lm:  # word n-gram LM beam search (pyctcdecode + KenLM; Linux). Decoder first, then fork the pool, then CUDA.
+            import multiprocessing
+            from pyctcdecode import build_ctcdecoder
+            tok = self.processor.tokenizer
+            labels = [t for t, _ in sorted(tok.get_vocab().items(), key=lambda x: x[1])]
+            labels = ["" if t == tok.pad_token else " " if t == tok.word_delimiter_token else t for t in labels]
+            self.decoder = build_ctcdecoder(labels, kenlm_model_path=lm["arpa"], alpha=float(lm["alpha"]),
+                                            beta=float(lm["beta"]))
+            self.beam_width = int(lm.get("beam_width", 100))
+            self.pool = multiprocessing.get_context("fork").Pool(int(lm.get("workers", 8)))
+        self.model = AutoModelForCTC.from_pretrained(
+            self.model_id, revision=self.revision, dtype=_torch_dtype(self.dtype)
+        )
+        if self.target_lang:
             self.model.load_adapter(self.target_lang)
         self.model = self.model.to(self.device, dtype=_torch_dtype(self.dtype)).eval()
         self.model_language = self.settings.get("model_language")
@@ -121,5 +134,11 @@ class HFCTC(Recognizer):
         mask = batch.get("attention_mask")
         with torch.inference_mode():
             logits = self.model(values, attention_mask=None if mask is None else mask.to(self.device)).logits
+        if self.decoder is not None:  # beam search with the word n-gram LM, on unpadded log-probs
+            lens = ([logits.shape[1]] * len(audios) if mask is None
+                    else self.model._get_feat_extract_output_lengths(mask.sum(-1)).tolist())
+            lp = torch.log_softmax(logits.float(), dim=-1).cpu().numpy()
+            return [t.strip() for t in self.decoder.decode_batch(self.pool, [lp[i, :n] for i, n in enumerate(lens)],
+                                                                 beam_width=self.beam_width)]
         ids = logits.argmax(-1)  # greedy CTC: argmax per frame, then collapse repeats + blanks (S50-S52)
         return [t.strip() for t in self.processor.batch_decode(ids)]
