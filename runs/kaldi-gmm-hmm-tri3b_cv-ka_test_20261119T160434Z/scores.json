@@ -1,0 +1,338 @@
+{
+  "run": "kaldi-gmm-hmm-tri3b_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "kaldi-gmm-hmm",
+    "model_id": "kaldi-gmm-hmm-tri3b (recipes/kaldi-gmm-ka)",
+    "revision_resolved": "2dd43974bc2edadc01deee6385bfa8f47ddde02f",
+    "device": "cpu",
+    "dtype": "float32",
+    "language_hints": {},
+    "system": "**baseline, trained by us from scratch** (standard MFCC + GMM-HMM, A3): MFCC(13)+splice(±3)+LDA(40)+MLLT, speaker-adaptive (fMLLR/SAT) triphone GMM-HMM, 4000 leaves / 40k Gaussians; graphemic lexicon (91145 words), trigram KN LM on CV ka train text only; trained on CV 27.0 ka train (147.46 h)",
+    "settings": {
+      "lexicon_words": 91145,
+      "phones": 35,
+      "lm": {
+        "order": 3,
+        "smoothing": "Kneser-Ney (utils/lang/make_kn_lm.py)",
+        "1-grams": 91147,
+        "2-grams": 519013,
+        "3-grams": 675498
+      },
+      "oov_token_rate": 0.06,
+      "lmwt": 15,
+      "word_ins_penalty": 1.0,
+      "selected_on": "CV ka dev (decode-frozen.yaml)",
+      "beams": "Kaldi decode_fmllr.sh / decode.sh defaults"
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 86135,
+        "S": 18831,
+        "D": 2835,
+        "I": 2745,
+        "N": 107801,
+        "M": 107711
+      },
+      "wer": 0.22644502370107883,
+      "mer": 0.22082210120673745,
+      "wil": 0.3610358845787105,
+      "mean_clip_wer": 0.22596857474207033,
+      "char_counts": {
+        "C": 824281,
+        "S": 31445,
+        "D": 25032,
+        "I": 15889,
+        "N": 880758,
+        "M": 871615
+      },
+      "cer": 0.0821633184143658,
+      "wer_ci": {
+        "low": 0.21600697486512804,
+        "high": 0.2375712020394504,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.07537310863430433,
+        "high": 0.08998408366720932,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.03028409587096119,
+      "rtfx": 33.02063248845015,
+      "orthographic": {
+        "wer": 0.39643865689705315,
+        "cer": 0.1042409504481688
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "სადა",
+          26
+        ],
+        [
+          "და",
+          "სადაც",
+          10
+        ],
+        [
+          "იგი",
+          "დიდი",
+          9
+        ],
+        [
+          "ეს",
+          "ის",
+          9
+        ],
+        [
+          "დიდ",
+          "დიდი",
+          9
+        ],
+        [
+          "ძირითადად",
+          "ძირითად",
+          8
+        ],
+        [
+          "მის",
+          "მისი",
+          8
+        ],
+        [
+          "აქვთ",
+          "აქვს",
+          8
+        ],
+        [
+          "ერთ",
+          "ერთი",
+          8
+        ],
+        [
+          "მან",
+          "მას",
+          7
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          7
+        ],
+        [
+          "ცენტრია",
+          "ცენტრი",
+          6
+        ],
+        [
+          "ადგილობრივი",
+          "ადგილობრივ",
+          6
+        ],
+        [
+          "ორი",
+          "ყური",
+          6
+        ],
+        [
+          "მათ",
+          "მას",
+          6
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_40443346",
+          "ref": "წმინდა მელქისედეკი არის საქართველოს სამოციქულო ეკლესიის პირველი საჭეთმპყრობელი რომელიც მოიხსენიება ტიტულით საქართველოს კათოლიკოს პატრიარქი",
+          "hyp": "ვერა გვერდზე არტერიაა არის სარადარო საოცრებაა როე რევერსზე ფერარას ადრე ბაბალე რობერტო იწერება პრეტორი საქართველოს გამყარება პატარა ადრე",
+          "errors": {
+            "C": 2,
+            "S": 12,
+            "D": 0,
+            "I": 4,
+            "N": 14,
+            "M": 18
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_36821474",
+          "ref": "სიმღერა მუსიკოსმა მიუძღვნა მეუღლე ლინდა მაკ კარტნის",
+          "hyp": "სერიალი ორ სიკო ეკლესიაა მაღალი ილო ეძლეოდათ ყველგანაა მაია უკვე ლოიოლა ილირიელი და მაგა კარატე დენის",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 0,
+            "I": 9,
+            "N": 7,
+            "M": 16
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40899928",
+          "ref": "გავედი დავინახე ქათამი კადანისკარტებული გვერდზე ედგა გავშავპაიჭნაბადიანი ბატი ბატმა ქათამიც გააშავპაიჭნაბადიანა",
+          "hyp": "გავიტი დავინახე ქათამი კატანიის კარ ტყიბული გვერდზე იდგა გამო შაბთაი მითში ნალბანდიანი ბატი დადგმა ქათამი მისგან შავ გაიჩინა დადიან",
+          "errors": {
+            "C": 4,
+            "S": 7,
+            "D": 0,
+            "I": 8,
+            "N": 11,
+            "M": 19
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760373",
+          "ref": "ამის შემდეგ ერთხანს მსახურობდა მღვდლად ხოლო პირველი მსოფლიო ომის დროს იყო ავსტრია უნგრეთის არმიის კაპელანი",
+          "hyp": "გამოსცემდა დასახლდა ტყეები იღუნება ყველა ნოველა ესპანური",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 8,
+            "I": 0,
+            "N": 15,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40077605",
+          "ref": "იგი ასოცირდება სპეციფიკური მენტალური მდგომარეობების გამოვლინებასთან რომელიც დამოკიდებულია გამა რხევის სიხშირის დიაპაზონზე",
+          "hyp": "რვა სპეციფიკური მედელინ ბიბი მდგომარეობებს სრული ვრცელი რომლის დამოკიდებულია გამოცვლილი სელინს ხშირი სევერნი აქვს მზე",
+          "errors": {
+            "C": 1,
+            "S": 11,
+            "D": 0,
+            "I": 3,
+            "N": 12,
+            "M": 15
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40338901",
+          "ref": "სწორედ ამ შენობასთან მოკლეს ფრანც ფერდინანდი რაც შემდგომ პირველი მსოფლიო ომის დაწყების მიზეზი გახდა",
+          "hyp": "სტოკჰოლმის ჩანს ნანტი ვოლხოვის მოაღწია",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41819001",
+          "ref": "გარდამოიხილე ზეცით ღმერთო იხილე მოხედე ვენახსა მას და განამტკიცე ესე რომელ დაასხა მარჯვენამან შენმან",
+          "hyp": "დასწამა იხილეთ წელს მტკნარ დაიხია მოხეტიალე ნახა მასზე განაგრძეს ეროვნულ ფასს ხელმარჯვე მაშინ მან",
+          "errors": {
+            "C": 0,
+            "S": 14,
+            "D": 0,
+            "I": 0,
+            "N": 14,
+            "M": 14
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49293859",
+          "ref": "ისე გაგიხარია ლუკაია აწოწილო მანამდე არაფერი ჭამოს შენმა ცხენის კბილებმა შენ ვერაფერს გახდე დარიასთან",
+          "hyp": "ისეთ აგიხანი ლუკაიანის ოტელო მანტია და დარეჯანმა შერაცხეს გმირებმა შენობების გარდა იტალიასთან",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 2,
+            "I": 0,
+            "N": 14,
+            "M": 12
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49321891",
+          "ref": "ბაყაყი მყაყე ჭაობში ბაყბაყებს ბაყბაყ მდევივით რიონი ნარიონალში ნიორი ნანიორალში",
+          "hyp": "ბაყაყებით აგრეთვე ოლქში და ბაღებს პაპობა ბენ დეივიდ და რიონი მარია მანჩინი მიავლინა მილიონ ოლქში",
+          "errors": {
+            "C": 1,
+            "S": 9,
+            "D": 0,
+            "I": 5,
+            "N": 10,
+            "M": 15
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40893722",
+          "ref": "დროთა განმავლობაში ოთხთავის ძირითად ტექსტს ემატებოდა მუხლების საძიებლები აგრეთვე დღესასწაულებთან დაკავშირებული მონაკვეთების საძიებლები",
+          "hyp": "აღნიშნულ ბინდდების ზრუნვა უზრუნველყოფილნი მოღვაწეობისადმი",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 8,
+            "I": 0,
+            "N": 13,
+            "M": 5
+          }
+        }
+      ]
+    }
+  }
+}

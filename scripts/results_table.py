@@ -93,7 +93,8 @@ KA_PAIRS = [
     ("whisper-large-v3-turbo-ft_cv-ka", "whisper-large-v3-turbo"),
     ("mms-1b-all-kat-adapter-ft_cv-ka", "mms-1b-all-kat"),
     ("whisper-large-v3-turbo-ft_cv-ka", "mms-1b-all-kat-adapter-ft_cv-ka"),
-    ("mms-1b-all-kat", "kaldi-gmm-hmm-tri3b"),
+    ("kaldi-gmm-hmm-tri3b", "mms-1b-all-kat"),
+    ("whisper-large-v3-turbo-ft_cv-ka", "kaldi-gmm-hmm-tri3b"),
 ]
 PAIRS = KA_PAIRS if LANG == "ka" else KK_PAIRS
 
@@ -146,7 +147,14 @@ KA_INTRO = ["# Georgian results (our language)", "",
             "",
             "\\* The NVIDIA model was trained on Common Voice 17.0 train/dev/other (model card), and "
             "`scripts/cv_contamination.py` shows it has seen many of these CV clips (WER 1.8-4.2% on older clip IDs, "
-            "23% on the newest). Its CV numbers are not a fair comparison; FLEURS ka test (held out by NVIDIA) is.", ""]
+            "23% on the newest). Its CV numbers are not a fair comparison; FLEURS ka test (held out by NVIDIA) is.", "",
+            "The MFCC + GMM-HMM rows are a classical baseline we trained from scratch (`recipes/kaldi-gmm-ka/`) on the "
+            "same CV train split, on CPU. Unlike the neural baselines (greedy / beam decoding without an external LM) it "
+            "decodes with a trigram LM built from CV train transcripts (no dev/test text; 0.1% of dev/test sentences "
+            "occur verbatim in train, `docs/split-audit.md`) and a closed 91k-word vocabulary (OOV: 5.6% of CV dev "
+            "tokens, 14.8% of FLEURS dev). LM weight and insertion penalty were selected on CV dev "
+            "(`recipes/kaldi-gmm-ka/decode-frozen.yaml`). Its output has no case or punctuation, so only normalized "
+            "WER/CER apply. RTFx is wall clock on 8 parallel CPU decode jobs, MFCC extraction included.", ""]
 
 
 if __name__ == "__main__" and LANG == "ka":

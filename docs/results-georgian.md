@@ -5,6 +5,8 @@ WER/CER: corpus rates (%) under the declared policy `configs/scoring.yaml`; CI: 
 
 \* The NVIDIA model was trained on Common Voice 17.0 train/dev/other (model card), and `scripts/cv_contamination.py` shows it has seen many of these CV clips (WER 1.8-4.2% on older clip IDs, 23% on the newest). Its CV numbers are not a fair comparison; FLEURS ka test (held out by NVIDIA) is.
 
+The MFCC + GMM-HMM rows are a classical baseline we trained from scratch (`recipes/kaldi-gmm-ka/`) on the same CV train split, on CPU. Unlike the neural baselines (greedy / beam decoding without an external LM) it decodes with a trigram LM built from CV train transcripts (no dev/test text; 0.1% of dev/test sentences occur verbatim in train, `docs/split-audit.md`) and a closed 91k-word vocabulary (OOV: 5.6% of CV dev tokens, 14.8% of FLEURS dev). LM weight and insertion penalty were selected on CV dev (`recipes/kaldi-gmm-ka/decode-frozen.yaml`). Its output has no case or punctuation, so only normalized WER/CER apply. RTFx is wall clock on 8 parallel CPU decode jobs, MFCC extraction included.
+
 ## Test (frozen, run once)
 
 | Group | System | CV ka WER | CV ka CER | CV ka 95% CI (WER) | FLEURS ka WER | FLEURS ka CER | FLEURS ka 95% CI (WER) | RTFx (CV ka) | GPU (CV ka run) |
@@ -15,6 +17,7 @@ WER/CER: corpus rates (%) under the declared policy `configs/scoring.yaml`; CI: 
 | baseline | XLS-R-300M Georgian, xsway (zero-shot, CTC) | 46.26 | 9.02 | 45.05–47.58 | 52.49 | 11.83 | 51.12–53.87 | 638 | L4 |
 | baseline | MMS-1b-all + kat adapter (zero-shot, CTC) | 24.14 | 4.45 | 23.22–25.18 | 25.32 | 4.76 | 24.22–26.48 | 283 | L4 |
 | baseline | NVIDIA FastConformer hybrid ka (zero-shot, transducer)* | 4.85 | 1.27 | 4.49–5.23 | 15.49 | 5.32 | 14.25–16.80 | 273 | L4 |
+| baseline | MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU) | 22.64 | 8.22 | 21.60–23.76 | 39.64 | 14.95 | 37.99–41.32 | 33 | CPU: AMD Ryzen 7 7800X3D 8-Core Processor |
 | ours | MMS-1b-all, kat adapter fine-tune (2.3 M params) | 22.00 | 3.63 | 21.16–22.97 | 26.02 | 5.65 | 24.88–27.22 | 778 | A100-SXM4-40GB |
 | ours | Whisper-large-v3-turbo, full fine-tune | 12.80 | 2.60 | 12.02–13.65 | 27.47 | 12.15 | 25.58–29.45 | 87 | A100-SXM4-40GB |
 
@@ -29,11 +32,15 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | whisper-large-v3-turbo-ft_cv-ka | whisper-large-v3-turbo | 142.14% | 12.80% | 129.35% | 126.21% – 132.60% | 185.45% | 2.60% | 182.85% | 180.32% – 185.43% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka | mms-1b-all-kat | 24.14% | 22.00% | 2.13% | 1.89% – 2.35% | 4.45% | 3.63% | 0.82% | 0.59% – 1.11% |
 | CV ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat-adapter-ft_cv-ka | 22.00% | 12.80% | 9.21% | 8.83% – 9.57% | 3.63% | 2.60% | 1.03% | 0.87% – 1.16% |
+| CV ka | kaldi-gmm-hmm-tri3b | mms-1b-all-kat | 24.14% | 22.64% | 1.49% | 0.88% – 2.10% | 4.45% | 8.22% | -3.77% | -4.12% – -3.42% |
+| CV ka | whisper-large-v3-turbo-ft_cv-ka | kaldi-gmm-hmm-tri3b | 22.64% | 12.80% | 9.85% | 9.28% – 10.45% | 8.22% | 2.60% | 5.62% | 5.11% – 6.15% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 25.32% | 27.47% | -2.15% | -3.92% – -0.45% | 4.76% | 12.15% | -7.39% | -9.10% – -5.74% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.49% | 27.47% | -11.99% | -13.57% – -10.45% | 5.32% | 12.15% | -6.83% | -8.50% – -5.27% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | whisper-large-v3-turbo | 126.84% | 27.47% | 99.36% | 94.07% – 105.15% | 108.54% | 12.15% | 96.39% | 92.41% – 100.61% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka | mms-1b-all-kat | 25.32% | 26.02% | -0.69% | -1.23% – -0.15% | 4.76% | 5.65% | -0.90% | -1.24% – -0.57% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat-adapter-ft_cv-ka | 26.02% | 27.47% | -1.45% | -3.25% – 0.25% | 5.65% | 12.15% | -6.50% | -8.18% – -4.91% |
+| FLEURS ka | kaldi-gmm-hmm-tri3b | mms-1b-all-kat | 25.32% | 39.64% | -14.31% | -15.80% – -12.82% | 4.76% | 14.95% | -10.19% | -10.99% – -9.42% |
+| FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | kaldi-gmm-hmm-tri3b | 39.64% | 27.47% | 12.17% | 10.04% – 14.30% | 14.95% | 12.15% | 2.80% | 1.00% – 4.51% |
 
 ## Dev (selection)
 
@@ -45,6 +52,8 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | baseline | XLS-R-300M Georgian, xsway (zero-shot, CTC) | 44.58 | 8.33 | 42.29–46.90 | 53.31 | 11.96 | 51.15–55.62 | 657 | L4 |
 | baseline | MMS-1b-all + kat adapter (zero-shot, CTC) | 23.69 | 4.05 | 22.28–25.28 | 26.16 | 4.72 | 24.12–28.08 | 283 | L4 |
 | baseline | NVIDIA FastConformer hybrid ka (zero-shot, transducer)* | 4.46 | 1.09 | 3.94–5.05 | 15.17 | 5.24 | 13.00–17.55 | 272 | L4 |
+| baseline | MFCC + GMM-HMM, LDA+MLLT (Kaldi tri2b, trained by us from scratch, CPU) | 24.88 | 9.98 | 23.12–26.81 | 43.39 | 18.00 | 40.61–46.14 | 34 | CPU: AMD Ryzen 7 7800X3D 8-Core Processor |
+| baseline | MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU) | 20.29 | 7.00 | 18.86–21.84 | 38.26 | 14.35 | 35.32–41.02 | 30 | CPU: AMD Ryzen 7 7800X3D 8-Core Processor |
 | ours | MMS-1b-all, kat adapter fine-tune (2.3 M params) | 21.42 | 3.40 | 20.13–22.89 | 25.93 | 5.62 | 23.81–28.12 | 778 | A100-SXM4-40GB |
 | ours | Whisper-large-v3-turbo, full fine-tune | 11.88 | 2.27 | 10.74–13.14 | 24.77 | 10.30 | 21.86–27.87 | 87 | A100-SXM4-40GB |
 
@@ -59,9 +68,13 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | whisper-large-v3-turbo-ft_cv-ka | whisper-large-v3-turbo | 140.27% | 11.88% | 128.39% | 124.67% – 132.01% | 185.70% | 2.27% | 183.42% | 179.83% – 187.15% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka | mms-1b-all-kat | 23.69% | 21.42% | 2.28% | 2.00% – 2.60% | 4.05% | 3.40% | 0.65% | 0.44% – 0.97% |
 | CV ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat-adapter-ft_cv-ka | 21.42% | 11.88% | 9.53% | 9.06% – 10.01% | 3.40% | 2.27% | 1.12% | 0.95% – 1.27% |
+| CV ka | kaldi-gmm-hmm-tri3b | mms-1b-all-kat | 23.69% | 20.29% | 3.41% | 2.63% – 4.15% | 4.05% | 7.00% | -2.95% | -3.44% – -2.50% |
+| CV ka | whisper-large-v3-turbo-ft_cv-ka | kaldi-gmm-hmm-tri3b | 20.29% | 11.88% | 8.41% | 7.71% – 9.12% | 7.00% | 2.27% | 4.72% | 4.12% – 5.37% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 26.16% | 24.77% | 1.39% | -1.76% – 4.36% | 4.72% | 10.30% | -5.58% | -8.22% – -3.13% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.17% | 24.77% | -9.59% | -11.69% – -7.38% | 5.24% | 10.30% | -5.06% | -7.05% – -3.09% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | whisper-large-v3-turbo | 138.23% | 24.77% | 113.46% | 102.91% – 125.12% | 114.55% | 10.30% | 104.26% | 97.78% – 111.82% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka | mms-1b-all-kat | 26.16% | 25.93% | 0.23% | -0.72% – 1.19% | 4.72% | 5.62% | -0.91% | -1.48% – -0.37% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat-adapter-ft_cv-ka | 25.93% | 24.77% | 1.16% | -1.63% – 3.92% | 5.62% | 10.30% | -4.68% | -7.19% – -2.31% |
+| FLEURS ka | kaldi-gmm-hmm-tri3b | mms-1b-all-kat | 26.16% | 38.26% | -12.10% | -14.51% – -9.67% | 4.72% | 14.35% | -9.63% | -11.05% – -8.26% |
+| FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | kaldi-gmm-hmm-tri3b | 38.26% | 24.77% | 13.49% | 10.71% – 16.57% | 14.35% | 10.30% | 4.05% | 1.77% – 6.42% |
 

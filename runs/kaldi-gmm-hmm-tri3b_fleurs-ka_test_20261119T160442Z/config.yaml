@@ -1,0 +1,15 @@
+name: kaldi-gmm-hmm-tri3b_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+model:
+  family: kaldi-gmm-hmm
+  id: recipes/kaldi-gmm-ka (tri3b)
+decode:
+  lmwt: 15
+  word_ins_penalty: 1.0
+  selected_on: CV ka dev (decode-frozen.yaml)
+  beams: Kaldi decode_fmllr.sh / decode.sh defaults
+frozen: true

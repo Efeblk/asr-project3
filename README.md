@@ -27,7 +27,9 @@ These course-listed checkpoints were not run, because their model cards do not l
 Georgian baselines that are run, per family: Whisper (`openai/whisper-small`, `-large-v3`, `-large-v3-turbo`;
 attention encoder-decoder), wav2vec 2.0 + CTC (`xsway/wav2vec2-large-xlsr-georgian`, `facebook/mms-1b-all` with
 the `kat` adapter), transducer (`nvidia/stt_ka_fastconformer_hybrid_large_pc`, FastConformer hybrid
-Transducer-CTC) and our own MFCC + GMM-HMM. No HuBERT + CTC checkpoint for Georgian was found. Exact revisions are
+Transducer-CTC) and an MFCC + GMM-HMM that we train from scratch with the standard Kaldi recipe on CPU
+([`recipes/kaldi-gmm-ka/`](recipes/kaldi-gmm-ka/README.md): graphemic lexicon, trigram LM on CV train text, LDA+MLLT+SAT
+triphones; reported as a baseline row). No HuBERT + CTC checkpoint for Georgian was found. Exact revisions are
 in every run manifest.
 
 ## Setup
