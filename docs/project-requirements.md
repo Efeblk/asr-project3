@@ -9,7 +9,7 @@ The searchable text, including the speaker notes, is in `materials/text/week09-a
 
 > The decks say "the project"; A1 calls it "Project 3", which confirms they are the same project.
 >
-> **Still unknown:** deadline, grading breakdown (beyond the bonus dimensions in §0), report format, and presentation date/length/format. A1 confirms there will be **presentations**. When more details arrive, add them to `materials/course/` and update this file.
+> **Deadline: Monday 2026-11-23** (told by the student on 2026-11-19). **Still unknown:** grading breakdown (beyond the bonus dimensions in §0), report format, and presentation date/length/format. A1 confirms there will be **presentations**. When more details arrive, add them to `materials/course/` and update this file.
 
 ## 0. What A1 changed (read this first)
 
