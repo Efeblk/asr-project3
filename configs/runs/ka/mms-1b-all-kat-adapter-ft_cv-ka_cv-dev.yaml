@@ -1,0 +1,15 @@
+# Georgian, OURS (A1 contribution): mms-1b-all-kat-adapter-ft_cv-ka, fine-tuned by us. Dev run; decoding identical to the baseline
+# config mms-1b-all-kat_cv-dev.yaml (rule committed in 0c0d0e4: best-dev checkpoint, no Georgian decoder tuning).
+name: mms-1b-all-kat-adapter-ft_cv-ka_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat

@@ -1,0 +1,65 @@
+{
+  "name": "whisper-small_cv-ka_dev",
+  "created_utc": "2026-11-19T01:50:24+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14216,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-small",
+    "revision_requested": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "revision_resolved": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "batch_size": 32,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "gpu_memory_gb": 39.5
+    }
+  },
+  "model_load_sec": 16.21,
+  "completed_utc": "2026-11-19T02:35:05+00:00",
+  "totals": {
+    "items": 14216,
+    "audio_sec": 83399.76,
+    "compute_sec": 2610.62,
+    "rtf": 0.0313
+  }
+}

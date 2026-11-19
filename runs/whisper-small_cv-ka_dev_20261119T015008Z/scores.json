@@ -1,0 +1,327 @@
+{
+  "run": "whisper-small_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-small",
+    "revision_requested": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "revision_resolved": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 0,
+        "S": 67284,
+        "D": 41411,
+        "I": 768593,
+        "N": 108695,
+        "M": 835877
+      },
+      "wer": 8.07109802658816,
+      "mer": 1.0,
+      "wil": 1.0,
+      "mean_clip_wer": 9.401420629963862,
+      "char_counts": {
+        "C": 52101,
+        "S": 835908,
+        "D": 3464,
+        "I": 1969470,
+        "N": 891473,
+        "M": 2857479
+      },
+      "cer": 3.150787516840106,
+      "wer_ci": {
+        "low": 7.775458214951505,
+        "high": 8.385848224336131,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 3.1056951715048258,
+        "high": 3.201352600709776,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.03130251693769862,
+      "rtfx": 31.946312879258215,
+      "orthographic": {
+        "wer": 8.14751262520577,
+        "cer": 3.0814796237969873
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "ὁ",
+          1032
+        ],
+        [
+          "იყო",
+          "ὁ",
+          290
+        ],
+        [
+          "და",
+          "ḍᴀ",
+          231
+        ],
+        [
+          "იგი",
+          "ὁ",
+          175
+        ],
+        [
+          "მისი",
+          "វ្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្",
+          145
+        ],
+        [
+          "შემდეგ",
+          "ὁ",
+          144
+        ],
+        [
+          "მდებარეობს",
+          "ὁ",
+          128
+        ],
+        [
+          "არ",
+          "ὁ",
+          117
+        ],
+        [
+          "მისი",
+          "ὁ",
+          116
+        ],
+        [
+          "და",
+          "ὅ",
+          112
+        ],
+        [
+          "ამ",
+          "ὁ",
+          111
+        ],
+        [
+          "არის",
+          "ὁ",
+          109
+        ],
+        [
+          "როგორც",
+          "ὁ",
+          106
+        ],
+        [
+          "აქვს",
+          "ὁ",
+          93
+        ],
+        [
+          "ერთ",
+          "ὁ",
+          91
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_25487335",
+          "ref": "ბრიტანეთის მუზეუმში დაცული ჩანაწერების თანახმად ქაბულის ადგილობრივი მოსახლეობა ოდითგანვე იყო პუშტუნები და ტაჯიკები",
+          "hyp": "британ british museum of the british museum of the british museum of the british library of the british library of the british library of the british library of the british library of the british library of the british library of the british library of the british museum of the british library of the british museum of the british library of the british museum of the british library of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british museum of the british",
+          "errors": {
+            "C": 0,
+            "S": 13,
+            "D": 0,
+            "I": 405,
+            "N": 13,
+            "M": 418
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40342037",
+          "ref": "მატერიალს მოიპოვებენ ხორვატიაში სადაც აქვე პატიმრობაში იმყოფება ამ ბეტონის ერთ ერთი შემქმნელი სეთ როტი",
+          "hyp": "материоз мойب ов materials may be available in the world of the world but the material is not available in the world but it is not available in the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world of the world but we will be in the world",
+          "errors": {
+            "C": 0,
+            "S": 14,
+            "D": 0,
+            "I": 363,
+            "N": 14,
+            "M": 377
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40145139",
+          "ref": "სამრეკლოს აღმოსავლეთის და სამხრეთის ღიობები ამოშენებული იყო ნატეხი ქვით",
+          "hyp": "1 5 2 5 3 5 4 5 5 5 6 5 7 5 8 5 9 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 5 10 10 5 10 5 10 10 5 10 10 5 10 10 5 10 10 5 10 10 10 5 10 10 10 10 5 10 10 10 10 10 10 10 10",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 0,
+            "I": 213,
+            "N": 9,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40350035",
+          "ref": "სოფელში მდებარეობს ხუროთმოძღვრების ძეგლი დრანდის ეკლესია",
+          "hyp": "1 5 2 5 3 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5 4 5",
+          "errors": {
+            "C": 0,
+            "S": 6,
+            "D": 0,
+            "I": 216,
+            "N": 6,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40201213",
+          "ref": "ელენე ბაქრაძე ბევრი მისი მეგობრისგან და მეუღლისგან განსხვავებით საბჭოთა რეპრესიებს გადაურჩა",
+          "hyp": "1 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 211,
+            "N": 11,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40903039",
+          "ref": "აბდუს სალამის ინდივიდუალური და საჯარო ცხოვრება მკვეთრად განსხვავდებოდა ერთმანეთისაგან",
+          "hyp": "abdu salam izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz izz",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 0,
+            "I": 213,
+            "N": 9,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_36881318",
+          "ref": "დიდი ნახევარღერძი შესაძლოა წარმოვიდგინოთ როგორც ელიფსის უგრძესი რადიუსი",
+          "hyp": "gidinda ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 0,
+            "I": 213,
+            "N": 8,
+            "M": 221
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40130570",
+          "ref": "გეოგრაფიისა და გეოგრაფიული განათლების რეფორმატორი",
+          "hyp": "geografi ʃa ḥg g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g g",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 0,
+            "I": 214,
+            "N": 5,
+            "M": 219
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40423227",
+          "ref": "ასევე ორივე მხარე მოსთხოვეს შეეცვალათ სამხედრო რიტორიკა და უკანონო შეიარაღებული დაჯგუფები",
+          "hyp": "ase ve oribe m ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ ḍ �",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 139,
+            "N": 11,
+            "M": 150
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40351259",
+          "ref": "მართალია ბილის მიღებას ბევრი აკრიტიკებდა მაგრამ რეიგანი მას პირად გამარჯვებად მიიჩნევდა",
+          "hyp": "2 tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs tbs",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 138,
+            "N": 11,
+            "M": 149
+          }
+        }
+      ]
+    }
+  }
+}
