@@ -1,0 +1,332 @@
+{
+  "run": "whisper-large-v3-turbo_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-large-v3-turbo",
+    "revision_requested": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "revision_resolved": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 8,
+        "S": 46241,
+        "D": 61552,
+        "I": 45438,
+        "N": 107801,
+        "M": 91687
+      },
+      "wer": 1.4214246621088857,
+      "mer": 0.9999477939688982,
+      "wil": 0.9999999935248561,
+      "mean_clip_wer": 1.4552218415225147,
+      "char_counts": {
+        "C": 91501,
+        "S": 782118,
+        "D": 7139,
+        "I": 844109,
+        "N": 880758,
+        "M": 1717728
+      },
+      "cer": 1.8545003281264547,
+      "wer_ci": {
+        "low": 1.3896517935348398,
+        "high": 1.454956919582573,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 1.8293051659815107,
+        "high": 1.8799050418293297,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.017141106959257583,
+      "rtfx": 58.339289427274664,
+      "orthographic": {
+        "wer": 1.4003414986537073,
+        "cer": 1.817507124038629
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 1,
+        "emitted_words": 1,
+        "examples": [
+          {
+            "id": "cv-ka-test-common_voice_ka_38257760",
+            "hyp": "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე"
+          }
+        ]
+      },
+      "top_substitutions": [
+        [
+          "ამ",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          84
+        ],
+        [
+          "მისი",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          80
+        ],
+        [
+          "მდებარეობს",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          77
+        ],
+        [
+          "ეს",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          74
+        ],
+        [
+          "და",
+          "ერის",
+          71
+        ],
+        [
+          "იგი",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          58
+        ],
+        [
+          "და",
+          "ეს",
+          56
+        ],
+        [
+          "მას",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          49
+        ],
+        [
+          "და",
+          "da",
+          45
+        ],
+        [
+          "ამის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          31
+        ],
+        [
+          "მან",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          29
+        ],
+        [
+          "ის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          29
+        ],
+        [
+          "მის",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          29
+        ],
+        [
+          "თუმცა",
+          "ეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეეე",
+          29
+        ],
+        [
+          "ცენტრი",
+          "centri",
+          27
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_34264066",
+          "ref": "ხე იზრდება და ყველაფერს ყლაპავს",
+          "hyp": "he is the path of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the life of the",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 0,
+            "I": 439,
+            "N": 5,
+            "M": 444
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_37443730",
+          "ref": "ბრიტანეთი პროტექტორატის შექმნას ზანზიბარზე მისი უფლებების აღიარების სანაცვლოდ დათანხმდა",
+          "hyp": "britannic protecтор this is the only one that has been to the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of the world of",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 0,
+            "I": 428,
+            "N": 9,
+            "M": 437
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760385",
+          "ref": "ამერიკის მთავრობა თანდათან უფრო მეტი ყურადღებით ეკიდება ტექნოლოგიური კომპანიების საქმიანობას",
+          "hyp": "að er ekki þar alveg að þarna að það er að það með tupur að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta er að þetta",
+          "errors": {
+            "C": 0,
+            "S": 10,
+            "D": 0,
+            "I": 252,
+            "N": 10,
+            "M": 262
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40318604",
+          "ref": "იან ჩერსკის სახელი ეწოდა მთიან ქვეყანას რუსეთში ქედებს მთას დასახლებასა და სხვა",
+          "hyp": "i am a cherskis alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex alex a",
+          "errors": {
+            "C": 0,
+            "S": 12,
+            "D": 0,
+            "I": 210,
+            "N": 12,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_37299143",
+          "ref": "პირველი ქრისტიანებისათვის სამყარო იყოფოდა რომის და სპარსეთის ნაწილად",
+          "hyp": "1 2 2 3 2 3 2 3 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 0,
+            "I": 214,
+            "N": 8,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_38248698",
+          "ref": "პირველი სართული ნოვგოროდის სტილშია მოწყობილი ხოლო ზედა სართული როსტოვის სტილში",
+          "hyp": "1 2 3 3 3 3 3 4 3 4 3 4 3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4",
+          "errors": {
+            "C": 0,
+            "S": 10,
+            "D": 0,
+            "I": 212,
+            "N": 10,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097235",
+          "ref": "იგივეს გამეორება მან მოახერხა მხოლოდ რვა წლის შემდეგ ბრაზილიაში გამართულ ჩემპიონატზე",
+          "hyp": "það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er a",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 211,
+            "N": 11,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_36527902",
+          "ref": "პირველად როგორც მსახიობი გამოჩნდა მიშა კობახიძის ფილმში ქორწილი",
+          "hyp": "1 2 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 0,
+            "I": 214,
+            "N": 8,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760091",
+          "ref": "იმპერატორი ერთი ხელით ეყრდნობა ქვემეხს და მისი მზერა მიმართულია შორ მანძილზე",
+          "hyp": "það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er að það er a",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 211,
+            "N": 11,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_37877384",
+          "ref": "მტრები ერთმანეთს სენტინუმთან შეხვდნენ",
+          "hyp": "3 5 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 0,
+            "I": 218,
+            "N": 4,
+            "M": 222
+          }
+        }
+      ]
+    }
+  }
+}

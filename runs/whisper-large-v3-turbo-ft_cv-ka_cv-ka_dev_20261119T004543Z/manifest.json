@@ -1,0 +1,77 @@
+{
+  "name": "whisper-large-v3-turbo-ft_cv-ka_cv-ka_dev",
+  "created_utc": "2026-11-19T00:45:50+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14216,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z",
+      "base_model": {
+        "family": "hf-whisper",
+        "model_id": "openai/whisper-large-v3-turbo",
+        "revision_requested": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+        "revision_resolved": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.463,
+      "global_steps": 6000
+    },
+    "family": "hf-whisper",
+    "model_id": "checkpoints/whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "batch_size": 32,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none for clips <=30 s; family default long-form decoding above that",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "gpu_memory_gb": 39.5
+    }
+  },
+  "model_load_sec": 7.09,
+  "completed_utc": "2026-11-19T01:03:06+00:00",
+  "totals": {
+    "items": 14216,
+    "audio_sec": 83399.76,
+    "compute_sec": 955.75,
+    "rtf": 0.0115
+  }
+}

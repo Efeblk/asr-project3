@@ -1,0 +1,18 @@
+# Georgian, OURS (A1 contribution): whisper-large-v3-turbo-ft_cv-ka, fine-tuned by us. FROZEN TEST RUN, run once; decoding identical to the baseline
+# config whisper-large-v3-turbo_cv-test.yaml (rule committed in 0c0d0e4: best-dev checkpoint, no Georgian decoder tuning).
+name: whisper-large-v3-turbo-ft_cv-ka_cv-ka_test
+dataset: data/cv/ka/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 32
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+frozen: true

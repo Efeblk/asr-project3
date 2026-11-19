@@ -1,0 +1,327 @@
+{
+  "run": "whisper-large-v3-turbo_fleurs-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-large-v3-turbo",
+    "revision_requested": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "revision_resolved": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 979,
+      "word_counts": {
+        "C": 5,
+        "S": 4895,
+        "D": 12238,
+        "I": 4604,
+        "N": 17138,
+        "M": 9504
+      },
+      "wer": 1.2683510327926246,
+      "mer": 0.999770030355993,
+      "wil": 0.999999846512348,
+      "mean_clip_wer": 1.2978880116432052,
+      "char_counts": {
+        "C": 19131,
+        "S": 103525,
+        "D": 14520,
+        "I": 30839,
+        "N": 137176,
+        "M": 153495
+      },
+      "cer": 1.0853502070333003,
+      "wer_ci": {
+        "low": 1.2199888081762293,
+        "high": 1.3210728495308566,
+        "clusters": 350,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 1.0543054723347538,
+        "high": 1.1192859763264909,
+        "clusters": 350,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 11053.5,
+      "rtf": 0.009713222056362238,
+      "rtfx": 102.95244916644235,
+      "orthographic": {
+        "wer": 1.2453098183109428,
+        "cer": 1.0730456553127024
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "დის",
+          21
+        ],
+        [
+          "და",
+          "რის",
+          16
+        ],
+        [
+          "და",
+          "ერის",
+          15
+        ],
+        [
+          "და",
+          "შრის",
+          14
+        ],
+        [
+          "და",
+          "გის",
+          12
+        ],
+        [
+          "რომ",
+          "დის",
+          11
+        ],
+        [
+          "რომ",
+          "შრის",
+          10
+        ],
+        [
+          "არ",
+          "ერის",
+          9
+        ],
+        [
+          "და",
+          "ევის",
+          9
+        ],
+        [
+          "რომ",
+          "რის",
+          8
+        ],
+        [
+          "რომ",
+          "გის",
+          7
+        ],
+        [
+          "რომ",
+          "ერის",
+          6
+        ],
+        [
+          "ერთ",
+          "რის",
+          5
+        ],
+        [
+          "არ",
+          "დის",
+          5
+        ],
+        [
+          "მას",
+          "დის",
+          5
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "fleurs-ka_ge-test-3829894572460928182",
+          "ref": "ამაზონზე წყლის სრული 20 პროცენტი მოდის რომელიც ოკეანეებში პლანეტის მდინარეებიდან ჩაედინება",
+          "hyp": "amazon z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z z",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 211,
+            "N": 11,
+            "M": 222
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-17644889022942506393",
+          "ref": "კრისტინა ფერნანდეს დე კირხნერმა არგენტინის მოქმედმა სენატორმა და პირველმა ლედიმ ბუენოს აირესიდან 50 კილომეტრის 31 მილის დაშორებით ქალაქ ლა პლატაში წუხელ გააკეთა განცხადება საპრეზიდენტო კანდიდატობასთან დაკავშირებით",
+          "hyp": "cristina pérdantes de círcnerma argentiní smoque medo senat o rmada b hirva alma l edim buéno sáires tën 90 km y d ašro b hid kala klaplata shid zúhálg gag etr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n hidr n",
+          "errors": {
+            "C": 0,
+            "S": 26,
+            "D": 0,
+            "I": 124,
+            "N": 26,
+            "M": 150
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-1695286420858857376",
+          "ref": "კრისტინა ფერნანდეს დე კირხნერმა არგენტინის მოქმედმა სენატორმა და პირველმა ლედიმ ბუენოს აირესიდან 50 კილომეტრის 31 მილის დაშორებით ქალაქ ლა პლატაში წუხელ გააკეთა განცხადება საპრეზიდენტო კანდიდატობასთან დაკავშირებით",
+          "hyp": "cristina fernandez d a kierxner ma argentismocondos senat urmada pirmadadad urmada ledi nusarist nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd nd",
+          "errors": {
+            "C": 0,
+            "S": 26,
+            "D": 0,
+            "I": 119,
+            "N": 26,
+            "M": 145
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-11278009017393569939",
+          "ref": "ვირტუალური ექსკურსია არის მომავალი მოსწავლეებისთვის მოგზაურობის ასახვისა და საკუთარი გამოცდილების გაზიარების შესანიშნავი საშუალება",
+          "hyp": "virtual re excursiya ariz mamao ol imasao ol ebis yus moqzao ol ebis asaxista saku tariqa maisu ebis qaziyyara ebis shasani ishin evi sašo ol ebis gaziyyara ebis shasani evi sašo ol ebis gaziyyara ebis shasani evi sašo ol ebis gaziyyara ebis shasani evi sašo ol ebis gaziyyara ebis shasani evi sašo ol ebis gaziyyara ebis shasani evi sašo ol ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara ebis gaziyyara e",
+          "errors": {
+            "C": 0,
+            "S": 13,
+            "D": 0,
+            "I": 92,
+            "N": 13,
+            "M": 105
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-8281069223978847593",
+          "ref": "ფოლკლენდის ფუნტი fkp ფოლკლენდის ოფიციალური ვალუტას წარმოადგენს რომლის ვალუტის კურსი ერთ ბრიტანულ ფუნტს gbp უდრის",
+          "hyp": "poglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis pooglandis",
+          "errors": {
+            "C": 0,
+            "S": 15,
+            "D": 0,
+            "I": 74,
+            "N": 15,
+            "M": 89
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-8281898248373405277",
+          "ref": "ჩვენებიდან ხუთ წუთში ქარი იწყებს ბზრიალს დაახლოებით ერთი წუთის შემდეგ ქარი აღწევს 70 კმ სთ ში შემდეგ მოდის წვიმა მაგრამ ისეთი ძლიერი და ისეთი დიდი რომ კანზე ნემსივით გერჭობათ შემდეგ ციდან სეტყვა მოდის ხალხი პანიკაშია ყვირიან და ერთმანეთს თელავენ",
+          "hyp": "ესსს ესს ესს ესს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ე",
+          "errors": {
+            "C": 0,
+            "S": 39,
+            "D": 0,
+            "I": 33,
+            "N": 39,
+            "M": 72
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-11559075643041899996",
+          "ref": "ეს თეორიები შეისწავლიან იმას თუ რა არის ზოგიერთ ადამიანში ის რაც აიძულებს მათ სურდეთ ის რაც სურთ მათი გარემო პირობებში არსებული ფაქტორებიდან რომლები აიძულებთ მათ შეასრულონ ან არ შეასრულონ ზოგიერთი რამე",
+          "hyp": "ესსს ესს ესს ესს ესს ესს ესს ესს ესს ესს ესს ესს ეს ესს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს",
+          "errors": {
+            "C": 1,
+            "S": 30,
+            "D": 0,
+            "I": 36,
+            "N": 31,
+            "M": 67
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-9767866451538993053",
+          "ref": "გერმანული ცომეულის უმეტესობა შეიცავს ნუშს თხილს და კაკლის სხვა სახეობას მათი პოპულარული ტორტები კი განსაკუთრებით ძლიერ ყავას უხდება",
+          "hyp": "ეეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს ეს",
+          "errors": {
+            "C": 0,
+            "S": 18,
+            "D": 0,
+            "I": 48,
+            "N": 18,
+            "M": 66
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-8713937665365066028",
+          "ref": "ღამის განმავლობაში 150 დან 200 მდე ასლი გაკეთდა დღეს ისინი ცნობილია როგორც დუნლაპის პლაკატები",
+          "hyp": "ესსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დსს დს დსს დს დს დსს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს დს",
+          "errors": {
+            "C": 0,
+            "S": 14,
+            "D": 0,
+            "I": 46,
+            "N": 14,
+            "M": 60
+          }
+        },
+        {
+          "id": "fleurs-ka_ge-test-11760295228358482638",
+          "ref": "ხელისუფლებისგან მიიღეთ რჩევები დაიცავით ყველა ნიშანი და უსაფრთხოების შესახებ გაფრთხილებებს განსაკუთრებული ყურადღება მიაქციეთ მიუხედავად ყველაფრისა",
+          "hyp": "ევეის გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გას გა",
+          "errors": {
+            "C": 0,
+            "S": 15,
+            "D": 0,
+            "I": 40,
+            "N": 15,
+            "M": 55
+          }
+        }
+      ]
+    }
+  }
+}

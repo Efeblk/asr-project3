@@ -1,0 +1,114 @@
+{
+  "name": "whisper-large-v3-turbo-ft_cv-ka",
+  "created_utc": "2026-11-19T00:45:38+00:00",
+  "kind": "training (our contribution, A1)",
+  "language": "ka",
+  "base_model": {
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-large-v3-turbo",
+    "revision_requested": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "revision_resolved": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9"
+  },
+  "language_hint": "georgian",
+  "targets": "raw orthographic references",
+  "vocab": null,
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "train_split": "train",
+    "dev_split": "dev",
+    "train_items": 99767,
+    "train_hours": 147.463,
+    "train_hours_requested": null,
+    "dropped_too_long": 0,
+    "dev_items_for_selection": 300,
+    "dev_limit": 300,
+    "train_filter": null,
+    "dev_filter": null
+  },
+  "selection": {
+    "metric": "dev wer under the scoring policy",
+    "best_checkpoint": "checkpoints/whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z/checkpoint-6000",
+    "best_metric": 0.16264294790343076,
+    "final_eval": {
+      "eval_loss": 0.02836151421070099,
+      "eval_wer": 0.16264294790343076,
+      "eval_cer": 0.07140273831051408,
+      "eval_runtime": 75.6643,
+      "eval_samples_per_second": 3.965,
+      "eval_steps_per_second": 0.251,
+      "epoch": 0.9621552277100706
+    }
+  },
+  "training_args": {
+    "eval_strategy": "steps",
+    "save_strategy": "steps",
+    "logging_steps": 25,
+    "save_total_limit": 2,
+    "load_best_model_at_end": true,
+    "greater_is_better": false,
+    "report_to": [],
+    "remove_unused_columns": false,
+    "label_names": [
+      "labels"
+    ],
+    "dataloader_num_workers": 8,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_kwargs": {
+      "use_reentrant": false
+    },
+    "learning_rate": 1e-05,
+    "warmup_steps": 500,
+    "max_steps": 6000,
+    "per_device_train_batch_size": 16,
+    "per_device_eval_batch_size": 16,
+    "eval_steps": 500,
+    "save_steps": 500,
+    "bf16": true,
+    "predict_with_generate": true,
+    "generation_max_length": 225,
+    "seed": 42,
+    "metric_for_best_model": "wer"
+  },
+  "seed": 42,
+  "resumed": false,
+  "train_sec": 8055.9,
+  "global_steps": 6000,
+  "peak_gpu_memory_gb": 17.83,
+  "scoring_policy": {
+    "unicode_form": "NFC",
+    "lowercase": true,
+    "remove_punctuation": true,
+    "strip_diacritics": false,
+    "word_unit": "whitespace",
+    "cer_unit": "codepoint",
+    "drop_tokens": "",
+    "note": ""
+  },
+  "checkpoint_dir": "checkpoints/whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z/final",
+  "run_dir": "runs/train_whisper-large-v3-turbo-ft_cv-ka_20261118T222928Z",
+  "env": {
+    "git_commit": null,
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "gpu_memory_gb": 39.5
+    }
+  }
+}
