@@ -20,6 +20,27 @@ def _torch_dtype(name: str):
     return getattr(torch, _DTYPES[name])
 
 
+def split_at_pauses(audio: np.ndarray, sr: int, max_seconds: float) -> list[np.ndarray]:
+    """Split a clip into pieces of at most `max_seconds`, cutting at the quietest point (200 ms smoothed frame
+    energy) within the last 40 % of each piece. Clips that fit are returned whole. Used for Whisper on languages
+    whose transcripts overflow the 448-token decoder budget (Georgian: ~30 tokens per second of speech)."""
+    limit = int(max_seconds * sr)
+    if len(audio) <= limit:
+        return [audio]
+    hop, win = int(0.01 * sr), int(0.025 * sr)
+    n = max(1, (len(audio) - win) // hop + 1)
+    frames = np.lib.stride_tricks.sliding_window_view(audio[: (n - 1) * hop + win], win)[::hop]
+    energy = np.convolve((frames.astype(np.float64) ** 2).sum(axis=1), np.ones(20) / 20, mode="same")
+    pieces, start = [], 0
+    while len(audio) - start > limit:
+        lo, hi = (start + int(0.6 * limit)) // hop, min((start + limit - win) // hop, n - 1)
+        cut = (lo + int(np.argmin(energy[lo:hi + 1]))) * hop + win // 2 if hi > lo else start + limit
+        pieces.append(audio[start:cut])
+        start = cut
+    pieces.append(audio[start:])
+    return pieces
+
+
 class HFWhisper(Recognizer):
     family = "hf-whisper"
     WINDOW_SECONDS = 30
@@ -34,6 +55,22 @@ class HFWhisper(Recognizer):
         ).to(self.device).eval()
 
     def transcribe(self, audios: list[np.ndarray], language: str) -> list[str]:
+        chunk = float(self.settings.get("chunk_seconds") or 0)
+        if chunk:  # decoding policy: split long clips at low-energy points, decode pieces, join with a space
+            pieces, owner = [], []
+            for i, a in enumerate(audios):
+                for p in split_at_pauses(a, self.sample_rate, chunk):
+                    pieces.append(p)
+                    owner.append(i)
+            texts = self._transcribe(pieces, language)
+            out = [[] for _ in audios]
+            for i, t in zip(owner, texts):
+                if t:
+                    out[i].append(t)
+            return [" ".join(t) for t in out]
+        return self._transcribe(audios, language)
+
+    def _transcribe(self, audios: list[np.ndarray], language: str) -> list[str]:
         import torch
         long_form = any(len(a) > self.WINDOW_SECONDS * self.sample_rate for a in audios)
         kw = dict(sampling_rate=self.sample_rate, return_tensors="pt", return_attention_mask=True)
