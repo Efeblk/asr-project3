@@ -1,0 +1,332 @@
+{
+  "run": "whisper-small_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-whisper",
+    "model_id": "openai/whisper-small",
+    "revision_requested": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "revision_resolved": "973afd24965f72e36ca33b3055d56a652f456b4d",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {
+      "ka": "georgian"
+    },
+    "settings": {
+      "beam_size": 1
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 0,
+        "S": 67356,
+        "D": 40445,
+        "I": 781909,
+        "N": 107801,
+        "M": 849265
+      },
+      "wer": 8.253262956744372,
+      "mer": 1.0,
+      "wil": 1.0,
+      "mean_clip_wer": 9.809712647022403,
+      "char_counts": {
+        "C": 52360,
+        "S": 825787,
+        "D": 2611,
+        "I": 1990412,
+        "N": 880758,
+        "M": 2868559
+      },
+      "cer": 3.2004364422463376,
+      "wer_ci": {
+        "low": 8.04228096110549,
+        "high": 8.483084349351005,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 3.160671698169483,
+        "high": 3.241600756211104,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.0315900369705113,
+      "rtfx": 31.65555016391659,
+      "orthographic": {
+        "wer": 8.34434134854441,
+        "cer": 3.1268073334094413
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 1,
+        "emitted_words": 1,
+        "examples": [
+          {
+            "id": "cv-ka-test-common_voice_ka_38257760",
+            "hyp": "ḍᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀᴀ"
+          }
+        ]
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "ὁ",
+          1046
+        ],
+        [
+          "და",
+          "ḍᴀ",
+          248
+        ],
+        [
+          "იყო",
+          "ὁ",
+          220
+        ],
+        [
+          "იგი",
+          "ὁ",
+          157
+        ],
+        [
+          "მისი",
+          "វ្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្្",
+          139
+        ],
+        [
+          "მდებარეობს",
+          "ὁ",
+          136
+        ],
+        [
+          "შემდეგ",
+          "ὁ",
+          135
+        ],
+        [
+          "არის",
+          "ὁ",
+          119
+        ],
+        [
+          "მისი",
+          "ὁ",
+          118
+        ],
+        [
+          "და",
+          "ὅ",
+          113
+        ],
+        [
+          "ამ",
+          "ὁ",
+          107
+        ],
+        [
+          "აქვს",
+          "ὁ",
+          96
+        ],
+        [
+          "რომ",
+          "ὁ",
+          94
+        ],
+        [
+          "ერთი",
+          "ὁ",
+          92
+        ],
+        [
+          "დიდი",
+          "ὁ",
+          90
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_40906596",
+          "ref": "ამერიკელები კარგა ხანს ლიდერობდნენ ჩინელებთან შეხვედრაში მაგრამ ბოლოს კაიდანოვი დამარცხდა და მატჩიც ფრედ დასრულდა",
+          "hyp": "america is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very small country in china but it is a very",
+          "errors": {
+            "C": 0,
+            "S": 14,
+            "D": 0,
+            "I": 386,
+            "N": 14,
+            "M": 400
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40906211",
+          "ref": "ადმინისტრაციულად შედის მელანეზიური სახელმწიფო სოლომონის კუნძულების ისაბელის პროვინციის შემადგენლობაში",
+          "hyp": "адвіністрac administrational office has been released in the city of the city of milan the administration of the city of zyuri city which is the city of milan the city of zyuri is the city of the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of sallomon the city of",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 0,
+            "I": 234,
+            "N": 9,
+            "M": 243
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_37854051",
+          "ref": "ვაჰრამ ბაბაიანი რჩება ბრწყინვალე პიანისტად რომლებიც წარმოდგენებს ათზე მეტ ქვეყანაში ასრულებს",
+          "hyp": "1 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 211,
+            "N": 11,
+            "M": 222
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_25503660",
+          "ref": "აკადემიიდან გამოვიდა ფაშისტური დიქტატურის წინააღმდეგ პროტესტის ნიშნად",
+          "hyp": "aqademi idaankam ovi ida pashis du ri diktaturis ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida ida",
+          "errors": {
+            "C": 0,
+            "S": 7,
+            "D": 0,
+            "I": 212,
+            "N": 7,
+            "M": 219
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_25896256",
+          "ref": "აქ მან შემოიკრიბა მომხრეები და უკმაყოფილო გენერლები რომლებიც იმპერატორის არასასურველი მართველობის წინააღმდეგ აამხედრა",
+          "hyp": "ḍaq man shem mouikere ba mom ḍaqreib bi dauk ba qo pilogenere lebi ḍaq man shem mouikere ba mom ḍaqreib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaqreib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere lebi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere bi ḍaq man shem mouikere ba mom ḍaq reib bi dauk ba qo pi lo genere bi ḍaq",
+          "errors": {
+            "C": 0,
+            "S": 13,
+            "D": 0,
+            "I": 191,
+            "N": 13,
+            "M": 204
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_34080813",
+          "ref": "ნიუ იორკის ლინკოლნის ცენტრში ფილმის გადამღები ჯგუფი იკრიბება",
+          "hyp": "new york is link only center ship ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ ὁ �",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 0,
+            "I": 145,
+            "N": 8,
+            "M": 153
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40092664",
+          "ref": "რეგიონის დედაქალაქია უანკაიო",
+          "hyp": "ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ � ឍ � � ឍ � � � � � �",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 0,
+            "I": 148,
+            "N": 3,
+            "M": 151
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_25485451",
+          "ref": "მიმდინარეობდა სამწლიანი სწავლება",
+          "hyp": "ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ � ឍ ឍ � ឍ � � � �",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 0,
+            "I": 147,
+            "N": 3,
+            "M": 150
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_37455393",
+          "ref": "წყალი მუდამ სუფთაა",
+          "hyp": "វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ វ � វ វ � វ � វ � �",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 0,
+            "I": 147,
+            "N": 3,
+            "M": 150
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_34263949",
+          "ref": "ზოგჯერ მწერებსაც ჭამენ",
+          "hyp": "ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ ឍ � ឍ ឍ � ឍ � � � �",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 0,
+            "I": 147,
+            "N": 3,
+            "M": 150
+          }
+        }
+      ]
+    }
+  }
+}
