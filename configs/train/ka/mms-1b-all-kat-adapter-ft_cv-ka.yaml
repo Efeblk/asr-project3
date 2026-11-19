@@ -15,7 +15,7 @@ model:
   target_lang: kat
   reuse_vocab: true
   adapter_only: true
-  model_kwargs: {layerdrop: 0.0}
+  model_kwargs: {layerdrop: 0.0, ctc_zero_infinity: true}   # first run hit NaN at step 100 (inf CTC loss); see commit
 training:
   learning_rate: 1.0e-3
   warmup_steps: 100
