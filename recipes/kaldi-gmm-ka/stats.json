@@ -1,0 +1,104 @@
+{
+  "policy": {
+    "unicode_form": "NFC",
+    "lowercase": true,
+    "remove_punctuation": true,
+    "strip_diacritics": false,
+    "word_unit": "whitespace",
+    "cer_unit": "codepoint",
+    "drop_tokens": "",
+    "note": ""
+  },
+  "sets": {
+    "cv_train": {
+      "utts": 99763,
+      "speakers": 563,
+      "tokens": 771657,
+      "types": 91145,
+      "hours": 147.46,
+      "left_out": [
+        "cv-ka-train-common_voice_ka_40101235",
+        "cv-ka-train-common_voice_ka_40141897",
+        "cv-ka-train-common_voice_ka_40203874",
+        "cv-ka-train-common_voice_ka_40096121",
+        "cv-ka-train-common_voice_ka_49322380"
+      ]
+    },
+    "cv_dev": {
+      "utts": 14216,
+      "speakers": 221,
+      "tokens": 108695,
+      "types": 31040,
+      "hours": 23.17,
+      "oov_token_rate": 0.0558,
+      "oov_type_rate": 0.1852
+    },
+    "cv_test": {
+      "utts": 14259,
+      "speakers": 1058,
+      "tokens": 107801,
+      "types": 31433,
+      "hours": 23.33,
+      "oov_token_rate": 0.06,
+      "oov_type_rate": 0.1933
+    },
+    "fleurs_dev": {
+      "utts": 409,
+      "speakers": 409,
+      "tokens": 6610,
+      "types": 1737,
+      "hours": 1.22,
+      "oov_token_rate": 0.148,
+      "oov_type_rate": 0.1992
+    },
+    "fleurs_test": {
+      "utts": 979,
+      "speakers": 979,
+      "tokens": 17138,
+      "types": 3714,
+      "hours": 3.07,
+      "oov_token_rate": 0.1466,
+      "oov_type_rate": 0.2267
+    }
+  },
+  "lexicon": {
+    "words": 91145,
+    "phones": [
+      "ა",
+      "ბ",
+      "გ",
+      "დ",
+      "ე",
+      "ვ",
+      "ზ",
+      "თ",
+      "ი",
+      "კ",
+      "ლ",
+      "მ",
+      "ნ",
+      "ო",
+      "პ",
+      "ჟ",
+      "რ",
+      "ს",
+      "ტ",
+      "უ",
+      "ფ",
+      "ქ",
+      "ღ",
+      "ყ",
+      "შ",
+      "ჩ",
+      "ც",
+      "ძ",
+      "წ",
+      "ჭ",
+      "ხ",
+      "ჯ",
+      "ჰ",
+      "ჷ",
+      "ჸ"
+    ]
+  }
+}

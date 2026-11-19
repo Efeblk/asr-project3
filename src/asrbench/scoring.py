@@ -95,10 +95,11 @@ def render_report(results: dict, manifest: dict) -> str:
         "",
         f"- Model: `{model.get('model_id')}` @ `{model.get('revision_resolved') or model.get('revision_requested')}` "
         f"({model.get('family')}, {model.get('dtype')}, {model.get('device')})",
-        "- System: " + (f"**ours**: fine-tuned by us from `{model['trained_by_us']['base_model']['model_id']}` "
+        "- System: " + (model["system"] if model.get("system") else  # e.g. Kaldi GMM-HMM, trained from scratch
+                        f"**ours**: fine-tuned by us from `{model['trained_by_us']['base_model']['model_id']}` "
                         f"on {model['trained_by_us']['train_hours']} h ({model['trained_by_us']['train_run']})"
                         if model.get("trained_by_us") else "**baseline**: pretrained checkpoint, no training by us (A1)"),
-        f"- Hardware: {hw.get('gpu', 'CPU')}; batch size {manifest.get('batch_size')}",
+        f"- Hardware: {hw.get('gpu') or hw.get('cpu', 'CPU')}; batch size {manifest.get('batch_size')}",
         f"- Dataset: `{manifest['dataset']['path']}` sha256 `{manifest['dataset']['sha256'][:12]}`",
         f"- Timing boundary: {manifest.get('timing_boundary')}",
         "",

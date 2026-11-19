@@ -33,6 +33,8 @@ KA_SYSTEMS = [
     ("XLS-R-300M Georgian, xsway (zero-shot, CTC)", "xlsr-georgian-xsway", "baseline"),
     ("MMS-1b-all + kat adapter (zero-shot, CTC)", "mms-1b-all-kat", "baseline"),
     ("NVIDIA FastConformer hybrid ka (zero-shot, transducer)*", "nvidia-stt-ka-fastconformer", "baseline"),
+    ("MFCC + GMM-HMM, LDA+MLLT (Kaldi tri2b, trained by us from scratch, CPU)", "kaldi-gmm-hmm-tri2b", "baseline"),
+    ("MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU)", "kaldi-gmm-hmm-tri3b", "baseline"),
     ("MMS-1b-all, kat adapter fine-tune (2.3 M params)", "mms-1b-all-kat-adapter-ft_cv-ka", "ours"),
     ("Whisper-large-v3-turbo, full fine-tune", "whisper-large-v3-turbo-ft_cv-ka", "ours"),
 ]
@@ -70,7 +72,8 @@ def main_table(split: str) -> list[str]:
             if ds == SETS[0][0] and m and m.get("rtfx"):
                 rtfx = f"{m['rtfx']:.0f}"
                 man = json.load(open(os.path.join(_run(prefix, ds, split), "manifest.json"), encoding="utf-8"))
-                gpu = man.get("env", {}).get("hardware", {}).get("gpu", "—").replace("NVIDIA ", "")
+                hw = man.get("env", {}).get("hardware", {})
+                gpu = (hw.get("gpu") or ("CPU: " + hw["cpu"].split(" (")[0] if hw.get("cpu") else "—")).replace("NVIDIA ", "")
         if any(c != "—" for c in cells):
             out.append(f"| {group} | {label} | " + " | ".join(cells) + f" | {rtfx} | {gpu} |")
     return out
@@ -90,6 +93,7 @@ KA_PAIRS = [
     ("whisper-large-v3-turbo-ft_cv-ka", "whisper-large-v3-turbo"),
     ("mms-1b-all-kat-adapter-ft_cv-ka", "mms-1b-all-kat"),
     ("whisper-large-v3-turbo-ft_cv-ka", "mms-1b-all-kat-adapter-ft_cv-ka"),
+    ("mms-1b-all-kat", "kaldi-gmm-hmm-tri3b"),
 ]
 PAIRS = KA_PAIRS if LANG == "ka" else KK_PAIRS
 
