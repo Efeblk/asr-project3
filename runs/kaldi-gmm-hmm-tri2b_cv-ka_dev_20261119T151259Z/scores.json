@@ -1,0 +1,338 @@
+{
+  "run": "kaldi-gmm-hmm-tri2b_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": null,
+    "family": "kaldi-gmm-hmm",
+    "model_id": "kaldi-gmm-hmm-tri2b (recipes/kaldi-gmm-ka)",
+    "revision_resolved": "bf455f8c389b6ad42ba86d1aa9bcc8e435ab59e6",
+    "device": "cpu",
+    "dtype": "float32",
+    "language_hints": {},
+    "system": "**baseline, trained by us from scratch** (standard MFCC + GMM-HMM, A3): MFCC(13)+splice(±3)+LDA(40)+MLLT triphone GMM-HMM (no speaker adaptation), 4000 leaves / 40k Gaussians; graphemic lexicon (91145 words), trigram KN LM on CV ka train text only; trained on CV 27.0 ka train (147.46 h)",
+    "settings": {
+      "lexicon_words": 91145,
+      "phones": 35,
+      "lm": {
+        "order": 3,
+        "smoothing": "Kneser-Ney (utils/lang/make_kn_lm.py)",
+        "1-grams": 91147,
+        "2-grams": 519013,
+        "3-grams": 675498
+      },
+      "oov_token_rate": 0.0558,
+      "lmwt": 15,
+      "word_ins_penalty": 1.0,
+      "selected_on": "CV ka dev (decode-frozen.yaml)",
+      "beams": "Kaldi decode_fmllr.sh / decode.sh defaults"
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 83656,
+        "S": 20703,
+        "D": 4336,
+        "I": 2005,
+        "N": 108695,
+        "M": 106364
+      },
+      "wer": 0.24880629283775701,
+      "mer": 0.24429990966576332,
+      "wil": 0.394673116833406,
+      "mean_clip_wer": 0.243938240658382,
+      "char_counts": {
+        "C": 817237,
+        "S": 39597,
+        "D": 34639,
+        "I": 14751,
+        "N": 891473,
+        "M": 871585
+      },
+      "cer": 0.09982018524397261,
+      "wer_ci": {
+        "low": 0.2311667899760024,
+        "high": 0.2681038996547046,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.08752046919671214,
+        "high": 0.11328578972039573,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.029592519211086462,
+      "rtfx": 33.792324096062856,
+      "orthographic": {
+        "wer": 0.4105075193214475,
+        "cer": 0.12122011906378542
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "სადა",
+          12
+        ],
+        [
+          "და",
+          "ზედა",
+          12
+        ],
+        [
+          "დიდ",
+          "დიდი",
+          11
+        ],
+        [
+          "ის",
+          "ეს",
+          9
+        ],
+        [
+          "მისი",
+          "მის",
+          9
+        ],
+        [
+          "ერთ",
+          "ერთი",
+          9
+        ],
+        [
+          "ან",
+          "და",
+          9
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "ერთ",
+          "ერთად",
+          8
+        ],
+        [
+          "აქვთ",
+          "აქვს",
+          7
+        ],
+        [
+          "შემდეგ",
+          "შემდეგი",
+          7
+        ],
+        [
+          "მის",
+          "მისი",
+          7
+        ],
+        [
+          "ან",
+          "ამ",
+          7
+        ],
+        [
+          "რომლებიც",
+          "რომელიც",
+          7
+        ],
+        [
+          "ეს",
+          "ის",
+          7
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_41206209",
+          "ref": "ფილმი კონსპირაციის თეორიებით არის გაჯერებული და ცდილობს დაამტკიცოს რომ ამერიკის პრეზიდენტს ფარული ზრახვები აქვს",
+          "hyp": "იუგოსლავიას ზნეობრივი კარისკაცები გასცილდა აქცევს გომბორის კრეზის ქორწილს",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 6,
+            "I": 0,
+            "N": 14,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39695153",
+          "ref": "მოსკოვის სახელმწიფო ლინგვისტური უნივერსიტეტი არის რუსეთის ერთ ერთი ყველაზე დიდი უმაღლესი სასწავლებელი ენათმეცნიერების დარგში",
+          "hyp": "",
+          "errors": {
+            "C": 0,
+            "S": 0,
+            "D": 14,
+            "I": 0,
+            "N": 14,
+            "M": 0
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_26759863",
+          "ref": "სილვიო ემუდარება ნედას რომ მიატოვოს ქმარი და მასთან ერთად გაიქცეს რასაც ნედა საბოლოოდ თანხმდება",
+          "hyp": "სიბიუ მდებარე ფერმენტებს რომლებიც ნუსხური გამოსვლები ფუნქციასაც მიტაცებულ დაპყრობა",
+          "errors": {
+            "C": 0,
+            "S": 9,
+            "D": 5,
+            "I": 0,
+            "N": 14,
+            "M": 9
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40617840",
+          "ref": "საბჭოთა ისტორიოგრაფიის შეფასებით ფხოველთა და დიდოელთა აჯანყების დამარცხებას სხვადასხვა არსებითი ხასიათის მიზეზი ჰქონდა",
+          "hyp": "",
+          "errors": {
+            "C": 0,
+            "S": 0,
+            "D": 13,
+            "I": 0,
+            "N": 13,
+            "M": 0
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40334033",
+          "ref": "მან ტარანტინოს საუკეთესო სცენარისტის და საუკეთესო ფილმის პრიზები მოუტანა კომედიის და მიუზიკლის ჟანრებში",
+          "hyp": "კენას ან საუკეთესო სცენარის დასს გააუქმა ეთერსა ფილმის გააქვთ პრიზები მოუტანა კომერციისა და ამ კომედიის და მუსიკამ იბნ კლდის ჟანრებში",
+          "errors": {
+            "C": 7,
+            "S": 6,
+            "D": 0,
+            "I": 7,
+            "N": 13,
+            "M": 20
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40351387",
+          "ref": "მისი კვლევის საგანია საერთაშორისო ურთიერთობების თეორიები ტრანსფორმაციები პოსტსაბჭოთა სივრცეში საერთაშორისო პოლიტიკური ეკონომია და გლობალიზაცია",
+          "hyp": "მუსიკასა და სადესერტო მწვრთნელები გადაცემასა საბჭოთა სივრცეში საყრდენად ორგანიზაცია",
+          "errors": {
+            "C": 1,
+            "S": 8,
+            "D": 5,
+            "I": 0,
+            "N": 14,
+            "M": 9
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39743673",
+          "ref": "რომის კათოლიკურმა ეკლესიამ კი აკრძალული წიგნების სიაში შეიყვანა მონტესკიეს ბევრ სხვა ნამუშევართან ერთად",
+          "hyp": "ერნესტმა ნამუშევარმა იყო ახალი",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 9,
+            "I": 0,
+            "N": 13,
+            "M": 4
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_37420739",
+          "ref": "სექტემბრისთვის ქალაქის ზედა ნაწილიც დაინგრა და აღებულ იქნა მაგრამ ცენტრალური ციხესიმაგრე კვლავ განაგრძობდა წინააღმდეგობას",
+          "hyp": "ზედა გამჟღავნების ზედა ნაწილის ნანგრევები რომელსაც რომ შესრულებული აიძულებს წინააღმდეგ",
+          "errors": {
+            "C": 1,
+            "S": 9,
+            "D": 4,
+            "I": 0,
+            "N": 14,
+            "M": 10
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293795",
+          "ref": "როცა ჩემ მეგობარს ვხედავ რომ არის მოწყენილი მაშინ ისეთ რამეს ვაკეთებ რომ ისინი გავაბედნიერო",
+          "hyp": "როცა შესრულება ურუგვაის მიწერილი მასის როზმარი რომის მინდობილი",
+          "errors": {
+            "C": 1,
+            "S": 7,
+            "D": 6,
+            "I": 0,
+            "N": 14,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760186",
+          "ref": "ეს არის უკიდურესად მოკლე სტრუქტურის ლექსი რომლის მიზანია წამიერი შეგრძნებების საგანთა ხედვის გადმოცემა",
+          "hyp": "ლექციონარი ადამიანი იეიტსი და ნატეხების წარმოადგენდა",
+          "errors": {
+            "C": 0,
+            "S": 6,
+            "D": 7,
+            "I": 0,
+            "N": 13,
+            "M": 6
+          }
+        }
+      ]
+    }
+  }
+}

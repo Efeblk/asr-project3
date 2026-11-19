@@ -1,0 +1,39 @@
+# Selected on CV 27.0 ka dev only (tri3b, Kaldi WER on normalized text), before any test decode.
+# Applied unchanged to CV ka test and FLEURS ka test (and FLEURS dev). Beams: Kaldi decode_fmllr.sh defaults.
+lmwt: 15
+word_ins_penalty: 1.0
+cv_dev_wer: 20.29
+grid:
+  - {lmwt: 7, word_ins_penalty: 0.0, cv_dev_wer: 25.29}
+  - {lmwt: 7, word_ins_penalty: 0.5, cv_dev_wer: 24.86}
+  - {lmwt: 7, word_ins_penalty: 1.0, cv_dev_wer: 24.48}
+  - {lmwt: 8, word_ins_penalty: 0.0, cv_dev_wer: 24.00}
+  - {lmwt: 8, word_ins_penalty: 0.5, cv_dev_wer: 23.61}
+  - {lmwt: 8, word_ins_penalty: 1.0, cv_dev_wer: 23.22}
+  - {lmwt: 9, word_ins_penalty: 0.0, cv_dev_wer: 22.88}
+  - {lmwt: 9, word_ins_penalty: 0.5, cv_dev_wer: 22.46}
+  - {lmwt: 9, word_ins_penalty: 1.0, cv_dev_wer: 22.17}
+  - {lmwt: 10, word_ins_penalty: 0.0, cv_dev_wer: 22.01}
+  - {lmwt: 10, word_ins_penalty: 0.5, cv_dev_wer: 21.69}
+  - {lmwt: 10, word_ins_penalty: 1.0, cv_dev_wer: 21.40}
+  - {lmwt: 11, word_ins_penalty: 0.0, cv_dev_wer: 21.43}
+  - {lmwt: 11, word_ins_penalty: 0.5, cv_dev_wer: 21.16}
+  - {lmwt: 11, word_ins_penalty: 1.0, cv_dev_wer: 20.92}
+  - {lmwt: 12, word_ins_penalty: 0.0, cv_dev_wer: 21.03}
+  - {lmwt: 12, word_ins_penalty: 0.5, cv_dev_wer: 20.78}
+  - {lmwt: 12, word_ins_penalty: 1.0, cv_dev_wer: 20.63}
+  - {lmwt: 13, word_ins_penalty: 0.0, cv_dev_wer: 20.73}
+  - {lmwt: 13, word_ins_penalty: 0.5, cv_dev_wer: 20.55}
+  - {lmwt: 13, word_ins_penalty: 1.0, cv_dev_wer: 20.43}
+  - {lmwt: 14, word_ins_penalty: 0.0, cv_dev_wer: 20.57}
+  - {lmwt: 14, word_ins_penalty: 0.5, cv_dev_wer: 20.38}
+  - {lmwt: 14, word_ins_penalty: 1.0, cv_dev_wer: 20.32}
+  - {lmwt: 15, word_ins_penalty: 0.0, cv_dev_wer: 20.46}
+  - {lmwt: 15, word_ins_penalty: 0.5, cv_dev_wer: 20.34}
+  - {lmwt: 15, word_ins_penalty: 1.0, cv_dev_wer: 20.29}
+  - {lmwt: 16, word_ins_penalty: 0.0, cv_dev_wer: 20.46}
+  - {lmwt: 16, word_ins_penalty: 0.5, cv_dev_wer: 20.35}
+  - {lmwt: 16, word_ins_penalty: 1.0, cv_dev_wer: 20.34}
+  - {lmwt: 17, word_ins_penalty: 0.0, cv_dev_wer: 20.48}
+  - {lmwt: 17, word_ins_penalty: 0.5, cv_dev_wer: 20.43}
+  - {lmwt: 17, word_ins_penalty: 1.0, cv_dev_wer: 20.47}

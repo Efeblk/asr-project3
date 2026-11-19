@@ -1,0 +1,15 @@
+name: kaldi-gmm-hmm-tri2b_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+model:
+  family: kaldi-gmm-hmm
+  id: recipes/kaldi-gmm-ka (tri2b)
+decode:
+  lmwt: 15
+  word_ins_penalty: 1.0
+  selected_on: CV ka dev (decode-frozen.yaml)
+  beams: Kaldi decode_fmllr.sh / decode.sh defaults
+frozen: false

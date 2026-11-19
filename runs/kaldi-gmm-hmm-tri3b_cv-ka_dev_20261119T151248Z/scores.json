@@ -1,0 +1,338 @@
+{
+  "run": "kaldi-gmm-hmm-tri3b_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": null,
+    "family": "kaldi-gmm-hmm",
+    "model_id": "kaldi-gmm-hmm-tri3b (recipes/kaldi-gmm-ka)",
+    "revision_resolved": "bf455f8c389b6ad42ba86d1aa9bcc8e435ab59e6",
+    "device": "cpu",
+    "dtype": "float32",
+    "language_hints": {},
+    "system": "**baseline, trained by us from scratch** (standard MFCC + GMM-HMM, A3): MFCC(13)+splice(±3)+LDA(40)+MLLT, speaker-adaptive (fMLLR/SAT) triphone GMM-HMM, 4000 leaves / 40k Gaussians; graphemic lexicon (91145 words), trigram KN LM on CV ka train text only; trained on CV 27.0 ka train (147.46 h)",
+    "settings": {
+      "lexicon_words": 91145,
+      "phones": 35,
+      "lm": {
+        "order": 3,
+        "smoothing": "Kneser-Ney (utils/lang/make_kn_lm.py)",
+        "1-grams": 91147,
+        "2-grams": 519013,
+        "3-grams": 675498
+      },
+      "oov_token_rate": 0.0558,
+      "lmwt": 15,
+      "word_ins_penalty": 1.0,
+      "selected_on": "CV ka dev (decode-frozen.yaml)",
+      "beams": "Kaldi decode_fmllr.sh / decode.sh defaults"
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 89016,
+        "S": 17260,
+        "D": 2419,
+        "I": 2373,
+        "N": 108695,
+        "M": 108649
+      },
+      "wer": 0.20287961727770368,
+      "mer": 0.19854503547376381,
+      "wil": 0.3290334807108384,
+      "mean_clip_wer": 0.2004593287311186,
+      "char_counts": {
+        "C": 842829,
+        "S": 27600,
+        "D": 21044,
+        "I": 13728,
+        "N": 891473,
+        "M": 884157
+      },
+      "cer": 0.06996510270081091,
+      "wer_ci": {
+        "low": 0.18862661306526413,
+        "high": 0.21842997513959855,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.06147330701998879,
+        "high": 0.07985013294941055,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.033860934371993404,
+      "rtfx": 29.532557755615464,
+      "orthographic": {
+        "wer": 0.3750825404797113,
+        "cer": 0.09223500860781231
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "და",
+          "სადა",
+          15
+        ],
+        [
+          "შემდეგ",
+          "შემდეგი",
+          12
+        ],
+        [
+          "და",
+          "ზედა",
+          11
+        ],
+        [
+          "დიდ",
+          "დიდი",
+          9
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          9
+        ],
+        [
+          "ის",
+          "ეს",
+          7
+        ],
+        [
+          "ტბა",
+          "ტბაა",
+          7
+        ],
+        [
+          "თავის",
+          "თავისი",
+          7
+        ],
+        [
+          "ეს",
+          "ის",
+          7
+        ],
+        [
+          "ერთ",
+          "ერთი",
+          7
+        ],
+        [
+          "მის",
+          "მისი",
+          6
+        ],
+        [
+          "რომლის",
+          "რომის",
+          6
+        ],
+        [
+          "რომლებიც",
+          "რომელიც",
+          6
+        ],
+        [
+          "ერთ",
+          "ერთად",
+          6
+        ],
+        [
+          "ან",
+          "და",
+          6
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_40334033",
+          "ref": "მან ტარანტინოს საუკეთესო სცენარისტის და საუკეთესო ფილმის პრიზები მოუტანა კომედიის და მიუზიკლის ჟანრებში",
+          "hyp": "თინას არაა საუკეთესო სცენარის დასს გააუქმა ეთერსა ფილმის გააქვთ ფრიზები მოტანა კომედიის და და ამ კომედიის დაამყარა მიიღო ონლაინ კლდის ჟანრებში",
+          "errors": {
+            "C": 5,
+            "S": 8,
+            "D": 0,
+            "I": 8,
+            "N": 13,
+            "M": 21
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39695153",
+          "ref": "მოსკოვის სახელმწიფო ლინგვისტური უნივერსიტეტი არის რუსეთის ერთ ერთი ყველაზე დიდი უმაღლესი სასწავლებელი ენათმეცნიერების დარგში",
+          "hyp": "საყვარლის მეუღლე იყო ადგილას ასტატი მოადგილე",
+          "errors": {
+            "C": 0,
+            "S": 6,
+            "D": 8,
+            "I": 0,
+            "N": 14,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40617840",
+          "ref": "საბჭოთა ისტორიოგრაფიის შეფასებით ფხოველთა და დიდოელთა აჯანყების დამარცხებას სხვადასხვა არსებითი ხასიათის მიზეზი ჰქონდა",
+          "hyp": "",
+          "errors": {
+            "C": 0,
+            "S": 0,
+            "D": 13,
+            "I": 0,
+            "N": 13,
+            "M": 0
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293620",
+          "ref": "დრო არი ჩემო პატარავ იცოდე ერტი ამბავი ედელის როდა ბადალი დღეს საქართელოს მთა ბრი",
+          "hyp": "მრავალი დრამატული ამბავი ედემის როა და აპარატი დღეს საქართველოს მთავრობა",
+          "errors": {
+            "C": 1,
+            "S": 9,
+            "D": 4,
+            "I": 0,
+            "N": 14,
+            "M": 10
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293795",
+          "ref": "როცა ჩემ მეგობარს ვხედავ რომ არის მოწყენილი მაშინ ისეთ რამეს ვაკეთებ რომ ისინი გავაბედნიერო",
+          "hyp": "როტაციას ევორა გაუმართლა წერილი მას რის გამოც ვაკეთებ რომის მინდობილი",
+          "errors": {
+            "C": 1,
+            "S": 9,
+            "D": 4,
+            "I": 0,
+            "N": 14,
+            "M": 10
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760094",
+          "ref": "დეკემბერში გავლენიანმა გაზეთმა ნიუ იორკ თაიმსმა სტატია ახალგაზრდა მომღერალი რომელმაც ოპერის სამყარო დაიპყრო გამოაქვეყნა",
+          "hyp": "ინტერნაციონალური ევროპელებმა ნიუ მთავარსარდალია ახვევენ დამოუკიდებლობას ოპერის ჰყავდა იყო რის გამოც",
+          "errors": {
+            "C": 1,
+            "S": 10,
+            "D": 3,
+            "I": 0,
+            "N": 14,
+            "M": 11
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40057383",
+          "ref": "კუნძულოვან სკანდინავიურ ენებს განეკუთვნება რომელიც დიდი ხნის მანძილზე სხვა ენებისგან იზოლირებულად ვითარდებოდა",
+          "hyp": "კოსტიუმის კამბიუმი უმწერლობო როგორ უყვარდა და უელვა თვით",
+          "errors": {
+            "C": 0,
+            "S": 8,
+            "D": 4,
+            "I": 0,
+            "N": 12,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40332704",
+          "ref": "მოკავშირეთა კონტროლქვეშ აღმოჩნდა სპლიტ ლივნო კუპრეს ბუგოინოს გზატკეცილი რაც მებრძოლი მხარეების მომარაგების პრობლემებს ხსნიდა",
+          "hyp": "მოკავშირეთა კონტროლქვეშ აღმოჩნდა არის ყელით ნინო კუპერის და ბეი ნეგოტინოს გზატკეცილი რამაც მებრძოლი მხარეები მოუპოვა მომარაგების ტარანაკის",
+          "errors": {
+            "C": 6,
+            "S": 7,
+            "D": 1,
+            "I": 4,
+            "N": 14,
+            "M": 17
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39574591",
+          "ref": "მიუხედავად იმისა რომ შეფასებები იყო ნეგატიური კრიტიკოსებმა დადებითად შეაფასეს ჰილარი დაფის თამაში",
+          "hyp": "მეტრზე",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 11,
+            "I": 0,
+            "N": 12,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39743764",
+          "ref": "გარდა ამისა ბაღში აშენდა ზაფხულის პავილიონი სადაც ტარდებოდა კონცერტები და ჭადრაკის ტურნირები",
+          "hyp": "ენათა თანდათან წერტილიც",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 9,
+            "I": 0,
+            "N": 12,
+            "M": 3
+          }
+        }
+      ]
+    }
+  }
+}

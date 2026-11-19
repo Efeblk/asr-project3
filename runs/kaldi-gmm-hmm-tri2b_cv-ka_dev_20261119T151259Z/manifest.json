@@ -1,0 +1,71 @@
+{
+  "name": "kaldi-gmm-hmm-tri2b_cv-ka_dev",
+  "created_utc": "2026-11-19T15:13:02+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14216,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "kaldi-gmm-hmm",
+    "model_id": "kaldi-gmm-hmm-tri2b (recipes/kaldi-gmm-ka)",
+    "revision_resolved": "bf455f8c389b6ad42ba86d1aa9bcc8e435ab59e6",
+    "device": "cpu",
+    "dtype": "float32",
+    "language_hints": {},
+    "system": "**baseline, trained by us from scratch** (standard MFCC + GMM-HMM, A3): MFCC(13)+splice(±3)+LDA(40)+MLLT triphone GMM-HMM (no speaker adaptation), 4000 leaves / 40k Gaussians; graphemic lexicon (91145 words), trigram KN LM on CV ka train text only; trained on CV 27.0 ka train (147.46 h)",
+    "settings": {
+      "lexicon_words": 91145,
+      "phones": 35,
+      "lm": {
+        "order": 3,
+        "smoothing": "Kneser-Ney (utils/lang/make_kn_lm.py)",
+        "1-grams": 91147,
+        "2-grams": 519013,
+        "3-grams": 675498
+      },
+      "oov_token_rate": 0.0558,
+      "lmwt": 15,
+      "word_ins_penalty": 1.0,
+      "selected_on": "CV ka dev (decode-frozen.yaml)",
+      "beams": "Kaldi decode_fmllr.sh / decode.sh defaults"
+    }
+  },
+  "batch_size": null,
+  "timing_boundary": "wall clock of MFCC+CMVN extraction and decoding (incl. fMLLR 2nd pass) over parallel CPU jobs; graph building and model loading excluded; per-clip compute_sec is pro-rated by duration",
+  "chunking": "none (whole clips)",
+  "env": {
+    "git_commit": "bf455f8c389b6ad42ba86d1aa9bcc8e435ab59e6",
+    "git_dirty": true,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "2.5.5",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "cpu": "AMD Ryzen 7 7800X3D 8-Core Processor (16 threads, WSL2 Ubuntu 24.04)",
+      "kaldi": "5.5.1068 (conda-forge cpu build); steps/utils kaldi-asr/kaldi e02e35f0"
+    }
+  },
+  "missing_hypotheses": [],
+  "completed_utc": "2026-11-19T15:13:02+00:00",
+  "totals": {
+    "items": 14216,
+    "audio_sec": 83399.76,
+    "compute_sec": 2468.0,
+    "rtf": 0.0296
+  }
+}
