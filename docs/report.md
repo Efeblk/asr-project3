@@ -26,17 +26,29 @@ openly licensed data with human references is small: 147.5 h of CV train from on
 is still enough for training and for a 23 h speaker-disjoint test set with trusted references, which is the
 condition A1 sets. We do not claim the domain bonus: both corpora are general read speech.
 
-**Protocol.** Everything is chosen on dev: checkpoints, decoder settings, LM weights and chunk length. Every test
-config is frozen with `frozen: true` before its test run, and each test is run once (the harness refuses test
-runs that are not frozen). Generated fine-tune and decoder configs follow the pre-committed rules. Where a choice was made on dev, the candidate grid and the selection rule were committed
-before the dev runs (commits 0c0d0e4, 2dd4397, 78ed0a1, 02d561f).
+**Protocol.** Everything is chosen on dev: checkpoints, decoder settings, LM weights and chunk length. The harness
+refuses a test run unless its config says `frozen: true`. Each test config was run exactly once: there is one run
+directory per test config in `runs/`.
 
-**Two rounds, stated openly.** Round 1 (19 Nov) was all baselines plus both fine-tunes, with every test config
-frozen before any Georgian test run; its test set was blind. Round 2 (20 Nov) added the word LM decoder and chunked
-decoding. Their *ideas* came from the round-1 error analysis, which was done on test outputs (commit ea2f5c5). All
-their settings were then selected on dev only, by rules committed before the dev runs, and each was tested once.
-Because test errors motivated round 2, its test numbers are not fully blind. Its dev results tell the same story:
-on CV dev the LM gives −11.1 points and chunking gives 0.0.
+**Freeze record (UTC, from git and the run manifests).** The evidence is not equally strong for every row, so it is
+listed per system:
+
+| Systems | What was fixed before the test run | When | First test run |
+|---|---|---|---|
+| Pretrained baselines (Whisper ×3, xsway, MMS, NVIDIA) | the test configs themselves (commit 0c0d0e4) | 18 Nov 22:19 | 18 Nov 22:34 |
+| Our fine-tunes, round 1 (turbo FT, MMS FT) | the selection rule, stated in the 0c0d0e4 commit message: best dev-WER checkpoint, decoding identical to the matching baseline. The generated test configs were committed together with their results (159b106, 2edbfbb) | 18 Nov 22:19 | 19 Nov 01:04 |
+| Kaldi GMM-HMM | LM weight and insertion penalty, selected on dev (2dd4397) | 19 Nov 15:13 | 19 Nov 16:04 |
+| Round 2: LM decoder | the α/β grid and selection rule (02d561f). The generated test configs were committed with their results (383e968) | 19 Nov 23:50 | 20 Nov 00:59 |
+| Round 2: turbo r2 (plain) | the test configs (4a47713) | 20 Nov 02:32 | 20 Nov 02:39 |
+| Round 2: r2 + chunks | the chunk grid and rule (78ed0a1). The generated test configs were committed with their results (dd312d1) | 19 Nov 23:25 | 20 Nov 03:55 |
+
+**Two rounds.** Round 1 is the primary comparison: all baselines and both fine-tunes. No Georgian test result had
+been seen when its configs and rules were fixed. The Kaldi decode settings were selected on dev after the neural
+test results existed, but they use no test data. Round 2 is a follow-up: the beam-search + word-LM decoder, the r2
+retrain and chunked decoding. Their *ideas* came from the round-1 error analysis, which was done on test outputs
+(ea2f5c5). Their settings were then selected on dev only, by rules committed before the dev runs. **Round-2 test
+numbers come from a reused test set and are reported as follow-up findings, not as confirmatory results.** Their dev
+results agree with them: the beam + LM decoder gives −11.1 WER points on CV dev and chunking gives 0.0.
 
 ## 2. Metrics and why (HF audio course, chapter 5 "Evaluation")
 
@@ -52,12 +64,18 @@ Source: <https://huggingface.co/learn/audio-course/en/chapter5/evaluation> (as r
   (§5).
 - **Normalized vs orthographic.** Following the course ("train on orthographic text and evaluate on normalized
   text"), the primary numbers use one declared policy for every system: NFC, casefold, punctuation → space
-  (`configs/scoring.yaml`). Every run also reports orthographic WER/CER (case and punctuation kept). References that
-  are empty after normalization (1 CV test clip) are excluded from WER and reported separately as silent clips.
+  (`configs/scoring.yaml`). Every run also reports orthographic WER/CER (case and punctuation kept). One CV test
+  reference is unusable: clip `common_voice_ka_38257760` reads `???????? ???????? ????? ?????? ??????.` in the CV
+  release (its Georgian letters were lost in encoding), so it is empty after normalization. Its audio is speech, not
+  silence. It is excluded from WER/CER for every system alike, and its per-system output length is listed in each
+  run's `scores.json`.
   Word accuracy (1 − WER) is not reported; the course notes it is rarely quoted.
-- **RTFx** = audio duration / processing time (higher is faster), the course's speed measure next to WER. The
-  timing boundary is model forward + decoding. Loading is excluded, and for the GMM-HMM and LM decoders the CPU
-  search is included. Hardware is listed per row.
+- **RTFx** = audio duration / processing time (higher is faster), the course's speed measure next to WER. For the
+  neural systems the timer covers model forward + decoding after the audio is loaded, CUDA-synchronized, after a
+  warm-up pass. For the LM rows it includes the CPU beam search. The Kaldi timer is different: it covers MFCC/CMVN
+  extraction and lattice decoding on 8 CPU jobs and stops before the final one-best extraction
+  (`recipes/kaldi-gmm-ka/run.sh`). Speeds in the results tables were measured on whatever hardware each run used.
+  The same-GPU comparison is in §4.
 - **Uncertainty.** We report 95 % cluster-bootstrap intervals (2000 resamples) that resample speakers (CV) or
   sentences (FLEURS), plus paired bootstrap differences between systems on identical clip IDs.
 
@@ -65,12 +83,20 @@ Source: <https://huggingface.co/learn/audio-course/en/chapter5/evaluation> (as r
 
 **Baselines** (announcement A3: every listed family that supports Georgian, at pinned revisions):
 
-| Family | Checkpoint (revision) | Notes |
-|---|---|---|
-| Attention enc-dec | `openai/whisper-small` (973afd2), `whisper-large-v3` (06f233f), `whisper-large-v3-turbo` (41f01f3) | greedy, language hint "georgian" |
-| wav2vec 2.0 + CTC | `xsway/wav2vec2-large-xlsr-georgian` (b29b819), `facebook/mms-1b-all` + `kat` adapter (3d33597) | greedy CTC |
-| Transducer | `nvidia/stt_ka_fastconformer_hybrid_large_pc` (bdfd787) | NeMo, RNN-T head. Trained on CV 17.0 incl. dev, so contaminated on CV (§5.4) |
-| MFCC + GMM-HMM | Kaldi tri3b, **trained by us from scratch** (`recipes/kaldi-gmm-ka/`) | graphemic lexicon, word trigram LM on CV train text, LDA+MLLT+SAT, CPU |
+| Family | Checkpoint (revision) | Decoding | Documented training data that overlaps our test corpora |
+|---|---|---|---|
+| Attention enc-dec | `openai/whisper-small` (973afd2), `whisper-large-v3` (06f233f), `whisper-large-v3-turbo` (41f01f3) | greedy, language hint "georgian" | not disclosed (model card: "1 million hours of weakly labeled audio" + pseudo-labels); unknown |
+| wav2vec 2.0 + CTC | `xsway/wav2vec2-large-xlsr-georgian` (b29b819) | greedy CTC | CV ka **train + validation**, version not stated (model card) |
+| wav2vec 2.0 + CTC | `facebook/mms-1b-all` + `kat` adapter (3d33597) | greedy CTC | FLEURS (Hub card); the MMS paper (Pratap et al., JMLR 2024) also lists Common Voice for the 1162-language model; splits and versions not stated |
+| Transducer | `nvidia/stt_ka_fastconformer_hybrid_large_pc` (bdfd787) | NeMo, RNN-T head | CV **17.0** train + dev + other, FLEURS train + dev; FLEURS test held out (model card) |
+| MFCC + GMM-HMM | Kaldi tri3b, **trained by us from scratch** (`recipes/kaldi-gmm-ka/`) | lattice, word trigram LM | CV 27.0 ka train only (audio and LM text) |
+
+"Overlap" means the same *corpus*. Common Voice versions reshuffle clips between releases, so a model trained on an
+older CV train/dev split may have heard clips that are in CV 27.0 test. Model cards do not list clip IDs, so exact
+clip overlap cannot be joined. `scripts/cv_contamination.py` tests it indirectly, by WER per clip-ID age (§5.5).
+Every system is worse on the newest clips, which seem harder: MMS, the GMM-HMM and our turbo FT by about 1.5–3×.
+NVIDIA is worse by up to 13× (1.8 → 23.0 %), the pattern expected from training-set overlap. Every fine-tune of
+ours inherits its base model's exposure.
 
 Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `nvidia/parakeet-tdt-0.6b-v3`,
 `Qwen/Qwen3-ASR-1.7B` / `0.6B` (links in `README.md`). No HuBERT + CTC checkpoint for Georgian was found.
@@ -109,34 +135,54 @@ comparison are there). WER / CER in %, 95 % CI on WER.
 | baseline | Whisper-large-v3 | 72.04 | 16.64 | 69.12 | 19.79 |
 | baseline | Whisper-large-v3-turbo | 142.14 | 185.45 | 126.84 | 108.54 |
 | baseline | XLS-R-300M Georgian (xsway) | 46.26 | 9.02 | 52.49 | 11.83 |
-| baseline | MMS-1b-all + kat | 24.14 (23.2–25.2) | 4.45 | 25.32 (24.2–26.5) | 4.76 |
+| baseline | MMS-1b-all + kat | 24.14 (23.2–25.2) | 4.45 | 25.32 (24.2–26.5) | **4.76** |
 | baseline | NVIDIA FastConformer ka (CV contaminated) | *4.85* | *1.27* | **15.49** (14.3–16.8) | 5.32 |
 | baseline | MFCC + GMM-HMM tri3b (trained by us) | 22.64 (21.6–23.8) | 8.22 | 39.64 | 14.95 |
-| ours | MMS-1b-all kat adapter FT | 22.00 (21.2–23.0) | 3.63 | 26.02 | 5.65 |
-| ours | Whisper-large-v3-turbo full FT | 12.80 (12.0–13.7) | 2.60 | 27.47 | 12.15 |
-| ours + decoder | MMS kat adapter FT + our 3-gram LM | **11.07** (10.5–11.7) | **2.13** | 19.28 (18.1–20.5) | **4.64** |
-| ablation | MMS kat zero-shot + our 3-gram LM | 13.50 (12.7–14.4) | 3.08 | 18.36 (17.3–19.5) | 3.81 |
-| ours | Whisper-large-v3-turbo full FT, retrain r2 | 12.71 (11.9–13.6) | 2.59 | 27.33 (25.5–29.3) | 12.17 |
+| ours (round 1) | MMS-1b-all kat adapter FT | 22.00 (21.2–23.0) | 3.63 | 26.02 | 5.65 |
+| ours (round 1) | Whisper-large-v3-turbo full FT | **12.80** (12.0–13.7) | **2.60** | 27.47 | 12.15 |
+| *round 2, follow-up on a reused test set:* | | | | | |
+| ours + decoder | MMS kat adapter FT + beam 100 + our 3-gram LM | **11.07** (10.5–11.7) | **2.13** | 19.28 (18.1–20.5) | 4.64 |
+| baseline + our decoder | MMS kat zero-shot + beam 100 + our 3-gram LM (ablation) | 13.50 (12.7–14.4) | 3.08 | **18.36** (17.3–19.5) | **3.81** |
+| ours | Whisper-large-v3-turbo full FT, retrain r2 (same recipe) | 12.71 (11.9–13.6) | 2.59 | 27.33 (25.5–29.3) | 12.17 |
 | ours + decoder | r2 + 14 s chunks (selected on dev) | 12.84 (12.0–13.7) | 2.70 | 30.00 (27.8–32.3) | 13.95 |
+
+Bold = best value in its column within its block (round 1 and round 2 are bolded separately). NVIDIA's CV row is in
+italics because it is contaminated and excluded from every comparison.
 
 Speed (RTFx on CV test): MMS 283 (L4), turbo FT 87 (A100), MMS FT + LM 374 (RTX 4070 SUPER + 12 CPU workers),
 GMM-HMM 33 (8 CPU jobs). Plain r2 and chunked r2 both run at about 87 RTFx on CV test (A100).
 
-Key paired differences (test, Δ WER = reference − ours, 95 % CI):
+Key paired differences on test. One convention throughout: **Δ = WER(reference system) − WER(our system)**, in
+percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means ours has fewer errors.**
 
+*Primary (round 1, blind test):*
 - **CV ka**:
-  - Our best (MMS FT + LM) vs the best clean pretrained baseline (MMS zero-shot): **−13.1 points**, from 24.14 % to 11.07 %
-    (Δ 13.07).
-  - Turbo FT vs MMS zero-shot: Δ 11.34 (10.91–11.75).
-  - MMS FT + LM vs turbo FT: Δ 1.73 (1.33–2.12).
-  - MMS FT + LM vs MMS zero-shot + LM: Δ 2.44 (2.16–2.74). That is the fine-tune's share once both use the LM.
+  - Turbo FT vs its own pretrained checkpoint: Δ +129.35 (126.21–132.60), from 142.14 % to 12.80 %.
+  - Turbo FT vs the best non-contaminated pretrained baseline (MMS zero-shot): **Δ +11.34 (10.91–11.75)**, from
+    24.14 % to 12.80 %.
+  - Turbo FT vs our Kaldi GMM-HMM: Δ +9.85 (9.28–10.45).
+  - MMS adapter FT vs MMS zero-shot: Δ +2.13 (1.89–2.35).
+- **FLEURS ka** (out of domain for our CV training):
+  - Turbo FT vs MMS zero-shot: Δ −2.15 (−3.92 to −0.45). Our fine-tune is worse here (§5.2).
+  - Turbo FT vs NVIDIA: Δ −11.99. NVIDIA has the best FLEURS WER.
+  - MMS adapter FT vs MMS zero-shot: Δ −0.69 (−1.23 to −0.15).
+
+*Follow-up (round 2, reused test set):*
+- **CV ka**:
+  - MMS FT + beam + LM vs MMS zero-shot (greedy): Δ +13.07 (12.58–13.59), from 24.14 % to 11.07 %.
+  - MMS FT + beam + LM vs MMS FT (greedy): Δ +10.94 (10.48–11.41). This is the gain from the *decoder change*
+    (beam search + word LM + unpadded frames), not from the LM alone (§5.4).
+  - MMS FT + beam + LM vs MMS zero-shot + beam + LM: Δ +2.44 (2.16–2.74). This is the fine-tune's share when both
+    systems use the same decoder.
+  - MMS FT + beam + LM vs turbo FT: Δ +1.73 (1.33–2.12).
   - Chunked r2 vs plain r2: Δ −0.13 (−0.24 to −0.04), so chunking slightly worsens WER.
 - **FLEURS ka**:
-  - MMS FT + LM vs MMS zero-shot: Δ 6.04.
-  - vs NVIDIA: −3.79 (−4.57 to −2.96), so NVIDIA keeps the best FLEURS WER.
-  - Our CER is lower than NVIDIA's: 4.64 vs 5.32 %, Δ 0.67 (0.33–1.05).
-  - Chunked r2 vs plain r2: Δ −2.67 (−4.96 to −0.38). Plain r2 vs original turbo FT: Δ 0.15
-    (−0.26 to 0.55), with no clear retrain improvement.
+  - MMS FT + beam + LM vs MMS zero-shot (greedy): Δ +6.05 (5.16–6.98).
+  - MMS FT + beam + LM vs NVIDIA: Δ −3.79 (−4.57 to −2.96), so NVIDIA keeps the best FLEURS WER. On CER ours is
+    lower: 4.64 vs 5.32 %, Δ +0.67 (0.33–1.05).
+  - Chunked r2 vs plain r2: Δ −2.67 (−4.96 to −0.38).
+  - Plain r2 vs the original turbo FT: Δ +0.15 (−0.26 to 0.55). This is two training runs with the same recipe and
+    seed (§6).
 
 ## 5. Error analysis (summary of `docs/error-analysis-georgian.md`)
 
@@ -153,22 +199,27 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
 2. **Digits.** CV ka train has no digits (0 of 99,768 transcripts), while 20 % of FLEURS references have them.
    Our fine-tunes learned the CV convention and spell numbers out. Turbo FT: 39 % WER on clips with digits vs 24 % on
    the rest. The primary policy does not verbalize numbers (it was declared before any run), so this counts as error.
-   The same effect is why MMS zero-shot + LM beats MMS FT + LM on FLEURS (18.36 vs 19.28 %).
+   The same effect explains most of why MMS zero-shot + LM beats MMS FT + LM on FLEURS (18.36 vs 19.28 %). The
+   197 clips with digits hold 121 of the 158 extra errors (77 %). On the 782 clips without digits the fine-tune is
+   still slightly worse (17.17 vs 16.89 %), so digits are the main cause but not the only one.
 3. **Hallucination loops.**
    - Whisper-small loops on 44 % of CV clips, and those loops produce 99 % of its insertions.
    - Turbo zero-shot loops on 6 % of CV clips and writes some outputs in Latin transliteration.
    - Both stay above 100 % WER even without the loops: their "support" for Georgian is not usable.
    - Fine-tuning removes the loops (11 of 14,258 clips).
-4. **The LM matters most, and why.**
+4. **The decoder matters most, and why.** "LM" below means the round-2 decoder change as a whole: greedy → beam 100,
+   plus the word trigram, decoding unpadded frames. §5.8 splits that gain into its parts on dev.
    - About half of the CTC models' substitutions are one character away from the reference word.
-   - A word LM trained only on CV train text fixes most of these: −10.6 points for MMS zero-shot and −10.9 for our
-     MMS FT on CV.
+   - Beam search with a word LM trained only on CV train text fixes most of these: −10.6 points for MMS zero-shot
+     and −10.9 for our MMS FT on CV test.
    - The closed-vocabulary GMM-HMM shows the other side. On clips without OOV words it reaches 14.5 % WER, but it
      cannot output the 6–15 % of OOV tokens. Only 24 % of its substitutions are near misses; its CER is twice
      MMS's.
 5. **Contamination.** NVIDIA's WER is 1.8–4.2 % on older CV clip IDs and 23 % on the newest. Other systems degrade
-   only 1.5–3× on the newest IDs. Its CV row therefore reflects training-data overlap (CV 17.0 incl. dev). Only its
-   FLEURS row is a fair comparison.
+   only 1.5–3× on the newest IDs. NVIDIA trained on CV 17.0 train/dev/other, so its CV row most likely reflects
+   overlap with its training clips. We cannot prove which clips it saw, because the card lists no clip IDs. Its CV
+   row is therefore excluded from every comparison, and only its FLEURS row (FLEURS test held out per its card) is
+   used.
 6. **Speakers.**
    - 139 training speakers generalize to 1,058 unseen test speakers. Per-speaker WER of turbo FT: median 9.3 %,
      90th percentile 23.7 %.
@@ -187,9 +238,11 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
   rebuilt exactly from its backed-up adapter: 405/409 hypotheses are identical, and the rest differ through fp16 on a
   different GPU. The r2 final checkpoint and tokenizer are backed up locally under `checkpoints/` (gitignored);
   the model SHA256 matches the Colab source (`runs/train_whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/checkpoint_backup.json`).
-- **One training seed per fine-tune** (seed 42). The only run-to-run check is r1 vs r2: same config and seed, but a
-  different, non-deterministic GPU run. They differ by 0.08 WER points (95 % CI −0.06 to 0.24) on CV test. This bounds
-  hardware noise, not seed variance. The CIs above cover test-set sampling only, not training variance.
+- **Training variance.** All the CIs above cover test-set sampling for fixed checkpoints, not training variance.
+  Turbo r1 and r2 are two training runs with the same recipe and seed. Their CV test WERs differ by 0.08 points;
+  the CI (−0.06 to 0.24) is only the test-sampling uncertainty of that difference. Two runs cannot estimate
+  training variance. For our best system (MMS adapter FT, ± decoder), seeds 7 and 13 were therefore trained as
+  well (round 3, §4).
 - **Speed is not comparable across rows.** RTFx was measured on different hardware (A100, L4, RTX 4070 SUPER, CPU)
   as each run happened. It shows the order of magnitude per system, not a ranking. Each row lists its hardware.
 - **LM rows** use only CV train text (no external text), so they show what the training data alone can give. A
