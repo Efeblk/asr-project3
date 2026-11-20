@@ -31,6 +31,13 @@ config is frozen with `frozen: true` before its test run, and each test is run o
 runs that are not frozen). Generated fine-tune and decoder configs follow the pre-committed rules. Where a choice was made on dev, the candidate grid and the selection rule were committed
 before the dev runs (commits 0c0d0e4, 2dd4397, 78ed0a1, 02d561f).
 
+**Two rounds, stated openly.** Round 1 (19 Nov) was all baselines plus both fine-tunes, with every test config
+frozen before any Georgian test run; its test set was blind. Round 2 (20 Nov) added the word LM decoder and chunked
+decoding. Their *ideas* came from the round-1 error analysis, which was done on test outputs (commit ea2f5c5). All
+their settings were then selected on dev only, by rules committed before the dev runs, and each was tested once.
+Because test errors motivated round 2, its test numbers are not fully blind. Its dev results tell the same story:
+on CV dev the LM gives −11.1 points and chunking gives 0.0.
+
 ## 2. Metrics and why (HF audio course, chapter 5 "Evaluation")
 
 Source: <https://huggingface.co/learn/audio-course/en/chapter5/evaluation> (as required by announcement A3).
@@ -180,6 +187,11 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
   rebuilt exactly from its backed-up adapter: 405/409 hypotheses are identical, and the rest differ through fp16 on a
   different GPU. The r2 final checkpoint and tokenizer are backed up locally under `checkpoints/` (gitignored);
   the model SHA256 matches the Colab source (`runs/train_whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/checkpoint_backup.json`).
+- **One training seed per fine-tune** (seed 42). The only run-to-run check is r1 vs r2: same config and seed, but a
+  different, non-deterministic GPU run. They differ by 0.08 WER points (95 % CI −0.06 to 0.24) on CV test. This bounds
+  hardware noise, not seed variance. The CIs above cover test-set sampling only, not training variance.
+- **Speed is not comparable across rows.** RTFx was measured on different hardware (A100, L4, RTX 4070 SUPER, CPU)
+  as each run happened. It shows the order of magnitude per system, not a ranking. Each row lists its hardware.
 - **LM rows** use only CV train text (no external text), so they show what the training data alone can give. A
   larger Georgian text corpus would likely help further, but it would need deduplication against dev/test.
 - **Chunking is a negative result.** The dev grid selected the best chunk candidate, not an improvement over plain

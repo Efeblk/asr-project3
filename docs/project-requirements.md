@@ -10,6 +10,12 @@ The searchable text, including the speaker notes, is in `materials/text/week09-a
 > The decks say "the project"; A1 calls it "Project 3", which confirms they are the same project.
 >
 > **Deadline: Monday 2026-11-23** (told by the student on 2026-11-19). **Still unknown:** grading breakdown (beyond the bonus dimensions in §0), report format, and presentation date/length/format. A1 confirms there will be **presentations**. When more details arrive, add them to `materials/course/` and update this file.
+>
+> **Likely rubric (from Project 2's grade sheet, shown by the student on 2026-11-21):** Technical Depth, Fluency, Pace,
+> Data Novelty, Problem Novelty, Rigor, Correctness. Fluency and Pace are presentation criteria, so **the presentation
+> is graded**. Our P2 marks lost the most on Technical Depth (3.5), Correctness (3.5) and Rigor (4.5); no written
+> feedback was given. P3 checks against this: blind test or an open disclosure, seed and hardware caveats,
+> contamination checks, human references only, no data leaks (A2 is graded under Correctness).
 
 ## 0. What A1 changed (read this first)
 
