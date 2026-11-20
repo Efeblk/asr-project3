@@ -107,8 +107,13 @@ a neural system beats it.
 older CV train/dev split may have heard clips that are in CV 27.0 test. Model cards do not list clip IDs, so exact
 clip overlap cannot be joined. `scripts/cv_contamination.py` tests it indirectly, by WER per clip-ID age (§5.5).
 Every system is worse on the newest clips, which seem harder: MMS, the GMM-HMM and our turbo FT by about 1.5–3×.
-NVIDIA is worse by up to 13× (1.8 → 23.0 %), the pattern expected from training-set overlap. Every fine-tune of
-ours inherits its base model's exposure.
+NVIDIA is worse by up to 13× (1.8 → 23.0 %), the pattern expected from training-set overlap. The round-3 speed
+slice (the 500 oldest CV dev clips) exposed a second case. xsway scores **9.35 %** on those clips against
+45.89 % on the rest of dev, consistent with its fine-tuning on an old CV train + *validation* split whose clips
+now sit in CV 27.0 dev. On the 500 oldest *test* clips it shows no such gap (47.15 vs 46.23 %), so its test
+rows stand. Its dev rows are contaminated, but no choice was made from them. No other system shows a gap on the
+oldest 500 clips of either split (all within ±2.4 points). Every fine-tune of ours inherits its base model's
+exposure.
 
 Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `nvidia/parakeet-tdt-0.6b-v3`,
 `Qwen/Qwen3-ASR-1.7B` / `0.6B` (links in `README.md`). No HuBERT + CTC checkpoint for Georgian was found.
@@ -165,8 +170,29 @@ comparison are there). WER / CER in %, 95 % CI on WER.
 Bold = best value in its column within its block (round 1 and round 2 are bolded separately). NVIDIA's CV row is in
 italics because it is contaminated and excluded from every comparison.
 
-Speed (RTFx on CV test): MMS 283 (L4), turbo FT 87 (A100), MMS FT + LM 374 (RTX 4070 SUPER + 12 CPU workers),
-GMM-HMM 33 (8 CPU jobs). Plain r2 and chunked r2 both run at about 87 RTFx on CV test (A100).
+**Speed on one GPU (round 3, pre-registered).** Every system was run on the same RTX 4070 SUPER (WSL), on the
+same 500 CV dev clips (48.8 min of audio, the first 500 by clip ID), with batch 8 and each system's frozen
+precision and decoder. The timer covers forward + decoding after a warm-up pass, CUDA-synchronized, and for LM rows
+it includes the CPU beam search (12 workers). Runs: `runs/speed4070_*`.
+
+| System | RTFx (higher = faster) | Precision |
+|---|---|---|
+| XLS-R-300M xsway (CTC, greedy) | 788 | fp16 |
+| MMS-1b-all + kat (CTC, greedy) | 382 | fp16 |
+| MMS adapter FT (ours, greedy) | 357 | fp16 |
+| MMS zero-shot + beam 100 + LM | 341 | fp16 + CPU search |
+| MMS adapter FT + beam 100 + LM (ours) | 340 | fp16 + CPU search |
+| NVIDIA FastConformer (transducer) | 253 | fp32 |
+| Whisper-large-v3-turbo FT r2 (ours) | 40 | fp16 |
+| … + 14 s chunks (no clip > 14 s in this slice, so no chunking happened) | 39 | fp16 |
+| Whisper-large-v3-turbo zero-shot | 23 | fp16 |
+| Whisper-small zero-shot | 14 | fp16 |
+| Whisper-large-v3 zero-shot | 12 | fp16 |
+| Kaldi GMM-HMM tri3b (CPU, 8 jobs; different timing boundary, §2) | 33 on CV test | CPU |
+
+The CTC systems are an order of magnitude faster than Whisper. The beam + LM search costs MMS only about 5 % of
+its speed. Zero-shot Whisper-small and -turbo are slower than larger fine-tuned models because they loop and
+generate up to the token limit. Speed here is throughput (RTFx), not streaming latency.
 
 Key paired differences on test. One convention throughout: **Δ = WER(reference system) − WER(our system)**, in
 percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means ours has fewer errors.**

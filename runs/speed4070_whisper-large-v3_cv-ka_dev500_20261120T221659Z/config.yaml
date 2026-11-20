@@ -1,0 +1,17 @@
+name: speed4070_whisper-large-v3_cv-ka_dev500
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3
+  revision: 06f233fe06e710322aca913c1bc4249a0d71fce1
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+limit: 500
