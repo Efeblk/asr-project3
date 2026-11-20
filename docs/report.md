@@ -70,9 +70,17 @@ Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `
    pair is applied to MMS zero-shot as an ablation.
 4. **Whisper-turbo retrain r2 + chunked decoding** (decoder row; §5.1): training finished at step 6000,
    with 17.32 % WER on the 300-clip CV dev selection subset (225-token training evaluation cap).
-   Full plain dev/test evaluation and chunk-length selection are pending. The pre-committed candidates are
-   8, 11 and 14 seconds; select the lowest mean CV/FLEURS dev WER, breaking ties toward longer chunks.
+   The pre-committed candidates were 8, 11 and 14 seconds. The rule selected **14 seconds** by lowest mean
+   CV/FLEURS dev WER, breaking ties toward longer chunks.
    Plain and chunked r2 results use the same weights, isolating the decoding change from the retrain.
+   Selection was restricted to those chunk candidates; plain decoding was better on dev.
+
+   | Decoder | CV dev WER (%) | FLEURS dev WER (%) |
+   |---|---|---|
+   | Plain r2 | 11.92 | 24.86 |
+   | 8 s chunks | 34.09 | 55.78 |
+   | 11 s chunks | 12.82 | 40.08 |
+   | 14 s chunks (selected) | 11.92 | 27.87 |
 
 ## 4. Results (test, frozen, run once)
 
@@ -92,9 +100,11 @@ comparison are there). WER / CER in %, 95 % CI on WER.
 | ours | Whisper-large-v3-turbo full FT | 12.80 (12.0–13.7) | 2.60 | 27.47 | 12.15 |
 | ours + decoder | MMS kat adapter FT + our 3-gram LM | **11.07** (10.5–11.7) | **2.13** | 19.28 (18.1–20.5) | **4.64** |
 | ablation | MMS kat zero-shot + our 3-gram LM | 13.50 (12.7–14.4) | 3.08 | 18.36 (17.3–19.5) | 3.81 |
+| ours | Whisper-large-v3-turbo full FT, retrain r2 | 12.71 (11.9–13.6) | 2.59 | 27.33 (25.5–29.3) | 12.17 |
+| ours + decoder | r2 + 14 s chunks (selected on dev) | 12.84 (12.0–13.7) | 2.70 | 30.00 (27.8–32.3) | 13.95 |
 
 Speed (RTFx on CV test): MMS 283 (L4), turbo FT 87 (A100), MMS FT + LM 374 (RTX 4070 SUPER + 12 CPU workers),
-GMM-HMM 33 (8 CPU jobs).
+GMM-HMM 33 (8 CPU jobs). Plain r2 and chunked r2 both run at about 87 RTFx on CV test (A100).
 
 Key paired differences (test, Δ WER = reference − ours, 95 % CI):
 
@@ -104,20 +114,26 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
   - Turbo FT vs MMS zero-shot: Δ 11.34 (10.91–11.75).
   - MMS FT + LM vs turbo FT: Δ 1.73 (1.33–2.12).
   - MMS FT + LM vs MMS zero-shot + LM: Δ 2.44 (2.16–2.74). That is the fine-tune's share once both use the LM.
+  - Chunked r2 vs plain r2: Δ −0.13 (−0.24 to −0.04), so chunking slightly worsens WER.
 - **FLEURS ka**:
   - MMS FT + LM vs MMS zero-shot: Δ 6.04.
   - vs NVIDIA: −3.79 (−4.57 to −2.96), so NVIDIA keeps the best FLEURS WER.
   - Our CER is lower than NVIDIA's: 4.64 vs 5.32 %, Δ 0.67 (0.33–1.05).
+  - Chunked r2 vs plain r2: Δ −2.67 (−4.96 to −0.38). Plain r2 vs original turbo FT: Δ 0.15
+    (−0.26 to 0.55), with no clear retrain improvement.
 
 ## 5. Error analysis (summary of `docs/error-analysis-georgian.md`)
 
 1. **Whisper's token budget truncates Georgian.**
    - Whisper's byte-level BPE has almost no Georgian merges: a word costs ~20.6 tokens and a second of speech ~30.
    - The decoder's 448-token window therefore holds only ~14.5 s of Georgian.
-   - No CV clip is that long, but 22 % of FLEURS test references are.
+   - No CV test reference exceeds the token budget, but 22 % of FLEURS test references do.
    - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more.
    - On FLEURS clips of up to 20 words, our turbo FT beats MMS in every length bucket (21–22 % vs 25–29 %).
-   - Chunking long clips at pauses is intended to reduce truncation; the r2 decoder evaluation is pending.
+   - The frozen r2 chunking study reduced FLEURS word deletions from 1,384 to 489, but insertions rose from
+     188 to 1,441. WER worsened from 27.33 to 30.00 % and CER from 12.17 to 13.95 %. This pause-based
+     splitting implementation therefore did not improve the system; the truncation diagnosis alone was
+     insufficient to establish a useful decoder change.
 2. **Digits.** CV ka train has no digits (0 of 99,768 transcripts), while 20 % of FLEURS references have them.
    Our fine-tunes learned the CV convention and spell numbers out. Turbo FT: 39 % WER on clips with digits vs 24 % on
    the rest. The primary policy does not verbalize numbers (it was declared before any run), so this counts as error.
@@ -157,6 +173,9 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
   the model SHA256 matches the Colab source (`runs/train_whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/checkpoint_backup.json`).
 - **LM rows** use only CV train text (no external text), so they show what the training data alone can give. A
   larger Georgian text corpus would likely help further, but it would need deduplication against dev/test.
+- **Chunking is a negative result.** The dev grid selected the best chunk candidate, not an improvement over plain
+  decoding. We report that frozen variant alongside plain r2 and keep the stronger existing systems as our main
+  results. No further training or decoder experiments are planned.
 
 ## 7. Reproducing
 

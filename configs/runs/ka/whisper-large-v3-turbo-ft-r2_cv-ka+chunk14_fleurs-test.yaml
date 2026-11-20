@@ -1,0 +1,19 @@
+# Georgian, OURS + decoding change: whisper-large-v3-turbo-ft-r2_cv-ka_fleurs-test.yaml with long clips split at pauses into <= 14 s
+# pieces (scripts/chunk_select.py). FROZEN TEST RUN, run once; chunk selected on dev (whisper-large-v3-turbo-ft-r2_cv-ka+chunk-selection.yaml).
+name: whisper-large-v3-turbo-ft-r2_cv-ka+chunk14_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 32
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+  chunk_seconds: 14
+frozen: true

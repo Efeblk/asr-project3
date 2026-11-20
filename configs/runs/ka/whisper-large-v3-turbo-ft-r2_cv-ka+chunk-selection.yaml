@@ -1,0 +1,17 @@
+model: whisper-large-v3-turbo-ft-r2_cv-ka
+rule: min mean(CV dev WER, FLEURS dev WER); ties -> longer chunk
+candidates:
+- 8
+- 11
+- 14
+dev_wer:
+  8:
+    cv: 34.09
+    fleurs: 55.78
+  11:
+    cv: 12.82
+    fleurs: 40.08
+  14:
+    cv: 11.92
+    fleurs: 27.87
+selected: 14

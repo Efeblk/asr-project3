@@ -51,11 +51,18 @@ budget, and their deletion rate stays flat (§2).
 The same budget explains why the in-training dev CER looked inflated. In-training evaluation capped generation at 225
 tokens, about 7 s of Georgian speech. The final evaluation used the model's full 448.
 
-**Follow-up (evaluation pending):** r2 was retrained because the original turbo weights were not kept.
+**Follow-up (completed, negative result):** r2 was retrained because the original turbo weights were not kept.
 `scripts/chunk_select.py` evaluates 8/11/14-second chunks split at low-energy points, selects the lowest mean
 CV/FLEURS dev WER (ties toward longer chunks), and freezes that choice before test. Plain and chunked r2
 rows use the same weights. The candidate grid and rule were committed in 78ed0a1 before the chunked dev runs;
 no chunk length is selected using test results.
+
+The selected 14-second candidate worsened FLEURS test WER from **27.33 % (plain r2) to 30.00 %**, and CER
+from 12.17 to 13.95 %. Word deletions fell from 1,384 to 489, but insertions rose from 188 to 1,441
+(same 17,138 reference words). Splitting addresses truncation while introducing more errors elsewhere.
+CV test also worsened slightly (12.71 to 12.84 % WER). Shorter chunks were worse on dev: 8 s gave
+34.09/55.78 % CV/FLEURS WER, 11 s gave 12.82/40.08 %, and 14 s gave 11.92/27.87 %; plain r2 gave
+11.92/24.86 %. This implementation is not an effective fix. The study is closed with no further tuning.
 
 ## 2. Digits: a mismatch between the training and test text conventions
 
@@ -159,7 +166,8 @@ agglutinative language, a single letter in a suffix makes the whole word wrong.
   ahead of turbo FT (12.80 %). Turbo FT alone improves over MMS zero-shot by 11.3 points (CI 10.9–11.8).
 - **On FLEURS ka,** our greedy fine-tunes trail NVIDIA and roughly match MMS. Two major causes are:
   Whisper's token budget for Georgian (§1) and the digit convention (§2). The later MMS FT + LM row reaches
-  19.28 % WER, still behind NVIDIA's 15.49 %, with lower CER (4.64 vs 5.32 %). Chunking evaluation is pending.
+  19.28 % WER, still behind NVIDIA's 15.49 %, with lower CER (4.64 vs 5.32 %). The completed chunking study
+  worsened WER and CER; it does not change the main system ranking.
 - **For the classical baseline,** the GMM-HMM shows how much a word-level n-gram LM is worth on CV's narrow-domain
   read speech. The original neural CTC rows use no LM; the later matched MMS rows with the same CV-train LM
   separate the benefit of train-text decoding from adapter fine-tuning (`docs/results-georgian.md`).

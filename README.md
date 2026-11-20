@@ -94,7 +94,10 @@ The harness enforces these rules:
 
 ## Docs
 
-- Report draft: [docs/report.md](docs/report.md); Georgian results: [docs/results-georgian.md](docs/results-georgian.md)
+- Final report: [docs/report.md](docs/report.md); Georgian results: [docs/results-georgian.md](docs/results-georgian.md).
+  All queued r2 evaluations are complete. Dev selected 14 s chunks; they worsened test performance, so the
+  plain and decoder rows are reported separately. The r2 checkpoint is backed up locally with a verified SHA256
+  (`runs/train_whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/checkpoint_backup.json`). Training is closed.
 - Project rules and deliverables: [docs/project-requirements.md](docs/project-requirements.md)
 - Metrics, model families and code recipes: [docs/asr-methods-cheatsheet.md](docs/asr-methods-cheatsheet.md)
 - Course materials and what's in them: [materials/INDEX.md](materials/INDEX.md)

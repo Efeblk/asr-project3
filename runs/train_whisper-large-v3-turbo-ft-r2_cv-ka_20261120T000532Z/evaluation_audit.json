@@ -1,0 +1,126 @@
+{
+  "checks": "12 runs; full unique ID/reference coverage within dataset/split; identical scoring policies; frozen tests; selected configs present",
+  "selected_chunk_seconds": 14,
+  "runs": [
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk11_cv-ka_dev_20261120T031918Z",
+      "dataset": "cv",
+      "split": "dev",
+      "raw_items": 14216,
+      "scored_items": 14216,
+      "silent_items": 0,
+      "wer": 0.12816596899581398,
+      "cer": 0.030905030214039012
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk11_fleurs-ka_dev_20261120T033634Z",
+      "dataset": "fleurs",
+      "split": "dev",
+      "raw_items": 409,
+      "scored_items": 409,
+      "silent_items": 0,
+      "wer": 0.40075642965204233,
+      "cer": 0.24631925973101562
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk14_cv-ka_dev_20261120T033731Z",
+      "dataset": "cv",
+      "split": "dev",
+      "raw_items": 14216,
+      "scored_items": 14216,
+      "silent_items": 0,
+      "wer": 0.11920511523069138,
+      "cer": 0.02280831836746598
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk14_cv-ka_test_20261120T035547Z",
+      "dataset": "cv",
+      "split": "test",
+      "raw_items": 14259,
+      "scored_items": 14258,
+      "silent_items": 1,
+      "wer": 0.1284032615652916,
+      "cer": 0.026983575511093854
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk14_fleurs-ka_dev_20261120T035454Z",
+      "dataset": "fleurs",
+      "split": "dev",
+      "raw_items": 409,
+      "scored_items": 409,
+      "silent_items": 0,
+      "wer": 0.27866868381240545,
+      "cer": 0.12121155359082905
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk14_fleurs-ka_test_20261120T041312Z",
+      "dataset": "fleurs",
+      "split": "test",
+      "raw_items": 979,
+      "scored_items": 979,
+      "silent_items": 0,
+      "wer": 0.2999766600536819,
+      "cer": 0.1394777512101242
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk8_cv-ka_dev_20261120T025927Z",
+      "dataset": "cv",
+      "split": "dev",
+      "raw_items": 14216,
+      "scored_items": 14216,
+      "silent_items": 0,
+      "wer": 0.3409080454482727,
+      "cer": 0.22108801949133625
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka+chunk8_fleurs-ka_dev_20261120T031814Z",
+      "dataset": "fleurs",
+      "split": "dev",
+      "raw_items": 409,
+      "scored_items": 409,
+      "silent_items": 0,
+      "wer": 0.5577912254160363,
+      "cer": 0.38187914434495934
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka_cv-ka_dev_20261120T022120Z",
+      "dataset": "cv",
+      "split": "dev",
+      "raw_items": 14216,
+      "scored_items": 14216,
+      "silent_items": 0,
+      "wer": 0.11919591517549105,
+      "cer": 0.022801587933678306
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka_cv-ka_test_20261120T023948Z",
+      "dataset": "cv",
+      "split": "test",
+      "raw_items": 14259,
+      "scored_items": 14258,
+      "silent_items": 1,
+      "wer": 0.1271138486655968,
+      "cer": 0.025893605280905764
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka_fleurs-ka_dev_20261120T023849Z",
+      "dataset": "fleurs",
+      "split": "dev",
+      "raw_items": 409,
+      "scored_items": 409,
+      "silent_items": 0,
+      "wer": 0.24856278366111953,
+      "cer": 0.10332296856853856
+    },
+    {
+      "run": "whisper-large-v3-turbo-ft-r2_cv-ka_fleurs-ka_test_20261120T025730Z",
+      "dataset": "fleurs",
+      "split": "test",
+      "raw_items": 979,
+      "scored_items": 979,
+      "silent_items": 0,
+      "wer": 0.2732524215194305,
+      "cer": 0.12168309325246399
+    }
+  ]
+}
