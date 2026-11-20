@@ -45,7 +45,7 @@ def hardware() -> dict:
 
 
 def capture() -> dict:
-    status = _git("status", "--porcelain")
+    status = _git("status", "--porcelain", "--untracked-files=no")  # run outputs are untracked until committed
     return {
         "git_commit": _git("rev-parse", "HEAD"),
         "git_dirty": bool(status) if status is not None else None,

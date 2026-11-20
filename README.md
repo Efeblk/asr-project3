@@ -29,8 +29,18 @@ attention encoder-decoder), wav2vec 2.0 + CTC (`xsway/wav2vec2-large-xlsr-georgi
 the `kat` adapter), transducer (`nvidia/stt_ka_fastconformer_hybrid_large_pc`, FastConformer hybrid
 Transducer-CTC) and an MFCC + GMM-HMM that we train from scratch with the standard Kaldi recipe on CPU
 ([`recipes/kaldi-gmm-ka/`](recipes/kaldi-gmm-ka/README.md): graphemic lexicon, trigram LM on CV train text, LDA+MLLT+SAT
-triphones; reported as a baseline row). No HuBERT + CTC checkpoint for Georgian was found. Exact revisions are
-in every run manifest.
+triphones; reported as a baseline row). No HuBERT + CTC checkpoint for Georgian was found.
+
+Exact checkpoints and revisions (also in every run manifest):
+
+| Checkpoint | Revision |
+|---|---|
+| `openai/whisper-small` | `973afd24965f72e36ca33b3055d56a652f456b4d` |
+| `openai/whisper-large-v3` | `06f233fe06e710322aca913c1bc4249a0d71fce1` |
+| `openai/whisper-large-v3-turbo` | `41f01f3fe87f28c78e2fbf8b568835947dd65ed9` |
+| `xsway/wav2vec2-large-xlsr-georgian` | `b29b81945f5fa2e35fbb05da5256815d8cc71e20` |
+| `facebook/mms-1b-all` (adapter `kat`) | `3d33597edbdaaba14a8e858e2c8caa76e3cec0cd` |
+| `nvidia/stt_ka_fastconformer_hybrid_large_pc` | `bdfd7871e0574001e650e741d6201d40205db6bb` |
 
 ## Setup
 

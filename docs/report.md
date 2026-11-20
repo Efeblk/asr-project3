@@ -92,7 +92,16 @@ Source: <https://huggingface.co/learn/audio-course/en/chapter5/evaluation> (as r
 | wav2vec 2.0 + CTC | `xsway/wav2vec2-large-xlsr-georgian` (b29b819) | greedy CTC | CV ka **train + validation**, version not stated (model card) |
 | wav2vec 2.0 + CTC | `facebook/mms-1b-all` + `kat` adapter (3d33597) | greedy CTC | FLEURS (Hub card); the MMS paper (Pratap et al., JMLR 2024) also lists Common Voice for the 1162-language model; splits and versions not stated |
 | Transducer | `nvidia/stt_ka_fastconformer_hybrid_large_pc` (bdfd787) | NeMo, RNN-T head | CV **17.0** train + dev + other, FLEURS train + dev; FLEURS test held out (model card) |
-| MFCC + GMM-HMM | Kaldi tri3b, **trained by us from scratch** (`recipes/kaldi-gmm-ka/`) | lattice, word trigram LM | CV 27.0 ka train only (audio and LM text) |
+| MFCC + GMM-HMM | Kaldi tri3b, **trained by us from scratch** (`recipes/kaldi-gmm-ka/`) | lattice, word trigram LM; per-speaker CMVN + two-pass fMLLR (see below) | CV 27.0 ka train only (audio and LM text) |
+
+**The GMM-HMM uses test-time speaker grouping; the neural systems do not.** Following the standard Kaldi SAT
+recipe, tri3b pools each test speaker's utterances (CV `client_id`) for CMVN statistics and unsupervised two-pass
+fMLLR adaptation. That is side information no neural system receives: they decode every clip independently. Its
+strength varies by set. CV test averages 13.5 utterances per speaker and CV dev 64.3. FLEURS has no speaker IDs,
+so there the adaptation runs per utterance. The speaker-independent tri2b (per-speaker CMVN only) is 4.6 points
+worse on CV dev (24.88 vs 20.29 %), which shows roughly how much the adaptation is worth. Every comparison with
+the GMM-HMM should be read with this in mind. It favours the GMM-HMM, so it does not weaken any conclusion that
+a neural system beats it.
 
 "Overlap" means the same *corpus*. Common Voice versions reshuffle clips between releases, so a model trained on an
 older CV train/dev split may have heard clips that are in CV 27.0 test. Model cards do not list clip IDs, so exact
@@ -119,6 +128,10 @@ Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `
    CV/FLEURS dev WER, breaking ties toward longer chunks.
    Plain and chunked r2 results use the same weights, isolating the decoding change from the retrain.
    Selection was restricted to those chunk candidates; plain decoding was better on dev.
+   The splitter cuts at the quietest point in the last 40 % of each window, with no overlap, and joins the pieces with a space.
+   That deviates from the course's long-audio advice (S70/L39: overlapping chunks and a frozen merge policy).
+   §5.1 shows that this choice, not chunking as such, caused the failure. Only 1 CV dev and 7 CV test clips exceed
+   14 s, so on CV "chunking gives 0.0" mostly means it was hardly used.
 
    | Decoder | CV dev WER (%) | FLEURS dev WER (%) |
    |---|---|---|
@@ -193,12 +206,31 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    - Whisper's byte-level BPE has almost no Georgian merges: a word costs ~20.6 tokens and a second of speech ~30.
    - The decoder's 448-token window therefore holds only ~14.5 s of Georgian.
    - No CV test reference exceeds the token budget, but 22 % of FLEURS test references do.
-   - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more.
+   - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more. Part of the latter
+     comes from the long-form bug (item 8), which hit exactly the 32 longest FLEURS clips.
    - On FLEURS clips of up to 20 words, our turbo FT beats MMS in every length bucket (21–22 % vs 25–29 %).
    - The frozen r2 chunking study reduced FLEURS word deletions from 1,384 to 489, but insertions rose from
-     188 to 1,441. WER worsened from 27.33 to 30.00 % and CER from 12.17 to 13.95 %. This pause-based
-     splitting implementation therefore did not improve the system; the truncation diagnosis alone was
-     insufficient to establish a useful decoder change.
+     188 to 1,441. WER worsened from 27.33 to 30.00 % and CER from 12.17 to 13.95 %.
+   - **Why chunking failed** (FLEURS test, plain r2 → r2 + 14 s chunks, by clip duration):
+
+     | Duration | Clips | WER (%) | Insertions | Clips with a repetition loop |
+     |---|---|---|---|---|
+     | < 14 s (not split) | 782 | 22.8 → 22.8 | 138 → 138 | 0 → 0 |
+     | 14–15 s | 53 | 25.9 → **98.3** | 9 → 888 | 0 → **41** |
+     | 15–16 s | 50 | 32.3 → 42.3 | 13 → 232 | 0 → 7 |
+     | 16–20 s | 72 | 40.4 → **25.7** | 24 → 122 | 0 → 0 |
+     | 20–25 s | 15 | 53.5 → **27.9** | 4 → 40 | 0 → 1 |
+     | ≥ 25 s | 7 | 60.8 → **28.7** | 0 → 21 | 0 → 0 |
+
+     A clip just over 14 s is cut somewhere in 8.4–14 s. When the quietest point falls late, which the loops in
+     the 14–15 s row suggest, the second piece is a short tail of at most a few seconds, often mostly silence.
+     Whisper fills such a tail with a repetition loop. The 49 looping clips
+     hold 1,049 of the 1,441 insertions (73 %). On CV test, 6 of the 7 clips over 14 s loop the same way, which
+     accounts for the whole 12.71 → 12.84 % change. On clips over 16 s, chunking *halved* WER. The truncation
+     diagnosis was right. The splitter was wrong: no minimum piece length and no overlap, against S70/L39. A
+     balanced splitter (`split_balanced`: equal pieces, no short tail) is now in the harness, but it was not
+     evaluated as a chunking decoder, because that would be a third use of this test set. (Plain r2's long-clip
+     rows here also include the long-form bug, item 8.)
 2. **Digits.** CV ka train has no digits (0 of 99,768 transcripts), while 20 % of FLEURS references have them.
    Our fine-tunes learned the CV convention and spell numbers out. Turbo FT: 39 % WER on clips with digits vs 24 % on
    the rest. The primary policy does not verbalize numbers (it was declared before any run), so this counts as error.
@@ -230,6 +262,19 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    - Gender differences are small (≤ 2.4 points).
 7. **Remaining errors of our models** are mostly single-letter slips in suffixes, spelling variants (წმიდა/წმინდა)
    and some inconsistencies in the references themselves (აბსიდის/აფსიდის both ways).
+8. **A harness bug in Whisper long-form decoding (FLEURS only), found by review and fixed.** If any clip in a
+   batch exceeded 30 s, the whole batch was decoded with timestamped long-form generation. Clips are sorted
+   longest-first, so FLEURS's one clip over 30 s (dev 32.2 s, test 33.2 s) dragged the 32 longest FLEURS clips into
+   that mode in every Whisper run. Pretrained Whisper knows timestamps and partly *escaped* its token limit there.
+   On the same clips, our fine-tunes (trained without timestamps) skipped middle sentences and spliced the ends.
+   Common Voice is unaffected, because no CV clip exceeds 15 s. The fix decodes only clips over 30 s specially, by
+   balanced splitting without timestamps, identically for every Whisper system. The four affected systems were
+   re-run once on FLEURS dev and test (round 3 §4); the corrected rows are in §4.
+9. **Orthographic scoring reverses the top two.** With case and punctuation kept, Whisper-turbo FT scores
+   15.83 % WER on CV test (r2) and MMS FT + beam + LM 30.45 %. The CTC vocabulary and the normalized LM text cannot
+   produce punctuation, while Whisper learned it from the orthographic CV transcripts. Our normalized headline
+   measures the words. Which system is "best" depends on whether the application needs punctuated text, and for
+   that Whisper-turbo FT is clearly better. Full table: `docs/results-georgian.md`.
 
 ## 6. Limitations
 
@@ -246,13 +291,23 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   the CI (−0.06 to 0.24) is only the test-sampling uncertainty of that difference. Two runs cannot estimate
   training variance. For our best system (MMS adapter FT, ± decoder), seeds 7 and 13 were therefore trained as
   well (round 3, §4).
-- **Speed is not comparable across rows.** RTFx was measured on different hardware (A100, L4, RTX 4070 SUPER, CPU)
-  as each run happened. It shows the order of magnitude per system, not a ranking. Each row lists its hardware.
+- **Speed in the results tables is not comparable across rows.** RTFx there was measured on whatever hardware each
+  run used (A100, L4, RTX 4070 SUPER, CPU). The same-GPU benchmark in §4 is the comparable one. Its 500-clip CV dev
+  slice contains no clip over 14 s, so it times the chunked r2 decoder without any chunking.
 - **LM rows** use only CV train text (no external text), so they show what the training data alone can give. A
   larger Georgian text corpus would likely help further, but it would need deduplication against dev/test.
-- **Chunking is a negative result.** The dev grid selected the best chunk candidate, not an improvement over plain
-  decoding. We report that frozen variant alongside plain r2 and keep the stronger existing systems as our main
-  results. No further training or decoder experiments are planned.
+- **Chunking is a negative result of this splitter, not of chunking.** The dev grid selected the best chunk
+  candidate, not an improvement over plain decoding. §5.1 shows that the loss comes from short tail pieces, while
+  chunking helped clips over 16 s.
+- **Code provenance of the test runs.** The 20 frozen test runs executed on Colab record `git_commit: null`,
+  because the VM had a copy of the code, not a git checkout. The 6 run locally record `git_dirty: true`, because
+  generated configs were not yet committed. Each run directory saves its exact config, and the code paths they use
+  were not changed in between, except for the two bugs this report discloses. Round-3 runs record their exact
+  commit. `git_dirty` used to be true whenever an uncommitted run directory existed, which is always the case
+  during a run. It now counts only modified tracked files.
+- **Whisper training set: 99,767, not 99,768 clips.** Whisper's 448-token target cap dropped one CV train clip.
+  Until round 3 the harness wrote `train_ids.txt` before that filter and did not log the dropped ID. Fixed: the
+  file now lists exactly the clips trained on, and the manifest names the dropped ones.
 
 ## 7. Reproducing
 
