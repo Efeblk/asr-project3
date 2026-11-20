@@ -47,6 +47,7 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | whisper-large-v3-turbo-ft_cv-ka | 12.80% | 11.07% | 1.73% | 1.33% – 2.12% | 2.60% | 2.13% | 0.47% | 0.33% – 0.62% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 4.85% | 11.07% | -6.21% | -6.72% – -5.76% | 1.27% | 2.13% | -0.87% | -1.07% – -0.70% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 12.80% | 12.71% | 0.08% | -0.06% – 0.24% | 2.60% | 2.59% | 0.01% | -0.02% – 0.04% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 24.14% | 11.07% | 13.07% | 12.58% – 13.59% | 4.45% | 2.13% | 2.32% | 2.05% – 2.65% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 12.71% | 12.84% | -0.13% | -0.24% – -0.04% | 2.59% | 2.70% | -0.11% | -0.21% – -0.03% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 25.32% | 27.47% | -2.15% | -3.92% – -0.45% | 4.76% | 12.15% | -7.39% | -9.10% – -5.74% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.49% | 27.47% | -11.99% | -13.57% – -10.45% | 5.32% | 12.15% | -6.83% | -8.50% – -5.27% |
@@ -62,7 +63,28 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | whisper-large-v3-turbo-ft_cv-ka | 27.47% | 19.28% | 8.19% | 6.55% – 9.95% | 12.15% | 4.64% | 7.50% | 5.92% – 9.19% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 15.49% | 19.28% | -3.79% | -4.57% – -2.96% | 5.32% | 4.64% | 0.67% | 0.33% – 1.05% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 27.47% | 27.33% | 0.15% | -0.26% – 0.55% | 12.15% | 12.17% | -0.02% | -0.14% – 0.10% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 25.32% | 19.28% | 6.05% | 5.16% – 6.98% | 4.76% | 4.64% | 0.11% | -0.25% – 0.44% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 30.00% | -2.67% | -4.96% – -0.38% | 12.17% | 13.95% | -1.78% | -4.11% – 0.51% |
+
+### Orthographic scores and empty references (test)
+
+Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER keep case and punctuation, so they also count punctuation as words: CTC systems and the GMM-HMM output none, Whisper fine-tunes learned it from the orthographic CV transcripts.
+
+| Group | System | CV ka WER norm. | CV ka WER ortho. | CV ka CER ortho. | FLEURS ka WER norm. | FLEURS ka WER ortho. | FLEURS ka CER ortho. | Empty-reference clips: items / words emitted (CV) |
+|---|---|---|---|---|---|---|---|---|
+| baseline | Whisper-small (zero-shot) | 825.33 | 834.43 | 312.68 | 284.13 | 296.91 | 137.88 | 1 / 1 |
+| baseline | Whisper-large-v3 (zero-shot) | 72.04 | 74.73 | 16.98 | 69.12 | 72.55 | 20.74 | 1 / 22 |
+| baseline | Whisper-large-v3-turbo (zero-shot) | 142.14 | 140.03 | 181.75 | 126.84 | 124.53 | 107.30 | 1 / 1 |
+| baseline | XLS-R-300M Georgian, xsway (zero-shot, CTC) | 46.26 | 57.85 | 11.17 | 52.49 | 62.84 | 13.95 | 1 / 0 |
+| baseline | MMS-1b-all + kat adapter (zero-shot, CTC) | 24.14 | 40.14 | 6.77 | 25.32 | 40.02 | 7.14 | 1 / 0 |
+| baseline | NVIDIA FastConformer hybrid ka (zero-shot, transducer)* | 4.85 | 9.53 | 1.74 | 15.49 | 22.76 | 6.35 | 1 / 1 |
+| baseline | MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU) | 22.64 | 39.64 | 10.42 | 39.64 | 52.65 | 16.93 | 1 / 0 |
+| ours | MMS-1b-all, kat adapter fine-tune (2.3 M params) | 22.00 | 39.15 | 6.01 | 26.02 | 41.01 | 7.99 | 1 / 0 |
+| ours | Whisper-large-v3-turbo, full fine-tune | 12.80 | 15.91 | 2.98 | 27.47 | 32.98 | 13.11 | 1 / 24 |
+| baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 13.50 | 32.20 | 5.52 | 18.36 | 34.61 | 6.28 | 1 / 0 |
+| ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 11.07 | 30.45 | 4.57 | 19.28 | 35.16 | 7.01 | 1 / 1 |
+| ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 12.71 | 15.83 | 2.97 | 27.33 | 32.91 | 13.14 | 1 / 30 |
+| ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 12.84 | 15.96 | 3.08 | 30.00 | 36.16 | 14.76 | 1 / 30 |
 
 ## Dev (selection)
 
@@ -103,6 +125,7 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | whisper-large-v3-turbo-ft_cv-ka | 11.88% | 10.28% | 1.60% | 1.17% – 2.12% | 2.27% | 1.86% | 0.41% | 0.26% – 0.59% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 4.46% | 10.28% | -5.82% | -6.47% – -5.24% | 1.09% | 1.86% | -0.77% | -0.95% – -0.61% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 11.88% | 11.92% | -0.04% | -0.18% – 0.10% | 2.27% | 2.28% | -0.01% | -0.04% – 0.02% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 23.69% | 10.28% | 13.42% | 12.69% – 14.24% | 4.05% | 1.86% | 2.19% | 1.90% – 2.56% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 11.92% | 11.92% | -0.00% | -0.00% – 0.00% | 2.28% | 2.28% | -0.00% | -0.00% – 0.00% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 26.16% | 24.77% | 1.39% | -1.76% – 4.36% | 4.72% | 10.30% | -5.58% | -8.22% – -3.13% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.17% | 24.77% | -9.59% | -11.69% – -7.38% | 5.24% | 10.30% | -5.06% | -7.05% – -3.09% |
@@ -118,5 +141,27 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | whisper-large-v3-turbo-ft_cv-ka | 24.77% | 20.41% | 4.36% | 1.61% – 7.17% | 10.30% | 4.72% | 5.58% | 3.28% – 8.08% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 15.17% | 20.41% | -5.23% | -6.77% – -3.57% | 5.24% | 4.72% | 0.52% | -0.26% – 1.54% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 24.77% | 24.86% | -0.09% | -0.68% – 0.49% | 10.30% | 10.33% | -0.03% | -0.26% – 0.15% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 26.16% | 20.41% | 5.75% | 4.34% – 7.07% | 4.72% | 4.72% | -0.01% | -0.57% – 0.50% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 27.87% | -3.01% | -6.77% – 0.27% | 10.33% | 12.12% | -1.79% | -5.37% – 1.28% |
+
+### Orthographic scores and empty references (dev)
+
+Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER keep case and punctuation, so they also count punctuation as words: CTC systems and the GMM-HMM output none, Whisper fine-tunes learned it from the orthographic CV transcripts.
+
+| Group | System | CV ka WER norm. | CV ka WER ortho. | CV ka CER ortho. | FLEURS ka WER norm. | FLEURS ka WER ortho. | FLEURS ka CER ortho. | Empty-reference clips: items / words emitted (CV) |
+|---|---|---|---|---|---|---|---|---|
+| baseline | Whisper-small (zero-shot) | 807.11 | 814.75 | 308.15 | 311.94 | 330.98 | 144.18 | 0 / 0 |
+| baseline | Whisper-large-v3 (zero-shot) | 72.40 | 75.01 | 16.70 | 70.08 | 73.02 | 19.11 | 0 / 0 |
+| baseline | Whisper-large-v3-turbo (zero-shot) | 140.27 | 138.14 | 181.85 | 138.23 | 135.60 | 112.94 | 0 / 0 |
+| baseline | XLS-R-300M Georgian, xsway (zero-shot, CTC) | 44.58 | 56.46 | 10.50 | 53.31 | 63.43 | 13.93 | 0 / 0 |
+| baseline | MMS-1b-all + kat adapter (zero-shot, CTC) | 23.69 | 39.66 | 6.37 | 26.16 | 40.57 | 6.97 | 0 / 0 |
+| baseline | NVIDIA FastConformer hybrid ka (zero-shot, transducer)* | 4.46 | 8.88 | 1.54 | 15.17 | 21.52 | 6.12 | 0 / 0 |
+| baseline | MFCC + GMM-HMM, LDA+MLLT (Kaldi tri2b, trained by us from scratch, CPU) | 24.88 | 41.05 | 12.12 | 43.39 | 54.48 | 19.78 | 0 / 0 |
+| baseline | MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU) | 20.29 | 37.51 | 9.22 | 38.26 | 50.67 | 16.23 | 0 / 0 |
+| ours | MMS-1b-all, kat adapter fine-tune (2.3 M params) | 21.42 | 38.46 | 5.76 | 25.93 | 40.61 | 7.82 | 0 / 0 |
+| ours | Whisper-large-v3-turbo, full fine-tune | 11.88 | 14.81 | 2.63 | 24.77 | 29.32 | 11.10 | 0 / 0 |
+| baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 12.68 | 31.26 | 5.04 | 19.70 | 35.03 | 6.16 | 0 / 0 |
+| ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 10.28 | 29.61 | 4.29 | 20.41 | 35.62 | 6.94 | 0 / 0 |
+| ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 11.92 | 14.78 | 2.63 | 24.86 | 29.16 | 11.11 | 0 / 0 |
+| ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 11.92 | 14.78 | 2.63 | 27.87 | 32.81 | 12.79 | 0 / 0 |
 

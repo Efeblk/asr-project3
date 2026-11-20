@@ -44,6 +44,16 @@ KA_SYSTEMS = [
     ("Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept)", "whisper-large-v3-turbo-ft-r2_cv-ka",
      "ours"),
 ]
+KA_SYSTEMS += [  # round 3 (docs/preregistration-round3.md); rows appear once their runs exist
+    ("MMS-1b-all, kat adapter fine-tune, seed 7", "mms-1b-all-kat-adapter-ft_cv-ka-seed7", "ours (round 3 seed)"),
+    ("MMS-1b-all, kat adapter fine-tune, seed 13", "mms-1b-all-kat-adapter-ft_cv-ka-seed13", "ours (round 3 seed)"),
+    ("… seed 7 + our word 3-gram LM (same α/β)", "mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm", "ours+decoder (round 3 seed)"),
+    ("… seed 13 + our word 3-gram LM (same α/β)", "mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm", "ours+decoder (round 3 seed)"),
+    ("Whisper-small (zero-shot), long-form fix", "whisper-small+lf-split", "baseline (FLEURS re-run, §4 fix)"),
+    ("Whisper-large-v3 (zero-shot), long-form fix", "whisper-large-v3+lf-split", "baseline (FLEURS re-run, §4 fix)"),
+    ("Whisper-large-v3-turbo (zero-shot), long-form fix", "whisper-large-v3-turbo+lf-split", "baseline (FLEURS re-run, §4 fix)"),
+    ("Whisper-large-v3-turbo FT r2, long-form fix", "whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "ours (FLEURS re-run, §4 fix)"),
+]
 _chunk = "configs/runs/ka/whisper-large-v3-turbo-ft-r2_cv-ka+chunk-selection.yaml"
 if os.path.exists(_chunk):  # chunk length selected on dev by scripts/chunk_select.py
     _s = re.search(r"^selected: (\d+)", open(_chunk, encoding="utf-8").read(), re.M).group(1)
@@ -113,6 +123,10 @@ KA_PAIRS = [
     ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "whisper-large-v3-turbo-ft_cv-ka"),
     ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "nvidia-stt-ka-fastconformer"),
     ("whisper-large-v3-turbo-ft-r2_cv-ka", "whisper-large-v3-turbo-ft_cv-ka"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "mms-1b-all-kat"),
+    ("whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "whisper-large-v3-turbo-ft-r2_cv-ka"),
+    ("whisper-large-v3+lf-split", "whisper-large-v3"),
+    ("whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "mms-1b-all-kat"),
 ]
 if KA_SYSTEMS[-1][1].startswith("whisper-large-v3-turbo-ft-r2_cv-ka+chunk"):
     KA_PAIRS.append((KA_SYSTEMS[-1][1], "whisper-large-v3-turbo-ft-r2_cv-ka"))
@@ -183,12 +197,58 @@ KA_INTRO = ["# Georgian results (our language)", "",
             "(`scripts/rebuild_mms_adapter.py`; 405/409 FLEURS dev hypotheses identical to the original greedy run).", ""]
 
 
+def ortho_table(split: str) -> list[str]:
+    """Orthographic WER/CER (case and punctuation kept, Unicode form only) next to the normalized primary numbers,
+    plus what each system emitted on references that are empty after normalization (CV: 1 corrupted reference)."""
+    out = ["| Group | System | " + " | ".join(f"{n} WER norm. | {n} WER ortho. | {n} CER ortho." for _, n in SETS)
+           + " | Empty-reference clips: items / words emitted (CV) |", "|" + "---|" * (3 + 3 * len(SETS))]
+    for label, prefix, group in SYSTEMS:
+        cells, sil = [], "—"
+        for ds, _ in SETS:
+            m = _scores(_run(prefix, ds, split))
+            o = (m or {}).get("orthographic") or {}
+            cells += [pct(m and m["wer"]), pct(o.get("wer")), pct(o.get("cer"))]
+            if ds == "cv" and m and m.get("silence"):
+                sil = f"{m['silence']['silent_items']} / {m['silence']['emitted_words']}"
+        if any(c != "—" for c in cells):
+            out.append(f"| {group} | {label} | " + " | ".join(cells) + f" | {sil} |")
+    return out
+
+
+def seed_table(split: str) -> list[str]:
+    """Round 3 §1: MMS adapter FT over training seeds {42, 7, 13}; mean ± sample SD of corpus WER/CER."""
+    import statistics
+    out = []
+    for kind, suffix in (("greedy CTC", ""), ("beam 100 + word 3-gram LM", "+lm")):
+        prefixes = [f"mms-1b-all-kat-adapter-ft_cv-ka{suffix}"] + [f"mms-1b-all-kat-adapter-ft_cv-ka-seed{s}{suffix}"
+                                                                   for s in (7, 13)]
+        for ds, name in SETS:
+            ms = [_scores(_run(p, ds, split)) for p in prefixes]
+            if not all(ms):
+                continue
+            w, c = [100 * m["wer"] for m in ms], [100 * m["cer"] for m in ms]
+            out.append(f"| {kind} | {name} | " + " | ".join(f"{x:.2f}" for x in w)
+                       + f" | {statistics.mean(w):.2f} ± {statistics.stdev(w):.2f} | "
+                       + f"{statistics.mean(c):.2f} ± {statistics.stdev(c):.2f} |")
+    if out:
+        out = ["| Decoder | Set | WER seed 42 | WER seed 7 | WER seed 13 | WER mean ± SD | CER mean ± SD |",
+               "|---|---|---|---|---|---|---|"] + out
+    return out
+
+
 if __name__ == "__main__" and LANG == "ka":
     lines = list(KA_INTRO)
     for split, title in (("test", "Test (frozen, run once)"), ("dev", "Dev (selection)")):
         lines += [f"## {title}", ""] + main_table(split) + [""]
         lines += [f"### Paired comparisons ({split})", "", "Positive Δ = B has fewer errors than A. Cluster bootstrap "
                   "(2000 resamples) on matched clip IDs.", ""] + paired_table(split) + [""]
+        seeds = seed_table(split)
+        if seeds:
+            lines += [f"### Training-seed variance, MMS adapter FT ({split}, round 3)", ""] + seeds + [""]
+        lines += [f"### Orthographic scores and empty references ({split})", "",
+                  "Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER keep case and "
+                  "punctuation, so they also count punctuation as words: CTC systems and the GMM-HMM output none, "
+                  "Whisper fine-tunes learned it from the orthographic CV transcripts.", ""] + ortho_table(split) + [""]
     print("\n".join(lines))
 elif __name__ == "__main__":
     lines = ["# Kazakh results", "",
