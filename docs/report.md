@@ -20,8 +20,8 @@ FLEURS splits share no sentences. Data provenance (archive sha256, manifest sha2
 `docs/data-notes-cv-ka.md`.
 
 **Protocol.** Everything is chosen on dev: checkpoints, decoder settings, LM weights and chunk length. Every test
-config was committed with `frozen: true` before its test run, and each test was run once (the harness refuses test
-runs that are not frozen). Where a choice was made on dev, the candidate grid and the selection rule were committed
+config is frozen with `frozen: true` before its test run, and each test is run once (the harness refuses test
+runs that are not frozen). Generated fine-tune and decoder configs follow the pre-committed rules. Where a choice was made on dev, the candidate grid and the selection rule were committed
 before the dev runs (commits 0c0d0e4, 2dd4397, 78ed0a1, 02d561f).
 
 ## 2. Metrics and why (HF audio course, chapter 5 "Evaluation")
@@ -57,7 +57,7 @@ before the dev runs (commits 0c0d0e4, 2dd4397, 78ed0a1, 02d561f).
 | MFCC + GMM-HMM | Kaldi tri3b, **trained by us from scratch** (`recipes/kaldi-gmm-ka/`) | graphemic lexicon, word trigram LM on CV train text, LDA+MLLT+SAT, CPU |
 
 Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `nvidia/parakeet-tdt-0.6b-v3`,
-`Qwen/Qwen3-ASR-1.7B` / `0.6B` (links in `README.md`). No HuBERT + CTC checkpoint for Georgian exists.
+`Qwen/Qwen3-ASR-1.7B` / `0.6B` (links in `README.md`). No HuBERT + CTC checkpoint for Georgian was found.
 
 **Ours** (the contribution, A1), trained on the CV ka train split only, with checkpoints selected on dev:
 
@@ -68,7 +68,11 @@ Not run because their model cards do not list Georgian: `nvidia/canary-1b-v2`, `
    KenLM, beam 100) with the trigram we built for the GMM-HMM (Kneser-Ney, CV train transcripts only). LM weight
    α = 0.5 and insertion bonus β = 0 were selected on dev from a 12-point grid by a pre-committed rule. The same
    pair is applied to MMS zero-shot as an ablation.
-4. **Whisper-turbo retrain r2 + chunked decoding** (decoder row; §5.1): *[pending: Colab run in progress]*.
+4. **Whisper-turbo retrain r2 + chunked decoding** (decoder row; §5.1): training finished at step 6000,
+   with 17.32 % WER on the 300-clip CV dev selection subset (225-token training evaluation cap).
+   Full plain dev/test evaluation and chunk-length selection are pending. The pre-committed candidates are
+   8, 11 and 14 seconds; select the lowest mean CV/FLEURS dev WER, breaking ties toward longer chunks.
+   Plain and chunked r2 results use the same weights, isolating the decoding change from the retrain.
 
 ## 4. Results (test, frozen, run once)
 
@@ -95,7 +99,7 @@ GMM-HMM 33 (8 CPU jobs).
 Key paired differences (test, Δ WER = reference − ours, 95 % CI):
 
 - **CV ka**:
-  - Our best (MMS FT + LM) vs the best clean baseline (MMS zero-shot): **−13.1 points**, from 24.14 % to 11.07 %
+  - Our best (MMS FT + LM) vs the best clean pretrained baseline (MMS zero-shot): **−13.1 points**, from 24.14 % to 11.07 %
     (Δ 13.07).
   - Turbo FT vs MMS zero-shot: Δ 11.34 (10.91–11.75).
   - MMS FT + LM vs turbo FT: Δ 1.73 (1.33–2.12).
@@ -113,7 +117,7 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
    - No CV clip is that long, but 22 % of FLEURS test references are.
    - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more.
    - On FLEURS clips of up to 20 words, our turbo FT beats MMS in every length bucket (21–22 % vs 25–29 %).
-   - Chunking long clips at pauses fixes this; that is the r2 decoder row.
+   - Chunking long clips at pauses is intended to reduce truncation; the r2 decoder evaluation is pending.
 2. **Digits.** CV ka train has no digits (0 of 99,768 transcripts), while 20 % of FLEURS references have them.
    Our fine-tunes learned the CV convention and spell numbers out. Turbo FT: 39 % WER on clips with digits vs 24 % on
    the rest. The primary policy does not verbalize numbers (it was declared before any run), so this counts as error.

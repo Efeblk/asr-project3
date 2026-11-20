@@ -3,7 +3,8 @@
 Numbers come from the frozen test runs in `docs/results-georgian.md`. The supporting tables are in
 [`error-analysis-georgian-data.md`](error-analysis-georgian-data.md), regenerated with
 `uv run python scripts/error_analysis_ka.py`. The analysis is descriptive: nothing here was used to select a model,
-decoder or normalizer. Section numbers (§) refer to the data file.
+decoder or normalizer for those frozen runs. The findings motivated later LM and chunking studies, with their
+candidate grids and selection rules committed before running dev. Section numbers (§) refer to the data file.
 
 ## Summary
 
@@ -50,9 +51,11 @@ budget, and their deletion rate stays flat (§2).
 The same budget explains why the in-training dev CER looked inflated. In-training evaluation capped generation at 225
 tokens, about 7 s of Georgian speech. The final evaluation used the model's full 448.
 
-**Fix (not applied):** decode long clips in chunks of ≤ 14 s. Speech-free points could be found with energy or VAD.
-Chunking is a decoding change, so it would be selected on FLEURS dev and reported as a separate "decoder" row, as for
-Kazakh beam-5. The Georgian turbo FT weights were not kept, so applying it needs a retrain.
+**Follow-up (evaluation pending):** r2 was retrained because the original turbo weights were not kept.
+`scripts/chunk_select.py` evaluates 8/11/14-second chunks split at low-energy points, selects the lowest mean
+CV/FLEURS dev WER (ties toward longer chunks), and freezes that choice before test. Plain and chunked r2
+rows use the same weights. The candidate grid and rule were committed in 78ed0a1 before the chunked dev runs;
+no chunk length is selected using test results.
 
 ## 2. Digits: a mismatch between the training and test text conventions
 
@@ -152,9 +155,11 @@ agglutinative language, a single letter in a suffix makes the whole word wrong.
 
 ## Implications for the comparison
 
-- **On CV ka,** our turbo FT is the best fair system by a wide margin (Δ 11.3 WER vs MMS zero-shot, CI 10.9–11.8).
-- **On FLEURS ka,** our two fine-tunes trail NVIDIA and roughly match MMS. The two largest causes are not acoustic:
-  Whisper's token budget for Georgian (§1) and the digit convention (§2). Both are fixable, but we did not touch the
-  test set to fix them.
+- **On CV ka,** the later MMS FT + our CV-train trigram LM row is the best fair system (11.07 % WER),
+  ahead of turbo FT (12.80 %). Turbo FT alone improves over MMS zero-shot by 11.3 points (CI 10.9–11.8).
+- **On FLEURS ka,** our greedy fine-tunes trail NVIDIA and roughly match MMS. Two major causes are:
+  Whisper's token budget for Georgian (§1) and the digit convention (§2). The later MMS FT + LM row reaches
+  19.28 % WER, still behind NVIDIA's 15.49 %, with lower CER (4.64 vs 5.32 %). Chunking evaluation is pending.
 - **For the classical baseline,** the GMM-HMM shows how much a word-level n-gram LM is worth on CV's narrow-domain
-  read speech. The neural CTC baselines (MMS) use no LM at all.
+  read speech. The original neural CTC rows use no LM; the later matched MMS rows with the same CV-train LM
+  separate the benefit of train-text decoding from adapter fine-tuning (`docs/results-georgian.md`).

@@ -1,0 +1,21 @@
+name: whisper-large-v3-turbo-ft-r2_cv-ka
+dataset: data/cv/ka/manifest.jsonl
+language: ka
+eligibility_confirmed: true
+dev_limit: 300
+max_audio_sec: 30
+seed: 42
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: 41f01f3fe87f28c78e2fbf8b568835947dd65ed9
+  language_hint: georgian
+training:
+  learning_rate: 1.0e-05
+  warmup_steps: 500
+  max_steps: 6000
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  eval_steps: 500
+  save_steps: 500
+  dataloader_num_workers: 8

@@ -38,12 +38,12 @@ You need [uv](https://docs.astral.sh/uv/) and `ffmpeg` on your PATH.
 
 ```bash
 uv sync --extra hf --group dev        # Whisper + wav2vec2/CTC (CUDA torch on Windows/Linux)
-uv run pytest                         # 32 tests: slide-derived metric checks, pipeline, CPU training, importers, language filter
+uv run pytest                         # 34 tests: metrics, pipeline, CPU training, importers, language filter, pause splitting
 ```
 
-Extras for other model families. Each goes in its own environment, and neither has been tested in this repo yet:
-- `uv sync --extra nemo`: Canary v2 and Parakeet v3. Linux or WSL recommended.
-- `uv sync --extra qwen`: Qwen3-ASR. Needs a bf16 CUDA GPU.
+Extras for other model families. Each goes in its own environment:
+- `uv sync --extra nemo`: NVIDIA FastConformer (verified on Georgian), Canary v2 and Parakeet v3. Linux or WSL recommended.
+- `uv sync --extra qwen`: Qwen3-ASR (not run here). Needs a bf16 CUDA GPU.
 
 ## Workflow
 
@@ -94,6 +94,7 @@ The harness enforces these rules:
 
 ## Docs
 
+- Report draft: [docs/report.md](docs/report.md); Georgian results: [docs/results-georgian.md](docs/results-georgian.md)
 - Project rules and deliverables: [docs/project-requirements.md](docs/project-requirements.md)
 - Metrics, model families and code recipes: [docs/asr-methods-cheatsheet.md](docs/asr-methods-cheatsheet.md)
 - Course materials and what's in them: [materials/INDEX.md](materials/INDEX.md)
