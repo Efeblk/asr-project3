@@ -45,8 +45,16 @@ in every length bucket:
 | MMS zero-shot | 29.0 % | 26.3 % | 24.9 % |
 
 On long clips it collapses: 30.6 % WER at 21–30 words and 53.0 % at 31+ words. The zero-shot Whisper-large-v3
-baseline shows the same deletion pattern (D 20.7 % at 31+ words). CTC and transducer models have no output
-budget, and their deletion rate stays flat (§2).
+baseline deletes 20.7 % of words at 31+ words. CTC and transducer models have no output budget, and their deletion
+rate stays flat (§2).
+
+**Correction (round 3, harness bug).** These FLEURS long-clip numbers are confounded by a decoding bug. If any clip
+in a batch exceeded 30 s, the whole batch was decoded with timestamped long-form generation. Clips are sorted
+longest-first, so the 32 longest FLEURS clips (19.1–33.2 s on test) all went through that mode. Pretrained
+large-v3 partly escaped its token limit there: D 13.0 % on its 24 longest 31+-word clips vs 31.1 % on the 20
+shorter ones decoded normally. Our turbo FT, trained without timestamps, instead skipped middle sentences on the
+same clips. The "same deletion pattern" was therefore not the same mechanism. CV is unaffected (no clip > 15 s).
+The corrected FLEURS re-runs are in `docs/results-georgian.md` (round 3 §4) and in report §4.
 
 The same budget explains why the in-training dev CER looked inflated. In-training evaluation capped generation at 225
 tokens, about 7 s of Georgian speech. The final evaluation used the model's full 448.
@@ -63,6 +71,20 @@ from 12.17 to 13.95 %. Word deletions fell from 1,384 to 489, but insertions ros
 CV test also worsened slightly (12.71 to 12.84 % WER). Shorter chunks were worse on dev: 8 s gave
 34.09/55.78 % CV/FLEURS WER, 11 s gave 12.82/40.08 %, and 14 s gave 11.92/27.87 %; plain r2 gave
 11.92/24.86 %. This implementation is not an effective fix. The study is closed with no further tuning.
+
+**Root cause (added in round 3, after an external review; counts verified from the committed predictions).** The loss
+comes from clips *just over* the chunk length. FLEURS test, plain r2 → r2 + 14 s, by duration:
+- Clips under 14 s are untouched: 22.8 → 22.8 %.
+- 14–15 s: 25.9 → 98.3 %, with 41 of 53 clips looping and insertions 9 → 888.
+- 15–16 s: 32.3 → 42.3 %, with 7 loops.
+- Longer clips improve: 16–20 s 40.4 → 25.7 %, 20–25 s 53.5 → 27.9 %, and over 25 s 60.8 → 28.7 %.
+
+The 49 looping clips hold 1,049 of the 1,441 insertions. On CV test, 6 of the 7 clips over 14 s loop, which
+accounts for the whole CV change. The splitter (`split_at_pauses`) cuts within the last 40 % of each window and has
+no minimum piece length and no overlap, so a clip slightly over the limit leaves a short, mostly silent tail that
+Whisper fills with a loop. This deviates from S70/L39 (overlapping chunks, a frozen merge policy). The truncation
+diagnosis holds: chunking halves WER on long clips. `split_balanced` (equal pieces, no short tail) is now in the
+harness but has not been evaluated as a chunking decoder on this test set.
 
 ## 2. Digits: a mismatch between the training and test text conventions
 
