@@ -110,6 +110,11 @@ The error types differ as well:
 This is why the GMM-HMM beats MMS on CV WER but has nearly twice its CER (8.2 % vs 4.5 %, `results-georgian.md`).
 It also points to the missing piece of the CTC baselines: MMS decodes greedily without any LM.
 
+**Applied afterwards (decoder rows, α/β selected on dev by `scripts/lm_select.py`):** we decoded MMS with the same
+CV-train trigram (beam search, pyctcdecode + KenLM). On CV test, MMS zero-shot drops from 24.14 to 13.50 % WER, and
+our MMS fine-tune drops from 22.00 to **11.07 %** (2.13 % CER), the best fair CV result. On FLEURS test the scores
+are 18.36 % and 19.28 %. There the fine-tune is slightly worse than zero-shot because of the digit convention (§2).
+
 ## 5. NVIDIA FastConformer: contamination, not skill, on CV
 
 NVIDIA's model card lists Common Voice 17.0 train/dev/other as training data. CV 27.0 ka dev/test contain clips that
