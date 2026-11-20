@@ -51,8 +51,8 @@ rate stays flat (§2).
 **Correction (round 3, harness bug).** These FLEURS long-clip numbers are confounded by a decoding bug. If any clip
 in a batch exceeded 30 s, the whole batch was decoded with timestamped long-form generation. Clips are sorted
 longest-first, so the 32 longest FLEURS clips (19.1–33.2 s on test) all went through that mode. Pretrained
-large-v3 partly escaped its token limit there: D 13.0 % on its 24 longest 31+-word clips vs 31.1 % on the 20
-shorter ones decoded normally. Our turbo FT, trained without timestamps, instead skipped middle sentences on the
+large-v3 partly escaped its token limit there. Among test clips whose reference has 31+ words, it deleted 14.1 %
+of words on the 21 inside that batch and 30.8 % on the 15 decoded normally. Our turbo FT, trained without timestamps, instead skipped middle sentences on the
 same clips. The "same deletion pattern" was therefore not the same mechanism. CV is unaffected (no clip > 15 s).
 The corrected FLEURS re-runs are in `docs/results-georgian.md` (round 3 §4) and in report §4.
 
