@@ -41,3 +41,11 @@ decoded on **CV dev and FLEURS dev only**, in two more variants (`configs/runs/k
 Together with the existing greedy and beam+LM dev runs, the chain is greedy → greedy-valid → beam → beam+LM. The test
 set is not used, and nothing is selected from this ablation. It changes only how the round-2 gain is attributed in
 the report.
+
+## Fix applied before any round-3 training (2026-11-21, found by an external review)
+
+`train.py` drew the 300-clip dev selection subset with the *training* seed. Seeds 7 and 13 would therefore have
+selected their checkpoints on different dev clips from seed 42 (7/300 shared), which contradicts §1. The subset now
+uses `dev_seed` (default 42). That reproduces the seed-42 subset exactly, and every earlier run used seed 42. Each
+training run now also writes `dev_ids.txt`. `train_ids.txt` is written after the Whisper 448-token filter, and the
+dropped IDs go to the train manifest. This commit is pulled into the WSL checkout before seed 7 starts training.

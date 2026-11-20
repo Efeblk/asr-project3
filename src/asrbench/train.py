@@ -188,7 +188,9 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
                                               else i.extra.get(key)) in want]
     dev_items = sorted((i for i in dev_items if i.reference.strip()), key=lambda i: i.id)
     if cfg.get("dev_limit"):
-        dev_items = random.Random(seed).sample(dev_items, min(int(cfg["dev_limit"]), len(dev_items)))
+        # The selection subset depends on `dev_seed` only (default 42, which reproduces every earlier run: all used
+        # seed 42), so runs that differ only in the training `seed` select their checkpoint on the same dev clips.
+        dev_items = random.Random(int(cfg.get("dev_seed", 42))).sample(dev_items, min(int(cfg["dev_limit"]), len(dev_items)))
     train_hours = sum(durations[i.id] or 0 for i in train_items) / 3600
     log(f"Train: {len(train_items)} items, {train_hours:.2f} h ({len(too_long)} > {max_sec:.0f}s dropped). "
         f"Dev for selection: {len(dev_items)} items.")
@@ -211,7 +213,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     ckpt_dir.mkdir(parents=True, exist_ok=True)
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False, allow_unicode=True), encoding="utf-8", newline="\n")
-    (run_dir / "train_ids.txt").write_text("\n".join(sorted(i.id for i in train_items)) + "\n", encoding="utf-8", newline="\n")
+    (run_dir / "dev_ids.txt").write_text("\n".join(sorted(i.id for i in dev_items)) + "\n", encoding="utf-8", newline="\n")
+    too_many_tokens: list[str] = []
 
     args_kw = {**_COMMON_DEFAULTS, **_FAMILY_DEFAULTS[family], **(cfg.get("training") or {})}
     args_kw.update(output_dir=str(ckpt_dir), seed=seed, metric_for_best_model=metric)
@@ -240,6 +243,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
             model.config.use_cache = False
         too_many_tokens = [i.id for i in train_items if len(processor.tokenizer(i.reference).input_ids) > 448]
         train_items = [i for i in train_items if i.id not in set(too_many_tokens)]
+        if too_many_tokens:
+            log(f"Dropped {len(too_many_tokens)} train items over Whisper's 448 target tokens: {too_many_tokens}")
         train_hours = sum(durations[i.id] or 0 for i in train_items) / 3600
         train_ds = AudioTextDataset(paths(train_items), [i.reference for i in train_items])
         dev_ds = AudioTextDataset(paths(dev_items), dev_refs)
@@ -318,6 +323,8 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     t0 = time.perf_counter()
+    # After every filter (incl. Whisper's 448-token cap), so the file lists exactly the items trained on.
+    (run_dir / "train_ids.txt").write_text("\n".join(sorted(i.id for i in train_items)) + "\n", encoding="utf-8", newline="\n")
     trainer.train(resume_from_checkpoint=bool(resume))
     train_sec = time.perf_counter() - t0
     final = ckpt_dir / "final"
@@ -346,6 +353,7 @@ def train(config_path: str | Path, checkpoints_dir: str | Path = "checkpoints", 
                     "train_split": cfg.get("train_split", "train"), "dev_split": cfg.get("dev_split", "dev"),
                     "train_items": len(train_items), "train_hours": round(train_hours, 3),
                     "train_hours_requested": cfg.get("train_hours"), "dropped_too_long": len(too_long),
+                    "dropped_too_many_tokens": too_many_tokens, "dev_seed": int(cfg.get("dev_seed", 42)),
                     "dev_items_for_selection": len(dev_items), "dev_limit": cfg.get("dev_limit"),
                     "train_filter": cfg.get("train_filter"), "dev_filter": cfg.get("dev_filter")},
         "selection": {"metric": f"dev {metric} under the scoring policy", "best_checkpoint": trainer.state.best_model_checkpoint,
