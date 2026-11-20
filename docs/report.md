@@ -190,7 +190,7 @@ it includes the CPU beam search (12 workers). Runs: `runs/speed4070_*`.
 | Whisper-large-v3 zero-shot | 12 | fp16 |
 | Kaldi GMM-HMM tri3b (CPU, 8 jobs; different timing boundary, §2) | 33 on CV test | CPU |
 
-The CTC systems are an order of magnitude faster than Whisper. The beam + LM search costs MMS only about 5 % of
+The CTC systems are an order of magnitude faster than Whisper. The beam + LM search costs MMS only 5–11 % of
 its speed. Zero-shot Whisper-small and -turbo are slower than larger fine-tuned models because they loop and
 generate up to the token limit. Speed here is throughput (RTFx), not streaming latency.
 
