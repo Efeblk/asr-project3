@@ -7,6 +7,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 
 from .base import Recognizer
@@ -113,15 +115,21 @@ class HFCTC(Recognizer):
             tok = self.processor.tokenizer
             labels = [t for t, _ in sorted(tok.get_vocab().items(), key=lambda x: x[1])]
             labels = ["" if t == tok.pad_token else " " if t == tok.word_delimiter_token else t for t in labels]
-            self.decoder = build_ctcdecoder(labels, kenlm_model_path=lm["arpa"], alpha=float(lm["alpha"]),
-                                            beta=float(lm["beta"]))
+            arpa = lm.get("arpa")  # null = beam search without an LM (decoder ablation, dev only)
+            if arpa and lm.get("arpa_sha256"):
+                import hashlib
+                h = hashlib.sha256(Path(arpa).read_bytes()).hexdigest()
+                if h != lm["arpa_sha256"]:
+                    raise ValueError(f"{arpa}: sha256 {h} does not match the pinned {lm['arpa_sha256']}")
+            self.decoder = (build_ctcdecoder(labels, kenlm_model_path=arpa, alpha=float(lm["alpha"]),
+                                             beta=float(lm["beta"])) if arpa else build_ctcdecoder(labels))
             self.beam_width = int(lm.get("beam_width", 100))
             self.pool = multiprocessing.get_context("fork").Pool(int(lm.get("workers", 8)))
         self.model = AutoModelForCTC.from_pretrained(
             self.model_id, revision=self.revision, dtype=_torch_dtype(self.dtype)
         )
         if self.target_lang:
-            self.model.load_adapter(self.target_lang)
+            self.model.load_adapter(self.target_lang, revision=self.revision)  # adapter from the pinned revision
         self.model = self.model.to(self.device, dtype=_torch_dtype(self.dtype)).eval()
         self.model_language = self.settings.get("model_language")
 
@@ -141,4 +149,7 @@ class HFCTC(Recognizer):
             return [t.strip() for t in self.decoder.decode_batch(self.pool, [lp[i, :n] for i, n in enumerate(lens)],
                                                                  beam_width=self.beam_width)]
         ids = logits.argmax(-1)  # greedy CTC: argmax per frame, then collapse repeats + blanks (S50-S52)
+        if self.settings.get("greedy_valid_frames") and mask is not None:  # ablation: drop padded frames, as beam does
+            lens = self.model._get_feat_extract_output_lengths(mask.sum(-1)).tolist()
+            return [self.processor.decode(ids[i, :n]).strip() for i, n in enumerate(lens)]
         return [t.strip() for t in self.processor.batch_decode(ids)]

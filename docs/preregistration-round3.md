@@ -28,3 +28,16 @@ Round 3 adds two checks for rigor. It adds no new modelling ideas and changes no
   CPU system and keeps its CPU RTFx.
 - These runs are on dev and are used only for speed. Their WER on 500 clips is logged as a sanity check but not
   used for any choice.
+
+## 3. Decoder ablation on dev (added 2026-11-21, before any of these runs; prompted by an external review)
+
+The round-2 LM rows change two things at once: greedy → beam-100 search, and no LM → word 3-gram LM. The beam path
+also decodes only the valid (unpadded) frames. To separate these effects, MMS FT (seed 42) and MMS zero-shot are
+decoded on **CV dev and FLEURS dev only**, in two more variants (`configs/runs/ka/round3/decoder/`):
+
+- `greedy-valid`: greedy CTC on unpadded frames only. This isolates the padding difference.
+- `beam100-nolm`: pyctcdecode beam 100 without an LM. This isolates the beam search.
+
+Together with the existing greedy and beam+LM dev runs, the chain is greedy → greedy-valid → beam → beam+LM. The test
+set is not used, and nothing is selected from this ablation. It changes only how the round-2 gain is attributed in
+the report.

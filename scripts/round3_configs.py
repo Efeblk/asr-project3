@@ -8,6 +8,7 @@
 Usage:
   python scripts/round3_configs.py speed
   python scripts/round3_configs.py seed 7 checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed7_<ts>/final
+  python scripts/round3_configs.py decoder   # dev-only CTC decoder ablation (preregistration §3)
 """
 import sys
 from pathlib import Path
@@ -61,9 +62,30 @@ def seed(s: int, ckpt: str) -> None:
                      f"# and the name differ. LM alpha/beta stay as selected in round 2 (no reselection).\n")
 
 
+def decoder() -> None:
+    variants = {
+        "greedy-valid": lambda m: m.update(greedy_valid_frames=True),
+        "beam100-nolm": lambda m: m.update(lm={"arpa": None, "alpha": 0.0, "beta": 0.0, "beam_width": 100,
+                                               "workers": 12}),
+    }
+    for base in ("mms-1b-all-kat-adapter-ft_cv-ka", "mms-1b-all-kat"):
+        for corpus in ("cv", "fleurs"):
+            src = KA / f"{base}_{corpus}-dev.yaml"
+            for tag, apply in variants.items():
+                cfg = yaml.safe_load(src.read_text(encoding="utf-8"))
+                assert cfg["split"] == "dev" and not cfg["model"].get("lm"), src
+                apply(cfg["model"])
+                cfg["name"] = cfg["name"].replace(base, f"{base}+{tag}", 1)
+                dump(cfg, OUT / "decoder" / f"{base}+{tag}_{corpus}-dev.yaml",
+                     f"# Round 3 decoder ablation (dev only), generated from {src.name} by scripts/round3_configs.py.\n"
+                     f"# Variant {tag}; everything else unchanged.\n")
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "speed":
         speed()
+    elif sys.argv[1] == "decoder":
+        decoder()
     elif sys.argv[1] == "seed":
         seed(int(sys.argv[2]), sys.argv[3])
     else:

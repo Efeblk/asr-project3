@@ -1,0 +1,21 @@
+# Round 3 decoder ablation (dev only), generated from mms-1b-all-kat-adapter-ft_cv-ka_fleurs-dev.yaml by scripts/round3_configs.py.
+# Variant beam100-nolm; everything else unchanged.
+name: mms-1b-all-kat-adapter-ft_cv-ka+beam100-nolm_fleurs-ka_dev
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat
+  lm:
+    arpa: null
+    alpha: 0.0
+    beta: 0.0
+    beam_width: 100
+    workers: 12
