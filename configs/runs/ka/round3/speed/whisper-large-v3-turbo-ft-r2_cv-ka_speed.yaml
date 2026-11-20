@@ -1,0 +1,18 @@
+# Round 3 speed benchmark, generated from whisper-large-v3-turbo-ft-r2_cv-ka_cv-test.yaml by scripts/round3_configs.py.
+# Same GPU, first 500 CV ka dev clips by ID, batch 8; model/decoder unchanged.
+name: speed4070_whisper-large-v3-turbo-ft-r2_cv-ka_cv-ka_dev500
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+limit: 500
