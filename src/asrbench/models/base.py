@@ -63,6 +63,10 @@ class Recognizer(ABC):
             "settings": self.settings,
         }
 
+    def chunking_description(self) -> str:
+        """How long clips are handled; written to the run manifest. Families override this."""
+        return "none: every clip is decoded whole"
+
     def sync(self) -> None:
         """Block until queued GPU work is done so timings are honest."""
         try:

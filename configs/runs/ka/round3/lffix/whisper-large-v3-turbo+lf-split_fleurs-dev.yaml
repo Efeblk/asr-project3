@@ -1,0 +1,20 @@
+# Round 3 §4 bug-fix re-run, generated from whisper-large-v3-turbo_fleurs-dev.yaml by scripts/round3_configs.py.
+# Changes: model.long_form = split (no batch-wide timestamped long-form decoding); batch 16
+# (12 GB GPU; decoding no longer depends on the batch).
+name: whisper-large-v3-turbo+lf-split_fleurs-ka_dev
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: openai/whisper-large-v3-turbo
+  revision: 41f01f3fe87f28c78e2fbf8b568835947dd65ed9
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+  long_form: split

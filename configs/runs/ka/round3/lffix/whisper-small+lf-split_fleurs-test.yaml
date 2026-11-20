@@ -1,0 +1,21 @@
+# Round 3 §4 bug-fix re-run, generated from whisper-small_fleurs-test.yaml by scripts/round3_configs.py.
+# Changes: model.long_form = split (no batch-wide timestamped long-form decoding); batch 16
+# (12 GB GPU; decoding no longer depends on the batch).
+name: whisper-small+lf-split_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 16
+model:
+  family: hf-whisper
+  id: openai/whisper-small
+  revision: 973afd24965f72e36ca33b3055d56a652f456b4d
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+  long_form: split
+frozen: true

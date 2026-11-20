@@ -43,6 +43,33 @@ def split_at_pauses(audio: np.ndarray, sr: int, max_seconds: float) -> list[np.n
     return pieces
 
 
+def split_balanced(audio: np.ndarray, sr: int, max_seconds: float, search: float = 0.15) -> list[np.ndarray]:
+    """Cut a clip into the fewest equal-length pieces of at most `max_seconds`, moving each cut to the quietest
+    point (200 ms smoothed frame energy) within ±`search` of a piece length around the equal-length target. Unlike
+    `split_at_pauses`, this never leaves a short trailing shard: every piece is at least (1 − 2·search)·L long, where
+    L = duration / n. Pieces never exceed `max_seconds`."""
+    limit = int(max_seconds * sr)
+    if len(audio) <= limit:
+        return [audio]
+    n_pieces = int(np.ceil(len(audio) / limit))
+    hop, win = int(0.01 * sr), int(0.025 * sr)
+    n = max(1, (len(audio) - win) // hop + 1)
+    frames = np.lib.stride_tricks.sliding_window_view(audio[: (n - 1) * hop + win], win)[::hop]
+    energy = np.convolve((frames.astype(np.float64) ** 2).sum(axis=1), np.ones(20) / 20, mode="same")
+    piece = len(audio) / n_pieces
+    cuts, prev = [], 0
+    for k in range(1, n_pieces):
+        lo = max(int(k * piece - search * piece), prev + 1, len(audio) - (n_pieces - k) * limit)
+        hi = min(int(k * piece + search * piece), prev + limit)
+        lo_f, hi_f = lo // hop, min(hi // hop, n - 1)
+        cut = (lo_f + int(np.argmin(energy[lo_f:hi_f + 1]))) * hop if hi_f > lo_f else int(k * piece)
+        cut = min(max(cut, lo), hi)
+        cuts.append(cut)
+        prev = cut
+    bounds = [0, *cuts, len(audio)]
+    return [audio[a:b] for a, b in zip(bounds, bounds[1:])]
+
+
 class HFWhisper(Recognizer):
     family = "hf-whisper"
     WINDOW_SECONDS = 30
@@ -72,7 +99,40 @@ class HFWhisper(Recognizer):
             return [" ".join(t) for t in out]
         return self._transcribe(audios, language)
 
+    def chunking_description(self) -> str:
+        chunk = float(self.settings.get("chunk_seconds") or 0)
+        pre = (f"chunk_seconds={chunk:g}: clips over {chunk:g} s split at pauses (split_at_pauses, no overlap), "
+               "pieces joined with a space; then " if chunk else "")
+        if self.settings.get("long_form", "split") == "legacy-batch":
+            return pre + ("legacy-batch: a batch containing any clip over 30 s is decoded with timestamped long-form "
+                          "generation as a whole, including its clips of 30 s or less")
+        return pre + ("clips over 30 s split into the fewest equal pieces of at most 30 s at pauses (split_balanced), "
+                      "decoded without timestamps, joined with a space; clips of 30 s or less decoded whole")
+
     def _transcribe(self, audios: list[np.ndarray], language: str) -> list[str]:
+        """Clips over 30 s: policy `long_form` (model setting).
+        - "split" (default since round 3): each clip over 30 s is cut at pauses into the fewest equal-length pieces of
+          at most 30 s (`split_balanced`). The pieces are decoded like any other clip (single window, no timestamps)
+          and joined with a space. Every clip of 30 s or less is decoded on its own merits, whatever its batch.
+          This is the same for every Whisper system, including fine-tunes trained without timestamps.
+        - "legacy-batch": the behaviour of all runs before round 3. If any clip in a batch exceeded 30 s, the whole
+          batch went through transformers' timestamped long-form decoding, including its clips of 30 s or less.
+          It is kept only so that those frozen runs can be reproduced."""
+        limit = self.WINDOW_SECONDS * self.sample_rate
+        if self.settings.get("long_form", "split") == "legacy-batch" or all(len(a) <= limit for a in audios):
+            return self._generate(audios, language)
+        pieces, owner = [], []
+        for i, a in enumerate(audios):
+            for p in (split_balanced(a, self.sample_rate, self.WINDOW_SECONDS) if len(a) > limit else [a]):
+                pieces.append(p)
+                owner.append(i)
+        out = [[] for _ in audios]
+        for i, t in zip(owner, self._generate(pieces, language)):
+            if t:
+                out[i].append(t)
+        return [" ".join(t) for t in out]
+
+    def _generate(self, audios: list[np.ndarray], language: str) -> list[str]:
         import torch
         long_form = any(len(a) > self.WINDOW_SECONDS * self.sample_rate for a in audios)
         kw = dict(sampling_rate=self.sample_rate, return_tensors="pt", return_attention_mask=True)

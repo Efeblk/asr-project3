@@ -87,7 +87,7 @@ def run(config_path: str | Path, runs_dir: str | Path = "runs", resume: str | Pa
         "batch_size": bs,
         "timing_boundary": "model forward/decode only; audio loading and model loading excluded; "
                            "CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
-        "chunking": "none for clips <=30 s; family default long-form decoding above that",
+        "chunking": recognizer.chunking_description(),
         "env": envinfo.capture(),
         "model_load_sec": round(load_sec, 2),
     }

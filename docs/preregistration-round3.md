@@ -49,3 +49,22 @@ selected their checkpoints on different dev clips from seed 42 (7/300 shared), w
 uses `dev_seed` (default 42). That reproduces the seed-42 subset exactly, and every earlier run used seed 42. Each
 training run now also writes `dev_ids.txt`. `train_ids.txt` is written after the Whisper 448-token filter, and the
 dropped IDs go to the train manifest. This commit is pulled into the WSL checkout before seed 7 starts training.
+
+## 4. Bug-fix re-run: Whisper long-form decoding on FLEURS (added 2026-11-21, before these runs)
+
+An external review found a harness bug. In `HFWhisper`, if any clip in a batch was longer than 30 s, the *whole
+batch* was decoded with timestamped long-form generation. Because the runner sorts clips longest-first, the one
+FLEURS ka clip over 30 s (33.2 s test, 32.2 s dev) put the 32 longest FLEURS clips into that mode, in every
+Whisper run. Our fine-tunes were trained without timestamps and produced spliced, truncated outputs there. Common
+Voice is not affected: no CV dev/test clip is longer than 15 s.
+
+Fix (`long_form: split`, now the default): only clips over 30 s are handled specially. They are cut at pauses into
+the fewest equal pieces of at most 30 s, decoded without timestamps, and joined with a space. The policy is the
+same for every Whisper system. Every other clip is decoded whole, whatever its batch.
+
+Re-run, once each, with the original frozen configs changed only in `long_form` and batch size (16, to fit a 12 GB
+GPU; decoding no longer depends on the batch): FLEURS ka dev and test for Whisper-small, -large-v3, -large-v3-turbo
+and our turbo FT r2 (`configs/runs/ka/round3/lffix/`). The r1 turbo FT cannot be re-run because its weights are
+gone, and the chunked r2 runs are unaffected because all their pieces are 14 s or shorter. The report shows the
+corrected FLEURS Whisper rows as the main numbers, keeps the original frozen rows next to them, and states why. No
+setting is re-selected.

@@ -81,9 +81,32 @@ def decoder() -> None:
                      f"# Variant {tag}; everything else unchanged.\n")
 
 
+LFFIX_SYSTEMS = ("whisper-small", "whisper-large-v3", "whisper-large-v3-turbo", "whisper-large-v3-turbo-ft-r2_cv-ka")
+
+
+def lffix() -> None:
+    """Preregistration §4: FLEURS re-runs of every Whisper system whose frozen FLEURS runs hit the batch long-form
+    bug. Only `long_form: split` is new; everything else, test freezing included, is copied from the original."""
+    for base in LFFIX_SYSTEMS:
+        for split in ("dev", "test"):
+            src = KA / f"{base}_fleurs-{split}.yaml"
+            cfg = yaml.safe_load(src.read_text(encoding="utf-8"))
+            assert cfg["model"]["family"] == "hf-whisper" and not cfg["model"].get("chunk_seconds"), src
+            cfg["model"]["long_form"] = "split"
+            cfg["batch_size"] = 16  # decoding is batch-independent after the fix; 16 fits a 12 GB GPU
+            cfg["name"] = cfg["name"].replace(base, f"{base}+lf-split", 1)
+            assert cfg["name"] != base
+            dump(cfg, OUT / "lffix" / f"{base}+lf-split_fleurs-{split}.yaml",
+                 f"# Round 3 §4 bug-fix re-run, generated from {src.name} by scripts/round3_configs.py.\n"
+                 f"# Changes: model.long_form = split (no batch-wide timestamped long-form decoding); batch 16\n"
+                 f"# (12 GB GPU; decoding no longer depends on the batch).\n")
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "speed":
         speed()
+    elif sys.argv[1] == "lffix":
+        lffix()
     elif sys.argv[1] == "decoder":
         decoder()
     elif sys.argv[1] == "seed":
