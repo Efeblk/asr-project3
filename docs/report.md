@@ -257,8 +257,16 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
 ## 7. Reproducing
 
 `README.md` describes the setup: uv environment, data import with sha256 checks, and `asrbench run/score`. The
-GMM-HMM is in `recipes/kaldi-gmm-ka/` (WSL + conda Kaldi). LM decoding needs Linux (KenLM). Tables come from
-`scripts/results_table.py ka` and `scripts/error_analysis_ka.py`.
+GMM-HMM is in `recipes/kaldi-gmm-ka/` (WSL + conda Kaldi). LM decoding needs Linux (`uv sync --extra lm`, KenLM).
+The LM decoder verifies the ARPA file's sha256 at load, and the MMS adapter is loaded at the pinned revision.
+
+There are two levels of reproduction:
+- **From the repository alone:** every WER/CER, CI and paired comparison. `asrbench score` and `compare` need only
+  the committed `runs/*/predictions.jsonl` and `configs/scoring.yaml`. `scripts/results_table.py ka` regenerates
+  the tables.
+- **With the datasets imported:** the split audit, `scripts/error_analysis_ka.py` (speaker metadata, durations,
+  OOV) and `scripts/cv_contamination.py`. These need the CV 27.0 and FLEURS manifests, whose sha256 values are in
+  `docs/data-notes-cv-ka.md`.
 
 ## Appendix: Kazakh pilot
 
