@@ -1,0 +1,350 @@
+{
+  "run": "mms-1b-all-kat-adapter-ft_cv-ka+lm_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 0.5,
+        "beta": 0.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 96644,
+        "S": 8389,
+        "D": 2768,
+        "I": 772,
+        "N": 107801,
+        "M": 105805
+      },
+      "wer": 0.11065760057884436,
+      "mer": 0.1098707781861052,
+      "wil": 0.18111896659647175,
+      "mean_clip_wer": 0.10969030861985693,
+      "char_counts": {
+        "C": 864826,
+        "S": 6478,
+        "D": 9454,
+        "I": 2865,
+        "N": 880758,
+        "M": 874169
+      },
+      "cer": 0.021341844184214052,
+      "wer_ci": {
+        "low": 0.10469368756499992,
+        "high": 0.11720814836558736,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.019085241087019925,
+        "high": 0.02406262644865374,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.002675426604616471,
+      "rtfx": 373.77216712822235,
+      "orthographic": {
+        "wer": 0.304515475330475,
+        "cer": 0.04571465939281356
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 1,
+        "emitted_words": 1,
+        "examples": [
+          {
+            "id": "cv-ka-test-common_voice_ka_38257760",
+            "hyp": "აი"
+          }
+        ]
+      },
+      "top_substitutions": [
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          17
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "საქართველოს",
+          "საქართველო",
+          7
+        ],
+        [
+          "სახელმწიფოს",
+          "სახელმწიფო",
+          6
+        ],
+        [
+          "ეს",
+          "ის",
+          5
+        ],
+        [
+          "ჰქონდათ",
+          "ჰქონდა",
+          5
+        ],
+        [
+          "ქვეშ",
+          "ქვეში",
+          5
+        ],
+        [
+          "თავისი",
+          "თავის",
+          5
+        ],
+        [
+          "თვითმმართველობის",
+          "თვითმართველობის",
+          4
+        ],
+        [
+          "ჩრდილოეთ",
+          "ჩდილოეთ",
+          4
+        ],
+        [
+          "საბოლოოდ",
+          "საბოლოო",
+          4
+        ],
+        [
+          "ტერიტორიაზე",
+          "ტერიტორიას",
+          4
+        ],
+        [
+          "დავით",
+          "დავიდ",
+          4
+        ],
+        [
+          "სამხრეთი",
+          "სამხრეთ",
+          4
+        ],
+        [
+          "არა",
+          "არ",
+          4
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_39760373",
+          "ref": "ამის შემდეგ ერთხანს მსახურობდა მღვდლად ხოლო პირველი მსოფლიო ომის დროს იყო ავსტრია უნგრეთის არმიის კაპელანი",
+          "hyp": "ამის შენი აისახებოდა იძენდა ხანაშივე ციკლი ყოფნისას უკავია ომისათვის არ მის კაპელას",
+          "errors": {
+            "C": 1,
+            "S": 11,
+            "D": 3,
+            "I": 0,
+            "N": 15,
+            "M": 12
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097318",
+          "ref": "ანტისოციალური პიროვნების აშლილობის მქონე ადამიანი ხასიათდება სხვა ადამიანის უფლებების უგულვებელყოფით და მათი დარღვევით",
+          "hyp": "ანი სოციალური ბრაუნების კავშირების ორი ადამიანი ხერძელეომასწავაურბებებიუიველყოფიდამათიდარღვევი",
+          "errors": {
+            "C": 1,
+            "S": 5,
+            "D": 7,
+            "I": 1,
+            "N": 13,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41819001",
+          "ref": "გარდამოიხილე ზეცით ღმერთო იხილე მოხედე ვენახსა მას და განამტკიცე ესე რომელ დაასხა მარჯვენამან შენმან",
+          "hyp": "გარდა მოიხილასზაცითხმერთოიხილემოხედევენახსამასდაგანარგცეეზე რომელ და ასამარჯვემანშენმან",
+          "errors": {
+            "C": 1,
+            "S": 4,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39695177",
+          "ref": "ესპანეთთან დაზავების შემდგომ ანრიმ განიზრახა ფრანკო ესპანური ალიანსი დინასტიური ქორწინებით გაემყარებინა",
+          "hyp": "კაცი შედის სახელის ვარაუდები ნიკა დენიკინის იულიანას ხმელი ამარა მას შეიყვარა საყურებლად",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 1,
+            "N": 11,
+            "M": 12
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097326",
+          "ref": "ქრისტიანობის შემოსვლის შემდეგ წარმართულ ლამარიას ცვლის მარიამ ღვთისმშობელი კულტი კი იგივე რჩება",
+          "hyp": "ტიან ობის სამსარის შემდეგ წარმოადგინა მარია შრისმარიანხრიშომელიკილიდაივერჩიბა",
+          "errors": {
+            "C": 1,
+            "S": 5,
+            "D": 6,
+            "I": 1,
+            "N": 12,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49319910",
+          "ref": "აბა იქით გაიხედე მაიმუნი მაიმუნობს აბა კლასში ეს ბიჭები რასღა ჩხუბობთ თქვა პიშკებო",
+          "hyp": "აბა იქით გაიხედემაიმონიმაიმუნობსწაბაკლასშიეზბიჭები რაღაც ჩხორო თქვაპიშკებო",
+          "errors": {
+            "C": 2,
+            "S": 4,
+            "D": 7,
+            "I": 0,
+            "N": 13,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40855669",
+          "ref": "ვინაიდან მას მაქსიმილიანის სახით უკვე ჰყავდა უფროსი ძმა ტახტზე ასვლის იმედი არ უნდა ჰქონოდა",
+          "hyp": "ვინაიდან მას მაქსიმილიანი სახით უგაყავდაუფირწმატახწეასუმედიაუნდაქონდა",
+          "errors": {
+            "C": 3,
+            "S": 2,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760422",
+          "ref": "ჩატარებული აქვს საერთაშორისო გუნდური შეხვედრები პოლონეთის უნგრეთის ჩეხოსლოვაკიის მონღოლეთის ეროვნულ ნაკრებებთან",
+          "hyp": "ბუდეს ააწასორზოუნდოშეფოაბიპოლოლეთისიდათიჩეხსვაკიისმოყოდარუნებ",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 9,
+            "I": 0,
+            "N": 11,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49392101",
+          "ref": "სიჭაბუკისა ყვავილი დამიჭკნო ჟამთა დენამა ნდომა მომაკლო დამიგდო სასაპყროდ გული რბენამა",
+          "hyp": "სიჭაბუკისაყვავილი დამიჭკნოჟამთადენამა ნდომა მომაკლოდამიგდო სასაპყოროდ გულირბენამა",
+          "errors": {
+            "C": 1,
+            "S": 5,
+            "D": 5,
+            "I": 0,
+            "N": 11,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39930460",
+          "ref": "მთელი ეს ამბავი მალე გავრცელდა იტალიაში და კატერინას ბიძის ლუდოვიკო სფორცას ყურამდეც მივიდა",
+          "hyp": "ფელინის ამბავი მალე გალობდა ითავა და კატერინას დიდის ლუდოვიკოს ორ წელს ტურამდე სენას",
+          "errors": {
+            "C": 4,
+            "S": 8,
+            "D": 1,
+            "I": 1,
+            "N": 13,
+            "M": 13
+          }
+        }
+      ]
+    }
+  }
+}

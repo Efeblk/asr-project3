@@ -1,0 +1,345 @@
+{
+  "run": "mms-1b-all-kat-adapter-ft_cv-ka+lm-a0.3-b2.0_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 0.3,
+        "beta": 2.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 98298,
+        "S": 8535,
+        "D": 1862,
+        "I": 1769,
+        "N": 108695,
+        "M": 108602
+      },
+      "wer": 0.1119278715672294,
+      "mer": 0.11013542873696408,
+      "wil": 0.18145610605860096,
+      "mean_clip_wer": 0.11150181311143276,
+      "char_counts": {
+        "C": 877870,
+        "S": 5871,
+        "D": 7732,
+        "I": 3695,
+        "N": 891473,
+        "M": 887436
+      },
+      "cer": 0.01940384060986704,
+      "wer_ci": {
+        "low": 0.10283569872461049,
+        "high": 0.12198373692496994,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.016613736866424554,
+        "high": 0.022611901967631173,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.0026337461882384315,
+      "rtfx": 379.6873079363981,
+      "orthographic": {
+        "wer": 0.30627865665950543,
+        "cer": 0.043675338727270335
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          14
+        ],
+        [
+          "ციხესიმაგრე",
+          "სიმაგრე",
+          11
+        ],
+        [
+          "დღესდღეობით",
+          "დღეობით",
+          9
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "საქართველოს",
+          "საქართველო",
+          8
+        ],
+        [
+          "ნიკოლოზ",
+          "ნიკოლას",
+          6
+        ],
+        [
+          "ან",
+          "ამ",
+          6
+        ],
+        [
+          "მარადმწვანე",
+          "მწვანე",
+          6
+        ],
+        [
+          "აბსიდით",
+          "აფსიდით",
+          5
+        ],
+        [
+          "მატჩში",
+          "მათში",
+          5
+        ],
+        [
+          "უეფა",
+          "უეფას",
+          5
+        ],
+        [
+          "ყოველწლიურად",
+          "წლიურად",
+          5
+        ],
+        [
+          "თავმჯდომარე",
+          "თავჯდომარე",
+          5
+        ],
+        [
+          "საკმაოდ",
+          "საკმაო",
+          5
+        ],
+        [
+          "დავით",
+          "დავიდ",
+          5
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_40617840",
+          "ref": "საბჭოთა ისტორიოგრაფიის შეფასებით ფხოველთა და დიდოელთა აჯანყების დამარცხებას სხვადასხვა არსებითი ხასიათის მიზეზი ჰქონდა",
+          "hyp": "არის ის იი",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 10,
+            "I": 0,
+            "N": 13,
+            "M": 3
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40255793",
+          "ref": "მიუხედავად დამთვალიერებლების სიჭარბისა მომავალი წლის ივნისში ედგარ ალან პოს სახლ მუზეუმი დაიხურება",
+          "hyp": "მიუხედავად და მთვარიელების ჭა სი ჭარბი სა მომავალი წლის ჟი ედგა რა პოს სახლ მუზეობი დაიხურა",
+          "errors": {
+            "C": 5,
+            "S": 7,
+            "D": 0,
+            "I": 4,
+            "N": 12,
+            "M": 16
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40618092",
+          "ref": "საბოლოო ჯამში იანგმა ჯგუფი დატოვა და მისი ადგილი სტივ ვესტმა დაიკავა",
+          "hyp": "ამ აიას",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 9,
+            "I": 0,
+            "N": 11,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40356724",
+          "ref": "გუგენჰაიმის სპირალურად დახვეული თეთრი აივნებიდანაც ავტომობილის ნაწილებით დამზადებული ექსტრავაგანტული ფიგურები იმზირებიან",
+          "hyp": "ეს შენობა არის რატო მაცი",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 6,
+            "I": 0,
+            "N": 11,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40332704",
+          "ref": "მოკავშირეთა კონტროლქვეშ აღმოჩნდა სპლიტ ლივნო კუპრეს ბუგოინოს გზატკეცილი რაც მებრძოლი მხარეების მომარაგების პრობლემებს ხსნიდა",
+          "hyp": "მოკავშირეთა კონტროლ ქვეშ აღნიშნა სპლიტ ლივნოკუპრესბეგოინოს გზატკეცილი რამაც მებრძოლი მხარეები მომარაგების პრობლემად იხსნა",
+          "errors": {
+            "C": 5,
+            "S": 7,
+            "D": 2,
+            "I": 1,
+            "N": 14,
+            "M": 13
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40053370",
+          "ref": "მიუხედავად ამისა ვაჟის გაჩენით ბიანკამ სამუდამოდ დაატყვევა ფრანჩესკო რომელსაც ამის შემდეგ მასზე ქორწინება სურდა",
+          "hyp": "მიუხედავად ამისა გაჩენის პიაკამსამოდამოდდაატყვევა ფრანცისკო რომელიც ამიშემდეგმაშზე ქორწინება სურდა",
+          "errors": {
+            "C": 4,
+            "S": 5,
+            "D": 5,
+            "I": 0,
+            "N": 14,
+            "M": 9
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760389",
+          "ref": "წერილობითი ფორმები კომბინირებულია დიაკრიტიკული ნიშნებით რომლებიც არ ითვლება ცალკეულ წერილებში რომელიმე ენაზე",
+          "hyp": "წერილობითი ფორმები კომბინირებული ან გია კრიტიკული მიშელი რომლებიც არიანა საკეო წერილებს რომელიმე ერთი",
+          "errors": {
+            "C": 4,
+            "S": 7,
+            "D": 1,
+            "I": 2,
+            "N": 12,
+            "M": 13
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_26759863",
+          "ref": "სილვიო ემუდარება ნედას რომ მიატოვოს ქმარი და მასთან ერთად გაიქცეს რასაც ნედა საბოლოოდ თანხმდება",
+          "hyp": "სიბიუ ემკვდარებანედასრომიატროვოსქმარიდა მასთან ერთად გაიქცეს რასაც ნე და საბოლოდათანხმდება",
+          "errors": {
+            "C": 4,
+            "S": 5,
+            "D": 5,
+            "I": 0,
+            "N": 14,
+            "M": 9
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40057383",
+          "ref": "კუნძულოვან სკანდინავიურ ენებს განეკუთვნება რომელიც დიდი ხნის მანძილზე სხვა ენებისგან იზოლირებულად ვითარდებოდა",
+          "hyp": "კუნძულოვანი სკანდინავიური ენების გარემო თოვა რომელიც დიდი ერთმა ძე და სხვა ნათან ისარგებლა ვითარდებოდა",
+          "errors": {
+            "C": 4,
+            "S": 8,
+            "D": 0,
+            "I": 2,
+            "N": 12,
+            "M": 14
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760415",
+          "ref": "მანამდე გენერალური მდივნის პოსტს დიმიტრი ბოკერია ბოლო ერთი თვის განმავლობაში იკავებდა",
+          "hyp": "ამ ბი გი მირა გირის დიმიტრი ბოკერია ბოუი სალობაშიკარია",
+          "errors": {
+            "C": 2,
+            "S": 6,
+            "D": 3,
+            "I": 1,
+            "N": 11,
+            "M": 9
+          }
+        }
+      ]
+    }
+  }
+}

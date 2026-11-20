@@ -1,0 +1,333 @@
+{
+  "run": "mms-1b-all-kat+lm_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 0.5,
+        "beta": 0.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 93901,
+        "S": 9729,
+        "D": 4171,
+        "I": 655,
+        "N": 107801,
+        "M": 104285
+      },
+      "wer": 0.13501730039610021,
+      "mer": 0.13420188832337537,
+      "wil": 0.21567546693603323,
+      "mean_clip_wer": 0.13745771108304422,
+      "char_counts": {
+        "C": 856493,
+        "S": 10802,
+        "D": 13463,
+        "I": 2855,
+        "N": 880758,
+        "M": 870150
+      },
+      "cer": 0.030791659002813485,
+      "wer_ci": {
+        "low": 0.1272522502309195,
+        "high": 0.14393676700612823,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.025905829137153988,
+        "high": 0.03670920701491436,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.002727307314268202,
+      "rtfx": 366.66201669624553,
+      "orthographic": {
+        "wer": 0.32196568126166863,
+        "cer": 0.05522002777571498
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "საქართველოს",
+          "საქართველო",
+          17
+        ],
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          16
+        ],
+        [
+          "გვხვდება",
+          "ხვდება",
+          14
+        ],
+        [
+          "ერთ",
+          "ერთერთი",
+          9
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "სახელმწიფოს",
+          "სახელმწიფო",
+          8
+        ],
+        [
+          "ერთ",
+          "ერთად",
+          8
+        ],
+        [
+          "დააარსა",
+          "დაარსა",
+          7
+        ],
+        [
+          "მათგანი",
+          "მადგანი",
+          6
+        ],
+        [
+          "მსოფლიოს",
+          "მსოფლიო",
+          5
+        ],
+        [
+          "აფსიდის",
+          "აბსიდის",
+          5
+        ],
+        [
+          "ქვეშ",
+          "ქვეში",
+          5
+        ],
+        [
+          "მხარეს",
+          "მხარის",
+          5
+        ],
+        [
+          "თავისი",
+          "თავის",
+          5
+        ],
+        [
+          "ბოლოს",
+          "ბოლო",
+          4
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_39760373",
+          "ref": "ამის შემდეგ ერთხანს მსახურობდა მღვდლად ხოლო პირველი მსოფლიო ომის დროს იყო ავსტრია უნგრეთის არმიის კაპელანი",
+          "hyp": "abcenlatnsacontaencascomty ncucnonbcacaffoucnnatsalmecafla",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 13,
+            "I": 0,
+            "N": 15,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40338901",
+          "ref": "სწორედ ამ შენობასთან მოკლეს ფრანც ფერდინანდი რაც შემდგომ პირველი მსოფლიო ომის დაწყების მიზეზი გახდა",
+          "hyp": "soensenbasangkuvesaansaendananscenewalnsala onussabisnececikafa",
+          "errors": {
+            "C": 0,
+            "S": 2,
+            "D": 12,
+            "I": 0,
+            "N": 14,
+            "M": 2
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097233",
+          "ref": "კერძოდ მასთან ერთად იყვენ ჯო ლინ ტერნერი იენს იუჰანსონი და მისი ძმა პატრიკ იუჰანსონი",
+          "hyp": "essmansamanjonntenerycunhansonamcicnamatriunhanony",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 13,
+            "I": 0,
+            "N": 14,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40855669",
+          "ref": "ვინაიდან მას მაქსიმილიანის სახით უკვე ჰყავდა უფროსი ძმა ტახტზე ასვლის იმედი არ უნდა ჰქონოდა",
+          "hyp": "მინა დრამას მაქსიმილიანი სასულე ყავდოლქერწმატახწეასუმედიაუნდაქუმდა",
+          "errors": {
+            "C": 0,
+            "S": 5,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097318",
+          "ref": "ანტისოციალური პიროვნების აშლილობის მქონე ადამიანი ხასიათდება სხვა ადამიანის უფლებების უგულვებელყოფით და მათი დარღვევით",
+          "hyp": "andnsatnnanashinehaanannkankberabichuwelafitemantangoabire",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 12,
+            "I": 0,
+            "N": 13,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41819001",
+          "ref": "გარდამოიხილე ზეცით ღმერთო იხილე მოხედე ვენახსა მას და განამტკიცე ესე რომელ დაასხა მარჯვენამან შენმან",
+          "hyp": "გარდა მოიხილე ზეცითხმერთოიხილემოხედევენახსამანსდეგანარგიცეეზე რომელ და ასამარჯვემანშენმან",
+          "errors": {
+            "C": 1,
+            "S": 5,
+            "D": 8,
+            "I": 0,
+            "N": 14,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760147",
+          "ref": "საშუალო სკოლის დამთავრების შემდეგ სწავლა განაგრძო ივანე ჯავახიშვილის სახელობის სახელმწიფო უნივერსიტეტში გეოგრაფია გეოლოგიის ფაკულტეტზე",
+          "hyp": "საშაოისოისოწერბშებდესხავლაგანაქვაიპანეჯაუიჩისახებობისეხეიმაუნივერსიტეტში გეოგრაფია გეოლოგიის ბაგლდეზენ",
+          "errors": {
+            "C": 2,
+            "S": 2,
+            "D": 10,
+            "I": 0,
+            "N": 14,
+            "M": 4
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40338759",
+          "ref": "სამოქალაქო ომმა ჩრდილო კავკასიის პოლიტიკურ ლიდერთა საქმიანობა და დამოუკიდებლობისაკენ მიმართული ნაბიჯები დააჩქარა",
+          "hyp": "samcnakoumacntvacansicpourutetanscnenatauosganenturinabicobitcr",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 11,
+            "I": 0,
+            "N": 12,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39676543",
+          "ref": "მასვე ეკუთვნის შრომები გერმანიის გეოლოგიური აგებულებისა და ნახშირის ადგილმდებარეობის აღმოსავლეთ ალპების ტრიასული ფაუნის შესახებ",
+          "hyp": "მ ასევე კუთვნიშრომები გერმანიის გეოლოგიური აგებულება დანაღშირისსაადგიმდებარეობის",
+          "errors": {
+            "C": 2,
+            "S": 5,
+            "D": 7,
+            "I": 0,
+            "N": 14,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760274",
+          "ref": "რადიო თავისუფალი აზია მის ბლოგს უწოდებდა ზომიერ ინტელექტუალურ რესურსს სოციალური პრობლემების გადასაჭრელად",
+          "hyp": "nadoltonccliasyamisblockonebosnberolveseutalunupobemebicennefatn",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 11,
+            "I": 0,
+            "N": 12,
+            "M": 1
+          }
+        }
+      ]
+    }
+  }
+}

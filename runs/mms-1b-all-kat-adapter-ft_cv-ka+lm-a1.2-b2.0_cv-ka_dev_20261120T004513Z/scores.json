@@ -1,0 +1,345 @@
+{
+  "run": "mms-1b-all-kat-adapter-ft_cv-ka+lm-a1.2-b2.0_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 1.2,
+        "beta": 2.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 92128,
+        "S": 9575,
+        "D": 6992,
+        "I": 248,
+        "N": 108695,
+        "M": 101951
+      },
+      "wer": 0.15469892819356917,
+      "mer": 0.15434676849361592,
+      "wil": 0.23408208208466919,
+      "mean_clip_wer": 0.15003672331600268,
+      "char_counts": {
+        "C": 871913,
+        "S": 6259,
+        "D": 13301,
+        "I": 2146,
+        "N": 891473,
+        "M": 880318
+      },
+      "cer": 0.024348465965878942,
+      "wer_ci": {
+        "low": 0.14454925230954366,
+        "high": 0.16587230693373678,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.021335860040183625,
+        "high": 0.027815622614577536,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.002675157578391113,
+      "rtfx": 373.80975538697714,
+      "orthographic": {
+        "wer": 0.33663495252178605,
+        "cer": 0.04828478936048116
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          8
+        ],
+        [
+          "ერთ",
+          "ერთი",
+          6
+        ],
+        [
+          "ციხესიმაგრე",
+          "სიმაგრე",
+          5
+        ],
+        [
+          "უეფა",
+          "უეფას",
+          5
+        ],
+        [
+          "თავმჯდომარე",
+          "თავჯდომარე",
+          5
+        ],
+        [
+          "თავის",
+          "თავისი",
+          5
+        ],
+        [
+          "დიდ",
+          "დიდი",
+          4
+        ],
+        [
+          "აბსიდით",
+          "აფსიდით",
+          4
+        ],
+        [
+          "აბსიდის",
+          "აფსიდის",
+          4
+        ],
+        [
+          "მართლმადიდებელი",
+          "მართმადიდებელი",
+          4
+        ],
+        [
+          "შემდეგი",
+          "შემდეგ",
+          4
+        ],
+        [
+          "გვქონდა",
+          "ჰქონდა",
+          4
+        ],
+        [
+          "მატჩში",
+          "მათში",
+          3
+        ],
+        [
+          "მსოფლიოს",
+          "მსოფლიო",
+          3
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_34227472",
+          "ref": "მუსტაფა იყო ქოფრიულიუ მეჰმედ ფაშას შვილი ქოფრიულიუ ფაზილ აჰმედ ფაშას ძმა და ქოფრიულიუ ამჯაზადე ჰუსეინ ფაშას ბიძაშვილი",
+          "hyp": "მუსტაფა იყო ქოფრიულიუმეჰმედფაშასშვილი ქოფრიულიუფაზილაჰმედფაშასძმა და ქოფრიულიუამჯაზადეჰუზეინფაშასბიძაშვილი",
+          "errors": {
+            "C": 3,
+            "S": 3,
+            "D": 11,
+            "I": 0,
+            "N": 17,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40617840",
+          "ref": "საბჭოთა ისტორიოგრაფიის შეფასებით ფხოველთა და დიდოელთა აჯანყების დამარცხებას სხვადასხვა არსებითი ხასიათის მიზეზი ჰქონდა",
+          "hyp": "არის",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 12,
+            "I": 0,
+            "N": 13,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39695153",
+          "ref": "მოსკოვის სახელმწიფო ლინგვისტური უნივერსიტეტი არის რუსეთის ერთ ერთი ყველაზე დიდი უმაღლესი სასწავლებელი ენათმეცნიერების დარგში",
+          "hyp": "მოსკოვის სახელმსიფოლინგვისსტუდიუნივერსიტეტი არისრუსეთის ერთიდხველაზებებიუმანასის სასწავებელი ენათმეცნიების დარგში",
+          "errors": {
+            "C": 2,
+            "S": 5,
+            "D": 7,
+            "I": 0,
+            "N": 14,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49295110",
+          "ref": "მეფეს ხელში თოფი მისცა ბრმა თვალი დაუხუჭა და საღი თვალით ირემი მიზანში ამოაღებინა",
+          "hyp": "მეფესხელში თოფიმისცა ბრმათვალიდაუხუჭა და საღირთვალითირემი მიზანშიამოაღებინა",
+          "errors": {
+            "C": 1,
+            "S": 5,
+            "D": 7,
+            "I": 0,
+            "N": 13,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293289",
+          "ref": "მოყვარეს და მოყვრის შუა აბრეშუმის ძაფია გაბმული მტერსა და მტერს შუა ბაწარიო",
+          "hyp": "მოყვარესდამოყვრისშუააბრეშუმიძაფიაგავმულიტესადამტერშუაბაწარიო",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 11,
+            "I": 0,
+            "N": 12,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40255793",
+          "ref": "მიუხედავად დამთვალიერებლების სიჭარბისა მომავალი წლის ივნისში ედგარ ალან პოს სახლ მუზეუმი დაიხურება",
+          "hyp": "მიუხედავად დამთვალიელების სჭასიჭარბისამომავალიწლისი მშიედგარააპოსსახლმუზეობი დაიხურა",
+          "errors": {
+            "C": 1,
+            "S": 4,
+            "D": 7,
+            "I": 0,
+            "N": 12,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293620",
+          "ref": "დრო არი ჩემო პატარავ იცოდე ერტი ამბავი ედელის როდა ბადალი დღეს საქართელოს მთა ბრი",
+          "hyp": "დროარი ჩემოტიიამბავი ედელის როდაბადალი დღეს საქართველოს მთა ფრი",
+          "errors": {
+            "C": 3,
+            "S": 5,
+            "D": 6,
+            "I": 0,
+            "N": 14,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760415",
+          "ref": "მანამდე გენერალური მდივნის პოსტს დიმიტრი ბოკერია ბოლო ერთი თვის განმავლობაში იკავებდა",
+          "hyp": "ააბიგიმირაგიისდიმიტრიუკერიაბოუეისალობაშიკაი",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 10,
+            "I": 0,
+            "N": 11,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40618092",
+          "ref": "საბოლოო ჯამში იანგმა ჯგუფი დატოვა და მისი ადგილი სტივ ვესტმა დაიკავა",
+          "hyp": "აი",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 10,
+            "I": 0,
+            "N": 11,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40356724",
+          "ref": "გუგენჰაიმის სპირალურად დახვეული თეთრი აივნებიდანაც ავტომობილის ნაწილებით დამზადებული ექსტრავაგანტული ფიგურები იმზირებიან",
+          "hyp": "ეს შენობა არის დატოვა",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 7,
+            "I": 0,
+            "N": 11,
+            "M": 4
+          }
+        }
+      ]
+    }
+  }
+}

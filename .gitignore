@@ -17,3 +17,6 @@ checkpoints/
 # OS
 .DS_Store
 Thumbs.db
+
+# Word n-gram LMs for CTC decoding (regenerable: recipes/kaldi-gmm-ka stage 1, gunzipped)
+lm/

@@ -1,0 +1,66 @@
+model: mms-1b-all-kat-adapter-ft_cv-ka
+rule: min mean(CV dev WER, FLEURS dev WER); ties -> smaller alpha, then beta
+alphas:
+- 0.3
+- 0.5
+- 0.8
+- 1.2
+betas:
+- 0.0
+- 1.0
+- 2.0
+dev_wer:
+- alpha: 0.3
+  beta: 0.0
+  cv: 10.61
+  fleurs: 20.57
+- alpha: 0.3
+  beta: 1.0
+  cv: 10.81
+  fleurs: 20.86
+- alpha: 0.3
+  beta: 2.0
+  cv: 11.19
+  fleurs: 21.06
+- alpha: 0.5
+  beta: 0.0
+  cv: 10.28
+  fleurs: 20.41
+- alpha: 0.5
+  beta: 1.0
+  cv: 10.3
+  fleurs: 20.44
+- alpha: 0.5
+  beta: 2.0
+  cv: 10.51
+  fleurs: 20.7
+- alpha: 0.8
+  beta: 0.0
+  cv: 11.88
+  fleurs: 21.18
+- alpha: 0.8
+  beta: 1.0
+  cv: 11.16
+  fleurs: 20.47
+- alpha: 0.8
+  beta: 2.0
+  cv: 10.72
+  fleurs: 20.42
+- alpha: 1.2
+  beta: 0.0
+  cv: 20.01
+  fleurs: 27.88
+- alpha: 1.2
+  beta: 1.0
+  cv: 17.62
+  fleurs: 25.89
+- alpha: 1.2
+  beta: 2.0
+  cv: 15.47
+  fleurs: 23.89
+selected:
+  alpha: 0.5
+  beta: 0.0
+applied_to:
+- mms-1b-all-kat-adapter-ft_cv-ka
+- mms-1b-all-kat

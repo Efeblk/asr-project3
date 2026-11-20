@@ -12,6 +12,7 @@ from __future__ import annotations
 import glob
 import json
 import os
+import re
 import sys
 
 KK_SYSTEMS = [  # (row label, run-name prefix, group)
@@ -37,7 +38,17 @@ KA_SYSTEMS = [
     ("MFCC + GMM-HMM, LDA+MLLT+SAT (Kaldi tri3b, trained by us from scratch, CPU)", "kaldi-gmm-hmm-tri3b", "baseline"),
     ("MMS-1b-all, kat adapter fine-tune (2.3 M params)", "mms-1b-all-kat-adapter-ft_cv-ka", "ours"),
     ("Whisper-large-v3-turbo, full fine-tune", "whisper-large-v3-turbo-ft_cv-ka", "ours"),
+    ("MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation)", "mms-1b-all-kat+lm", "baseline+our LM"),
+    ("MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev)", "mms-1b-all-kat-adapter-ft_cv-ka+lm",
+     "ours+decoder"),
+    ("Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept)", "whisper-large-v3-turbo-ft-r2_cv-ka",
+     "ours"),
 ]
+_chunk = "configs/runs/ka/whisper-large-v3-turbo-ft-r2_cv-ka+chunk-selection.yaml"
+if os.path.exists(_chunk):  # chunk length selected on dev by scripts/chunk_select.py
+    _s = re.search(r"^selected: (\d+)", open(_chunk, encoding="utf-8").read(), re.M).group(1)
+    KA_SYSTEMS.append((f"… r2 + chunked decoding (long clips split at pauses into ≤ {_s} s; selected on dev)",
+                       f"whisper-large-v3-turbo-ft-r2_cv-ka+chunk{_s}", "ours+decoder"))
 KA_SETS = [("cv", "CV ka"), ("fleurs", "FLEURS ka")]
 LANG = sys.argv[1] if len(sys.argv) > 1 else "kk"
 SYSTEMS, SETS = (KA_SYSTEMS, KA_SETS) if LANG == "ka" else (KK_SYSTEMS, KK_SETS)
@@ -95,7 +106,16 @@ KA_PAIRS = [
     ("whisper-large-v3-turbo-ft_cv-ka", "mms-1b-all-kat-adapter-ft_cv-ka"),
     ("kaldi-gmm-hmm-tri3b", "mms-1b-all-kat"),
     ("whisper-large-v3-turbo-ft_cv-ka", "kaldi-gmm-hmm-tri3b"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "mms-1b-all-kat-adapter-ft_cv-ka"),
+    ("mms-1b-all-kat+lm", "mms-1b-all-kat"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "mms-1b-all-kat+lm"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "kaldi-gmm-hmm-tri3b"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "whisper-large-v3-turbo-ft_cv-ka"),
+    ("mms-1b-all-kat-adapter-ft_cv-ka+lm", "nvidia-stt-ka-fastconformer"),
+    ("whisper-large-v3-turbo-ft-r2_cv-ka", "whisper-large-v3-turbo-ft_cv-ka"),
 ]
+if KA_SYSTEMS[-1][1].startswith("whisper-large-v3-turbo-ft-r2_cv-ka+chunk"):
+    KA_PAIRS.append((KA_SYSTEMS[-1][1], "whisper-large-v3-turbo-ft-r2_cv-ka"))
 PAIRS = KA_PAIRS if LANG == "ka" else KK_PAIRS
 
 
@@ -154,7 +174,13 @@ KA_INTRO = ["# Georgian results (our language)", "",
             "occur verbatim in train, `docs/split-audit.md`) and a closed 91k-word vocabulary (OOV: 5.6% of CV dev "
             "tokens, 14.8% of FLEURS dev). LM weight and insertion penalty were selected on CV dev "
             "(`recipes/kaldi-gmm-ka/decode-frozen.yaml`). Its output has no case or punctuation, so only normalized "
-            "WER/CER apply. RTFx is wall clock on 8 parallel CPU decode jobs, MFCC extraction included.", ""]
+            "WER/CER apply. RTFx is wall clock on 8 parallel CPU decode jobs, MFCC extraction included.", "",
+            "\"+ our word 3-gram LM\" rows decode the CTC model with that same CV-train trigram (pyctcdecode + KenLM, "
+            "beam 100). LM weight α and insertion bonus β were selected on dev by a rule committed beforehand "
+            "(`scripts/lm_select.py`, `configs/runs/ka/mms-1b-all-kat-adapter-ft_cv-ka+lm-selection.yaml`: α 0.5, β 0), and "
+            "the same pair is applied to MMS zero-shot as an ablation that separates the LM's gain from the fine-tune's. "
+            "Our MMS fine-tune was rebuilt from the pinned base model + its backed-up adapter "
+            "(`scripts/rebuild_mms_adapter.py`; 405/409 FLEURS dev hypotheses identical to the original greedy run).", ""]
 
 
 if __name__ == "__main__" and LANG == "ka":
