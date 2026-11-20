@@ -19,6 +19,13 @@ appears verbatim in train as raw text, and only 21 dev and 18 test sentences (0.
 FLEURS splits share no sentences. Data provenance (archive sha256, manifest sha256, import commands) is in
 `docs/data-notes-cv-ka.md`.
 
+**Why Georgian counts as low-resource (announcement A1 bonus).** Of the four pretrained ASR families the course
+names, only Whisper lists Georgian; Canary v2, Parakeet v3 and Qwen3-ASR do not (README, with model-card links). Even
+Whisper is unusable zero-shot: large-v3 scores 72 % WER on CV ka test, and small and turbo loop past 100 %. The
+openly licensed data with human references is small: 147.5 h of CV train from only 139 speakers, plus FLEURS. That
+is still enough for training and for a 23 h speaker-disjoint test set with trusted references, which is the
+condition A1 sets. We do not claim the domain bonus: both corpora are general read speech.
+
 **Protocol.** Everything is chosen on dev: checkpoints, decoder settings, LM weights and chunk length. Every test
 config is frozen with `frozen: true` before its test run, and each test is run once (the harness refuses test
 runs that are not frozen). Generated fine-tune and decoder configs follow the pre-committed rules. Where a choice was made on dev, the candidate grid and the selection rule were committed
