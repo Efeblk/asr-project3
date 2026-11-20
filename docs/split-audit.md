@@ -22,7 +22,14 @@ Note: Common Voice: official split, speaker-disjoint by construction (client_id)
 | dev | none (no speaker IDs) | — | 409 | 1.22 | n/a | 0 / 0 of 409 (0.0%) |
 | test | none (no speaker IDs) | — | 979 | 3.07 | n/a | 0 / 0 of 979 (0.0%) |
 
-Groups shared between dev and test: 0.
+Groups shared between dev and test: n/a (no speaker or recording IDs in this corpus; speaker separation cannot be checked here, see the note).
+
+Sentence IDs (one sentence, several readers): train 1082, dev 147, test 350; shared train–dev 0, train–test 0, dev–test 0.
+
+Overlap with the text we trained on (`data/cv/ka/manifest.jsonl` train, 99768 transcripts; fine-tunes, word LM and GMM-HMM):
+
+- dev: 0 raw / 0 normalized of 409 sentences (0.0%) also occur in it.
+- test: 0 raw / 0 normalized of 979 sentences (0.0%) also occur in it.
 
 Note: FLEURS has no speaker IDs. Its splits are sentence-disjoint, and its authors state that test speakers do not occur in train (paper arXiv 2205.12446; HF card google/fleurs). We use the documented split.
 
@@ -51,7 +58,9 @@ Note: KSC2 has no speaker IDs. Documented split used: crowdsourced dev/test come
 | dev | none (no speaker IDs) | — | 369 | 1.53 | n/a | 0 / 0 of 369 (0.0%) |
 | test | none (no speaker IDs) | — | 856 | 3.83 | n/a | 0 / 0 of 856 (0.0%) |
 
-Groups shared between dev and test: 0.
+Groups shared between dev and test: n/a (no speaker or recording IDs in this corpus; speaker separation cannot be checked here, see the note).
+
+Sentence IDs (one sentence, several readers): train 1494, dev 147, test 349; shared train–dev 0, train–test 0, dev–test 0.
 
 Note: FLEURS has no speaker IDs. Its splits are sentence-disjoint, and its authors state that test speakers do not occur in train (paper arXiv 2205.12446; HF card google/fleurs). We use the documented split.
 

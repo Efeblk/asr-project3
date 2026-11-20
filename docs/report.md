@@ -16,7 +16,10 @@ human references that ship with each corpus. No model output is used as a label 
 
 Split audit (announcement A2, `docs/split-audit.md`): no speaker is shared between CV splits. No dev/test sentence
 appears verbatim in train as raw text, and only 21 dev and 18 test sentences (0.1 %) do after normalization.
-FLEURS splits share no sentences. Data provenance (archive sha256, manifest sha256, import commands) is in
+FLEURS splits share no sentence IDs (train 1,082 / dev 147 / test 350). No FLEURS dev or test sentence occurs in CV
+train, the only text our fine-tunes, word LM and GMM-HMM were trained on (0 raw, 0 normalized). FLEURS has no
+speaker IDs, so its speaker separation cannot be checked here and rests on its authors' statement that test
+speakers are unseen. Data provenance (archive sha256, manifest sha256, import commands) is in
 `docs/data-notes-cv-ka.md`.
 
 **Why Georgian counts as low-resource (announcement A1 bonus).** Of the four pretrained ASR families the course
