@@ -26,6 +26,8 @@ before the dev runs (commits 0c0d0e4, 2dd4397, 78ed0a1, 02d561f).
 
 ## 2. Metrics and why (HF audio course, chapter 5 "Evaluation")
 
+Source: <https://huggingface.co/learn/audio-course/en/chapter5/evaluation> (as required by announcement A3).
+
 - **WER, primary.** Word error rate = (S + D + I) / N over words, with counts pooled over the whole test set
   (corpus WER, not a mean of per-clip rates). The course recommends WER as the default ASR metric. It can exceed
   100 % when a model inserts many words, which is visible here for looping Whisper models.
