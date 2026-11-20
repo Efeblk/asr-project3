@@ -1,0 +1,16 @@
+name: whisper-large-v3-turbo-ft-r2_cv-ka_cv-ka_test
+dataset: data/cv/ka/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 32
+model:
+  family: hf-whisper
+  id: checkpoints/whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/final
+  device: cuda
+  dtype: float16
+  beam_size: 1
+  language_hints:
+    ka: georgian
+frozen: true
