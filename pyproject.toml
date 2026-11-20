@@ -21,6 +21,11 @@ hf = [
     "transformers>=4.46",
     "accelerate>=1.0",
 ]
+# Word n-gram LM beam search for CTC models (pyctcdecode + KenLM). KenLM builds on Linux/WSL only.
+lm = [
+    "pyctcdecode==0.5.0",
+    "kenlm==0.3.0; sys_platform == 'linux'",
+]
 # NVIDIA NeMo models (Canary v2, Parakeet TDT v3). NeMo is best supported on Linux/WSL.
 nemo = [
     "torch>=2.5",

@@ -37,7 +37,7 @@ in every run manifest.
 You need [uv](https://docs.astral.sh/uv/) and `ffmpeg` on your PATH.
 
 ```bash
-uv sync --extra hf --group dev        # Whisper + wav2vec2/CTC (CUDA torch on Windows/Linux)
+uv sync --extra hf --group dev        # Whisper + wav2vec2/CTC (CUDA torch on Windows/Linux); add `--extra lm` on Linux/WSL for LM decoding
 uv run pytest                         # 34 tests: metrics, pipeline, CPU training, importers, language filter, pause splitting
 ```
 
