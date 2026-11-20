@@ -153,7 +153,8 @@ Key paired differences (test, Δ WER = reference − ours, 95 % CI):
   measure how much of the FLEURS gap is formatting.
 - **Lost weights.** The original turbo FT weights (r1) were not kept (Colab), hence the r2 retrain. Our MMS FT was
   rebuilt exactly from its backed-up adapter: 405/409 hypotheses are identical, and the rest differ through fp16 on a
-  different GPU.
+  different GPU. The r2 final checkpoint and tokenizer are backed up locally under `checkpoints/` (gitignored);
+  the model SHA256 matches the Colab source (`runs/train_whisper-large-v3-turbo-ft-r2_cv-ka_20261120T000532Z/checkpoint_backup.json`).
 - **LM rows** use only CV train text (no external text), so they show what the training data alone can give. A
   larger Georgian text corpus would likely help further, but it would need deduplication against dev/test.
 
