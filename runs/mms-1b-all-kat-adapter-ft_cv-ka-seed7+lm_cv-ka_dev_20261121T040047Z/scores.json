@@ -1,0 +1,345 @@
+{
+  "run": "mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm_cv-ka_dev",
+  "split": "dev",
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka-seed7_20261121T002912Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed7_20261121T002912Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 0.5,
+        "beta": 0.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14216,
+      "word_counts": {
+        "C": 98410,
+        "S": 7731,
+        "D": 2554,
+        "I": 708,
+        "N": 108695,
+        "M": 106849
+      },
+      "wer": 0.1011362068172409,
+      "mer": 0.10048170525488333,
+      "wil": 0.16612983641252,
+      "mean_clip_wer": 0.09905005767466045,
+      "char_counts": {
+        "C": 877617,
+        "S": 5315,
+        "D": 8541,
+        "I": 2572,
+        "N": 891473,
+        "M": 885504
+      },
+      "cer": 0.018427927710654164,
+      "wer_ci": {
+        "low": 0.09307798460276179,
+        "high": 0.10995396452545572,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.015716529177638747,
+        "high": 0.021612559212274653,
+        "clusters": 221,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 83399.76,
+      "rtf": 0.002589027834132856,
+      "rtfx": 386.2453646949417,
+      "orthographic": {
+        "wer": 0.2945974349674023,
+        "cer": 0.04270285306267276
+      },
+      "silence": {
+        "silent_items": 0,
+        "items_with_output": 0,
+        "emitted_words": 0,
+        "examples": []
+      },
+      "top_substitutions": [
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          14
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "ციხესიმაგრე",
+          "სიმაგრე",
+          6
+        ],
+        [
+          "უეფა",
+          "უეფას",
+          5
+        ],
+        [
+          "თავის",
+          "თავისი",
+          5
+        ],
+        [
+          "ერთ",
+          "ერთი",
+          5
+        ],
+        [
+          "მსოფლიოს",
+          "მსოფლიო",
+          4
+        ],
+        [
+          "ლამაზ",
+          "ლამას",
+          4
+        ],
+        [
+          "მართლმადიდებელი",
+          "მართმადიდებელი",
+          4
+        ],
+        [
+          "დავით",
+          "დავიდ",
+          4
+        ],
+        [
+          "პირველი",
+          "პირველ",
+          4
+        ],
+        [
+          "თავისი",
+          "თავის",
+          4
+        ],
+        [
+          "ან",
+          "ამ",
+          4
+        ],
+        [
+          "დიდ",
+          "დიდი",
+          4
+        ],
+        [
+          "გვქონდა",
+          "ჰქონდა",
+          4
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-dev-common_voice_ka_40617840",
+          "ref": "საბჭოთა ისტორიოგრაფიის შეფასებით ფხოველთა და დიდოელთა აჯანყების დამარცხებას სხვადასხვა არსებითი ხასიათის მიზეზი ჰქონდა",
+          "hyp": "აი",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 12,
+            "I": 0,
+            "N": 13,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293620",
+          "ref": "დრო არი ჩემო პატარავ იცოდე ერტი ამბავი ედელის როდა ბადალი დღეს საქართელოს მთა ბრი",
+          "hyp": "მდროარი ჩემკენ ამბავი ედელისროდაბადალი დღეს საქართველოს მთა ბრინი",
+          "errors": {
+            "C": 3,
+            "S": 5,
+            "D": 6,
+            "I": 0,
+            "N": 14,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_39760415",
+          "ref": "მანამდე გენერალური მდივნის პოსტს დიმიტრი ბოკერია ბოლო ერთი თვის განმავლობაში იკავებდა",
+          "hyp": "ამბიგიმირაიდიმიტრიუკერიაბოეისალობაშიმკარი",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 10,
+            "I": 0,
+            "N": 11,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40618092",
+          "ref": "საბოლოო ჯამში იანგმა ჯგუფი დატოვა და მისი ადგილი სტივ ვესტმა დაიკავა",
+          "hyp": "აი",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 10,
+            "I": 0,
+            "N": 11,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40356724",
+          "ref": "გუგენჰაიმის სპირალურად დახვეული თეთრი აივნებიდანაც ავტომობილის ნაწილებით დამზადებული ექსტრავაგანტული ფიგურები იმზირებიან",
+          "hyp": "ეს ჩვენ არის დატოვა",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 7,
+            "I": 0,
+            "N": 11,
+            "M": 4
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40255793",
+          "ref": "მიუხედავად დამთვალიერებლების სიჭარბისა მომავალი წლის ივნისში ედგარ ალან პოს სახლ მუზეუმი დაიხურება",
+          "hyp": "მიუხედავად დამთვალიელების სჭასიჭარბისამომავალი წლის მჟედგარააპოსსახლმუზეობიდაიხურებ",
+          "errors": {
+            "C": 2,
+            "S": 3,
+            "D": 7,
+            "I": 0,
+            "N": 12,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_49293543",
+          "ref": "დათვს ყურები დააგლიჯეს თაფლთან ვერ მიიყვანესო მერე კუდიც მოაგლიჯეს ვეღარ გამოიყვანესო",
+          "hyp": "რავთყურებიდააგრიჯესთავსთანვერმიიყვანესო მერე კუდის მოაგრიჯეს ვეღარ გამოიყვანეს ა",
+          "errors": {
+            "C": 2,
+            "S": 4,
+            "D": 5,
+            "I": 1,
+            "N": 11,
+            "M": 7
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40862045",
+          "ref": "მოსაწონი უნდა ვაკეთოთ ყველამ ყველაფერი აბა ცუდი თუ აკეთეთ ჰა",
+          "hyp": "მოსაწონიუმდალაკეთოთ ყველა მყველაბელი აბაცუთითუაკეთთა",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 6,
+            "I": 0,
+            "N": 10,
+            "M": 4
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40352416",
+          "ref": "იმ დროისათვის როდესაც ისინი ინგლისში დაბრუნდნენ მერი უკვე ორსულად იყო",
+          "hyp": "საბარათიანო",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 9,
+            "I": 0,
+            "N": 10,
+            "M": 1
+          }
+        },
+        {
+          "id": "cv-ka-dev-common_voice_ka_40435671",
+          "ref": "ჩრდილოეთისა და სამხრეთის ფასადებზე შემორჩენილია კვადრატული აგურით ნაწყობი თაროსებრი ლავგარდანი",
+          "hyp": "ეს",
+          "errors": {
+            "C": 0,
+            "S": 1,
+            "D": 9,
+            "I": 0,
+            "N": 10,
+            "M": 1
+          }
+        }
+      ]
+    }
+  }
+}

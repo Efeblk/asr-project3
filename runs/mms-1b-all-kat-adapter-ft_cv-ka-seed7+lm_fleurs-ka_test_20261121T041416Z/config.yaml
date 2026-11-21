@@ -1,0 +1,21 @@
+name: mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm_fleurs-ka_test
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed7_20261121T002912Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat
+  lm:
+    arpa: lm/ka_cv_train_tg.arpa
+    arpa_sha256: 1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547
+    beam_width: 100
+    workers: 12
+    alpha: 0.5
+    beta: 0.0
+frozen: true

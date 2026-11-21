@@ -1,0 +1,27 @@
+name: mms-1b-all-kat-adapter-ft_cv-ka-seed7
+dataset: data/cv/ka/manifest.jsonl
+language: ka
+eligibility_confirmed: true
+dev_limit: 300
+max_audio_sec: 30
+seed: 7
+model:
+  family: hf-ctc
+  id: facebook/mms-1b-all
+  revision: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+  target_lang: kat
+  reuse_vocab: true
+  adapter_only: true
+  model_kwargs:
+    layerdrop: 0.0
+    ctc_zero_infinity: true
+training:
+  learning_rate: 0.001
+  warmup_steps: 100
+  max_steps: 3000
+  per_device_train_batch_size: 8
+  gradient_accumulation_steps: 4
+  per_device_eval_batch_size: 8
+  eval_steps: 500
+  save_steps: 500
+  dataloader_num_workers: 8

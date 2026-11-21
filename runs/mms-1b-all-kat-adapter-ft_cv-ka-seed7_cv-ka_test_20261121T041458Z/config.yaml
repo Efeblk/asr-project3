@@ -1,0 +1,14 @@
+name: mms-1b-all-kat-adapter-ft_cv-ka-seed7_cv-ka_test
+dataset: data/cv/ka/manifest.jsonl
+split: test
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed7_20261121T002912Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat
+frozen: true
