@@ -44,6 +44,8 @@ listed per system:
 | Round 2: LM decoder | the α/β grid and selection rule (02d561f). The generated test configs were committed with their results (383e968) | 19 Nov 23:50 | 20 Nov 00:59 |
 | Round 2: turbo r2 (plain) | the test configs (4a47713) | 20 Nov 02:32 | 20 Nov 02:39 |
 | Round 2: r2 + chunks | the chunk grid and rule (78ed0a1). The generated test configs were committed with their results (dd312d1) | 19 Nov 23:25 | 20 Nov 03:55 |
+| Round 3: MMS FT seeds 7, 13 | recipe, configs, fixed α/β and run-once rule (`docs/preregistration-round3.md`, 4928da0), hardware amendment (02961d3) | 20 Nov 22:03 / 21 Nov 00:33 | 21 Nov 02:17 |
+| Round 3: Whisper long-form fix | the fix and the re-run plan (3bea1e1) | 20 Nov 22:21 | 21 Nov 04:48 |
 
 **Two rounds.** Round 1 is the primary comparison: all baselines and both fine-tunes. No Georgian test result had
 been seen when its configs and rules were fixed. The Kaldi decode settings were selected on dev after the neural
@@ -152,41 +154,49 @@ comparison are there). WER / CER in %, 95 % CI on WER.
 
 | Group | System | CV ka WER | CV ka CER | FLEURS ka WER | FLEURS ka CER |
 |---|---|---|---|---|---|
-| baseline | Whisper-small | 825.33 | 320.04 | 284.13 | 139.27 |
-| baseline | Whisper-large-v3 | 72.04 | 16.64 | 69.12 | 19.79 |
-| baseline | Whisper-large-v3-turbo | 142.14 | 185.45 | 126.84 | 108.54 |
+| baseline | Whisper-small | 825.33 | 320.04 | 288.95 ‡ (frozen 284.13) | 139.05 ‡ (139.27) |
+| baseline | Whisper-large-v3 | 72.04 | 16.64 | 69.68 ‡ (frozen 69.12) | 21.23 ‡ (19.79) |
+| baseline | Whisper-large-v3-turbo | 142.14 | 185.45 | 126.05 ‡ (frozen 126.84) | 108.51 ‡ (108.54) |
 | baseline | XLS-R-300M Georgian (xsway) | 46.26 | 9.02 | 52.49 | 11.83 |
 | baseline | MMS-1b-all + kat | 24.14 (23.2–25.2) | 4.45 | 25.32 (24.2–26.5) | **4.76** |
 | baseline | NVIDIA FastConformer ka (CV contaminated) | *4.85* | *1.27* | **15.49** (14.3–16.8) | 5.32 |
 | baseline | MFCC + GMM-HMM tri3b (trained by us) | 22.64 (21.6–23.8) | 8.22 | 39.64 | 14.95 |
 | ours (round 1) | MMS-1b-all kat adapter FT | 22.00 (21.2–23.0) | 3.63 | 26.02 | 5.65 |
-| ours (round 1) | Whisper-large-v3-turbo full FT | **12.80** (12.0–13.7) | **2.60** | 27.47 | 12.15 |
+| ours (round 1) | Whisper-large-v3-turbo full FT | **12.80** (12.0–13.7) | **2.60** | 27.47 § | 12.15 § |
 | *round 2, follow-up on a reused test set:* | | | | | |
 | ours + decoder | MMS kat adapter FT + beam 100 + our 3-gram LM | **11.07** (10.5–11.7) | **2.13** | 19.28 (18.1–20.5) | 4.64 |
 | baseline + our decoder | MMS kat zero-shot + beam 100 + our 3-gram LM (ablation) | 13.50 (12.7–14.4) | 3.08 | **18.36** (17.3–19.5) | **3.81** |
-| ours | Whisper-large-v3-turbo full FT, retrain r2 (same recipe) | 12.71 (11.9–13.6) | 2.59 | 27.33 (25.5–29.3) | 12.17 |
+| ours | Whisper-large-v3-turbo full FT, retrain r2 (same recipe) | 12.71 (11.9–13.6) | 2.59 | 27.27 ‡ (25.5–29.3; frozen 27.33) | 12.10 ‡ (12.17) |
 | ours + decoder | r2 + 14 s chunks (selected on dev) | 12.84 (12.0–13.7) | 2.70 | 30.00 (27.8–32.3) | 13.95 |
 
 Bold = best value in its column within its block (round 1 and round 2 are bolded separately). NVIDIA's CV row is in
-italics because it is contaminated and excluded from every comparison.
+italics because it is contaminated and excluded from every comparison. ‡ = FLEURS value after the Whisper long-form
+bug fix (round 3 §4, run once), with the frozen value in brackets, as the pre-registration specifies; CV is not
+affected. § = affected by the bug but not re-runnable (r1 weights not kept); r2 is the same recipe.
 
 **Training-seed variance (round 3, pre-registered).** Our MMS adapter FT was trained twice more, with seeds 7 and 13.
 Recipe, data, steps and checkpoint rule were identical, and the train IDs are byte-identical. LM α/β were not
-re-selected, and each test ran once. Seed 7 trained on the RTX 4070 SUPER, seeds 42 and 13 on an A100. All three
-selected the last checkpoint (step 3000; 300-clip dev WER 19.61 / 19.86 / 19.31 %). Test WER, seeds 42 / 7 / 13,
-with mean ± sample SD:
+re-selected, and each test ran once. The runs differ in hardware and code commit as well as seed. Seed 42 trained
+and was greedy-evaluated on a Colab A100, and its LM rows ran on the RTX 4070 SUPER. Seed 7 trained and was evaluated
+on the RTX 4070 SUPER (commit `9ad99b9`). Seed 13 trained and was evaluated on a Colab A100 (`b8fbf88`). Between
+those two commits only run-manifest provenance code changed. All three selected the last checkpoint (step 3000; 300-clip dev WER 19.61 / 19.86 / 19.31 %). Test WER, seeds 42 / 7 / 13,
+with mean ± sample SD (n = 3), and CER mean ± SD:
 
-| Decoder | CV ka WER | FLEURS ka WER |
-|---|---|---|
-| greedy CTC | 22.00 / 22.01 / 21.91 → **21.97 ± 0.06** | 26.02 / 25.70 / 25.64 → **25.79 ± 0.20** |
-| beam 100 + our 3-gram LM | 11.07 / 10.97 / 11.07 → **11.04 ± 0.06** | 19.28 / 19.14 / 19.09 → **19.17 ± 0.10** |
+| Decoder | CV ka WER | CV CER | FLEURS ka WER | FLEURS CER |
+|---|---|---|---|---|
+| greedy CTC | 22.00 / 22.01 / 21.91 → **21.97 ± 0.06** | 3.62 ± 0.01 | 26.02 / 25.70 / 25.64 → **25.79 ± 0.20** | 5.53 ± 0.11 |
+| beam 100 + our 3-gram LM | 11.07 / 10.97 / 11.07 → **11.04 ± 0.06** | 2.13 ± 0.01 | 19.28 / 19.14 / 19.09 → **19.17 ± 0.10** | 4.55 ± 0.08 |
 
-The seed spread (SD ≤ 0.20 points) is far smaller than the test-sampling CI half-width (0.6–0.9 points on CV,
-≈ 1.2 on FLEURS). Seed 42 was not a lucky draw: it is never the best of the three, and on FLEURS it is the worst
-for both decoders. The
-conclusions drawn from seed 42 hold for every seed, with one exception, marked † below. On CV, MMS FT vs MMS
-zero-shot is Δ +2.13 / +2.13 / +2.23, and MMS FT + LM vs turbo FT is Δ +1.73 / +1.82 / +1.72. On FLEURS, MMS FT +
-LM vs NVIDIA is Δ −3.79 / −3.66 / −3.60. All of these CIs exclude 0. Per-seed rows and CIs:
+Across these three runs, test WER SD was about 0.20 points or less (range ≤ 0.38). With n = 3 (2 degrees of
+freedom) and mixed hardware, this is a coarse, descriptive check, not a precise estimate of training variance. Even
+the full range stays below the test-sampling CI half-widths (0.6–0.9 points on CV, about 1.2 on FLEURS). Seed 42 is never the best of the three, and on FLEURS it
+is the worst for both decoders, so the headline is not a favourable draw among these runs. Three paired comparisons
+keep their sign for every seed, with CIs excluding 0:
+- CV, MMS FT vs MMS zero-shot: Δ +2.13 / +2.13 / +2.23.
+- CV, MMS FT + LM vs turbo FT r1: Δ +1.73 / +1.82 / +1.72.
+- FLEURS, MMS FT + LM vs NVIDIA: Δ −3.79 / −3.66 / −3.60.
+
+The FLEURS greedy comparison with MMS zero-shot is weaker; it is marked † below. Per-seed rows, CIs and these pairs:
 `docs/results-georgian.md`.
 
 **Whisper long-form bug-fix re-runs (round 3 §4, FLEURS test, run once).** Item 8 of §5 describes the bug. The
@@ -204,8 +214,11 @@ corrected values are:
 The r1 turbo FT could not be re-run (weights not kept), and r2 is the same recipe. The fix changes r2 by Δ +0.05
 (−0.05 to 0.20), which is not significant. Re-checked with fixed r2, the comparisons keep their sign and their CIs
 still exclude 0: vs MMS zero-shot Δ −1.95 (−3.76 to −0.28), vs NVIDIA Δ −11.79 (−13.36 to −10.23), and chunked vs
-fixed plain r2 Δ −2.72 (−5.01 to −0.47). The large-v3 change (Δ −0.56, −0.98 to −0.20) is significant, in the
-direction §5 item 8 explains.
+fixed plain r2 Δ −2.72 (−5.01 to −0.47). Of the pretrained models, two change significantly, each for its own
+reason. Large-v3 gets worse (Δ −0.56, −0.98 to −0.20) because it loses the timestamp-mode escape from its token
+budget. Whisper-small also gets worse (Δ −4.82, −10.03 to −0.11): on the 32 clips its errors shift from deletions
+to loop insertions. Turbo zero-shot does not change significantly (Δ +0.79, −1.60 to 3.13). FLEURS test WER rankings are unchanged; on CER, fixed r2 now lies below r1 (12.10 vs
+12.15 %).
 
 **Speed on one GPU (round 3, pre-registered).** Every system was run on the same RTX 4070 SUPER (WSL), on the
 same 500 CV dev clips (48.8 min of audio, the first 500 by clip ID), with batch 8 and each system's frozen
@@ -245,16 +258,16 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   - Turbo FT vs MMS zero-shot: Δ −2.15 (−3.92 to −0.45). Our fine-tune is worse here (§5.2).
   - Turbo FT vs NVIDIA: Δ −11.99. NVIDIA has the best FLEURS WER.
   - MMS adapter FT vs MMS zero-shot: Δ −0.69 (−1.23 to −0.15). † With seeds 7 and 13 the sign is the same, but
-    the CIs include 0: −0.38 (−0.93 to 0.18) and −0.32 (−0.83 to 0.21). The robust finding is "no gain on
-    FLEURS", not a significant loss. The CER loss holds for all three seeds (Δ CER −0.72 and −0.69 for seeds
+    the CIs include 0: −0.38 (−0.93 to 0.18) and −0.32 (−0.83 to 0.21). None of the three runs shows a greedy WER
+    gain on FLEURS, and for seeds 7 and 13 a loss is not significant. The CER loss holds for all three seeds (Δ CER −0.72 and −0.69 for seeds
     7 and 13, CIs excluding 0).
 
 *Follow-up (round 2, reused test set):*
 - **CV ka**:
   - MMS FT + beam + LM vs MMS zero-shot (greedy): Δ +13.07 (12.58–13.59), from 24.14 % to 11.07 %.
   - MMS FT + beam + LM vs MMS FT (greedy): Δ +10.94 (10.48–11.41). This is the gain from the *decoder change*
-    (beam search + word LM + unpadded frames). The dev ablation (§5, item 10) attributes almost all of it to the
-    LM.
+    (beam search + word LM + unpadded frames). On dev, the ablation (§5, item 10) attributes almost all of the
+    corresponding gain to the LM.
   - MMS FT + beam + LM vs MMS zero-shot + beam + LM: Δ +2.44 (2.16–2.74). This is the fine-tune's share when both
     systems use the same decoder.
   - MMS FT + beam + LM vs turbo FT: Δ +1.73 (1.33–2.12).
@@ -273,9 +286,10 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    - Whisper's byte-level BPE has almost no Georgian merges: a word costs ~20.6 tokens and a second of speech ~30.
    - The decoder's 448-token window therefore holds only ~14.5 s of Georgian.
    - No CV test reference exceeds the token budget, but 22 % of FLEURS test references do.
-   - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more. The long-form bug
-     (item 8) hit exactly the 32 longest FLEURS clips, but fixing it removes only 13 of r2's 448 deletions there.
-     The deletions are the token budget.
+   - Our turbo FT (frozen r1) deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more. After
+     the long-form fix (item 8), r2 still deletes 45.3 % on clips of 25 s or more. Fixing the bug reduced the
+     deletions on the one split clip from 22 to 5, while the other 31 affected clips went from 426 to 430. The
+     remaining deletions are consistent with token-budget truncation.
    - On FLEURS clips of up to 20 words, our turbo FT beats MMS in every length bucket (21–22 % vs 25–29 %).
    - The frozen r2 chunking study reduced FLEURS word deletions from 1,384 to 489, but insertions rose from
      188 to 1,441. WER worsened from 27.33 to 30.00 % and CER from 12.17 to 13.95 %.
@@ -314,8 +328,10 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    trigram, and decoding only unpadded frames. Item 10 splits the gain into these parts on dev: almost all of it is
    the LM.
    - About half of the CTC models' substitutions are one character away from the reference word.
-   - Beam search with a word LM trained only on CV train text fixes most of these: −10.6 points for MMS zero-shot
-     and −10.9 for our MMS FT on CV test.
+   - The round-2 decoder change (beam + word LM trained only on CV train text) lowers CV test WER by 10.6 points
+     for MMS zero-shot and 10.9 for our MMS FT. For our MMS FT it removes two-thirds of the one-character
+     substitutions (10,088 → 3,336) and about half of the others (9,539 → 5,053). Item 10 attributes the gain to
+     the LM on dev.
    - The closed-vocabulary GMM-HMM shows the other side. On clips without OOV words it reaches 14.5 % WER, but it
      cannot output the 6–15 % of OOV tokens. Only 24 % of its substitutions are near misses; its CER is twice
      MMS's.
@@ -340,28 +356,36 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    balanced splitting without timestamps, identically for every Whisper system. The four affected systems were
    re-run once on FLEURS dev and test (round 3 §4). On the 32 affected test clips, the fix moves r2 only from
    53.5 to 52.5 % WER (the other 947 clips: 25.5 → 25.5 %). Pretrained Whisper gets *worse*: large-v3 goes from
-   68.4 to 76.6 %, because timestamp mode had let it decode past its token budget. No ranking and no conclusion
-   changes. Corrected rows: §4. Details: `docs/error-analysis-georgian.md`.
+   68.4 to 76.6 %, consistent with timestamp mode having let it decode past its token budget. Whisper-small
+   loops instead (insertions 45 → 923 on those clips), and turbo zero-shot is unchanged overall. FLEURS test WER
+   rankings and the conclusions drawn from them do not change. One CER order does: fixed r2 (12.10 %) is now below
+   r1 (12.15 %, not re-runnable). Corrected rows: §4. Details: `docs/error-analysis-georgian.md`.
 9. **Orthographic scoring reverses the top two.** With case and punctuation kept, Whisper-turbo FT scores
    15.83 % WER on CV test (r2) and MMS FT + beam + LM 30.45 %. The CTC vocabulary and the normalized LM text cannot
    produce punctuation, while Whisper learned it from the orthographic CV transcripts. Our normalized headline
    measures the words. Which system is "best" depends on whether the application needs punctuated text, and for
    that Whisper-turbo FT is clearly better. Full table: `docs/results-georgian.md`.
-10. **The LM, not the beam, gives the decoder gain (round 3, pre-registered, dev only).** The round-2 LM rows changed
-    three things at once. Left to right, the columns add one change at a time (the beam path also decodes only
-    unpadded frames), with the same checkpoints (seed 42 for the FT) and otherwise frozen configs (`configs/runs/ka/round3/decoder/`). Dev WER / CER in %:
+10. **On dev, the LM, not the beam, gives the decoder gain (round 3 §3, pre-registered, dev only).** The round-2
+    LM rows changed three things at once. Here each change is added on its own. The checkpoints are seed 42 for
+    the FT, rebuilt from its adapter, and everything else is frozen config (`configs/runs/ka/round3/decoder/`). All
+    columns except "frozen" ran on the same RTX 4070 SUPER. The same-GPU greedy column is a control added after
+    review, not pre-registered. It separates the decoder from the GPU: the frozen greedy runs were on an L4 (MMS) or
+    an A100 (FT, original weights). Dev WER / CER in %:
 
-    | System, set | Greedy (as frozen) | Greedy, unpadded frames | Beam 100, no LM | Beam 100 + 3-gram LM |
-    |---|---|---|---|---|
-    | MMS zero-shot, CV dev | 23.69 / 4.05 | 23.70 / 4.05 | 23.55 / 4.04 | 12.68 / 2.61 |
-    | MMS zero-shot, FLEURS dev | 26.16 / 4.72 | 26.16 / 4.72 | 26.25 / 4.71 | 19.70 / 3.81 |
-    | MMS FT (ours), CV dev | 21.42 / 3.40 | 21.43 / 3.40 | 21.26 / 3.37 | 10.28 / 1.86 |
-    | MMS FT (ours), FLEURS dev | 25.93 / 5.62 | 25.90 / 5.62 | 25.92 / 5.61 | 20.41 / 4.72 |
+    | System, set | Greedy (frozen run) | Greedy, same GPU | + unpadded frames | Beam 100, no LM | Beam 100 + 3-gram LM |
+    |---|---|---|---|---|---|
+    | MMS zero-shot, CV dev | 23.69 / 4.05 | 23.70 / 4.05 | 23.70 / 4.05 | 23.55 / 4.04 | 12.68 / 2.61 |
+    | MMS zero-shot, FLEURS dev | 26.16 / 4.72 | 26.16 / 4.72 | 26.16 / 4.72 | 26.25 / 4.71 | 19.70 / 3.81 |
+    | MMS FT (ours), CV dev | 21.42 / 3.40 | 21.43 / 3.40 | 21.43 / 3.40 | 21.26 / 3.37 | 10.28 / 1.86 |
+    | MMS FT (ours), FLEURS dev | 25.93 / 5.62 | 25.90 / 5.62 | 25.90 / 5.62 | 25.92 / 5.61 | 20.41 / 4.72 |
 
-    Padding changes nothing (≤ 0.03 points). Beam search without an LM changes WER by at most 0.16 points: a CTC
-    model's greedy path is already almost the best single path. The word trigram accounts for the rest:
-    −10.9 to −11.0 points on CV dev and −5.5 to −6.6 on FLEURS dev. The near-miss substitutions of item 4 are
-    therefore fixed by word-level knowledge, not by a wider search.
+    On one GPU, decoding only unpadded frames changes no prediction (0 of 14,216 and 0 of 409 clips differ), so
+    padding has no effect. The small "frozen vs same GPU" gaps (up to about 0.03 points; 119–120 CV dev clips
+    differ) are GPU and weight-rebuild nondeterminism. Beam search without an LM changes WER by about 0.16 points
+    at most. The word trigram then lowers WER by 10.9–11.0 points on CV dev and 5.5–6.6 on FLEURS dev. On dev,
+    adding the LM therefore gives essentially the whole gain. The test-set Δs in §4 remain gains of the combined
+    decoder change, because this ablation was run on dev only. Item 4's substitution counts are likewise for the
+    combined decoder.
 
 ## 6. Limitations
 
@@ -377,9 +401,10 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   Turbo r1 and r2 are two training runs with the same recipe and seed. Their CV test WERs differ by 0.08 points;
   the CI (−0.06 to 0.24) is only the test-sampling uncertainty of that difference. Two runs cannot estimate
   training variance. For our best system (MMS adapter FT, ± decoder), seeds 7 and 13 were therefore trained as
-  well (round 3, §4). Their seed SD is ≤ 0.20 WER points on test. That covers the MMS rows only. The Whisper
-  turbo FT has two runs with the same seed, and its training variance remains unmeasured. Seeds also differed in GPU
-  type (A100 for 42 and 13, RTX 4070 SUPER for 7), so the spread includes hardware nondeterminism.
+  well (round 3, §4). Across the three runs, test WER SD is about 0.20 points or less. With n = 3 (2 degrees of
+  freedom), that is a coarse, descriptive spread. That spread also includes training and inference hardware (A100 vs RTX 4070 SUPER) and two
+  code commits, not seed alone. It covers the MMS rows only. The Whisper turbo FT has two runs with the same seed,
+  and its training variance remains unmeasured.
 - **Speed in the results tables is not comparable across rows.** RTFx there was measured on whatever hardware each
   run used (A100, L4, RTX 4070 SUPER, CPU). The same-GPU benchmark in §4 is the comparable one. Its 500-clip CV dev
   slice contains no clip over 14 s, so it times the chunked r2 decoder without any chunking.
@@ -388,11 +413,15 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
 - **Chunking is a negative result of this splitter, not of chunking.** The dev grid selected the best chunk
   candidate, not an improvement over plain decoding. §5.1 shows that the loss comes from short tail pieces, while
   chunking helped clips over 16 s.
-- **Code provenance of the test runs.** The 20 frozen test runs executed on Colab record `git_commit: null`,
-  because the VM had a copy of the code, not a git checkout. The 6 run locally record `git_dirty: true`, because
-  generated configs were not yet committed. Each run directory saves its exact config, and the code paths they use
-  were not changed in between, except for the two bugs this report discloses. Round-3 runs record their exact
-  commit. `git_dirty` used to be true whenever an uncommitted run directory existed, which is always the case
+- **Code provenance of the test runs.** The 20 round-1/2 frozen test runs executed on Colab record
+  `git_commit: null`, because the VM had a copy of the code, not a git checkout. The 6 round-1/2 test runs executed
+  locally record `git_dirty: true`, because generated configs were not yet committed. Each run directory saves its
+  exact config, and the code paths they use were not changed in between, except for the two bugs this report
+  discloses. In round 3, the local seed-7, decoder-ablation and bug-fix runs record a clean commit
+  (`git_dirty: false`). The seed-13 Colab runs record the commit their `git archive` was exported from
+  (`git_dirty: null`; local edits after the export would not be detectable). The 11 `speed4070_*` dev runs record
+  `git_dirty: true`, because the old `git_dirty` rule was still in place when they ran. They span two commits
+  (`8310a89`, `3bea1e1`). The second adds the Whisper long-form fix, which cannot affect CV clips (all ≤ 15 s). `git_dirty` used to be true whenever an uncommitted run directory existed, which is always the case
   during a run. It now counts only modified tracked files.
 - **Whisper training set: 99,767, not 99,768 clips.** Whisper's 448-token target cap dropped one CV train clip.
   Until round 3 the harness wrote `train_ids.txt` before that filter and did not log the dropped ID. Fixed: the

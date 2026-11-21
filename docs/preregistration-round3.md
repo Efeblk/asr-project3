@@ -15,6 +15,13 @@ Round 3 adds two checks for rigor. It adds no new modelling ideas and changes no
   adapter + head tensors come back from Colab; `scripts/rebuild_mms_adapter.py` restores the model, which is then
   evaluated in WSL like seed 7. Seed spread therefore also includes GPU-type nondeterminism, as seed 42 vs seed 7
   already does.
+  *Execution note (2026-11-21, after the runs, recorded as a deviation):* the plan above was not followed exactly.
+  (1) Seed 13 was also *evaluated* on the Colab A100, not in WSL. The same VM ran the same generated configs: dev
+  first, then each frozen test once. It used the same LM file (sha256 checked at load) and installed the `lm`
+  extra from the same `uv.lock`. (2) The seeds did not use "the same commit": seed 7 ran from `9ad99b9`, seed 13
+  from `b8fbf88`. Between them only run-manifest provenance code changed (`envinfo.py`, `.gitattributes`,
+  `ARCHIVE_COMMIT`). Training and decoding code is identical. (3) The
+  decoder ablation (§3) later received an unregistered same-GPU greedy control (see the report).
 - Evaluation: the four frozen seed-42 configs (CV/FLEURS × plain/+LM) and their dev twins, with only the checkpoint
   path and run name changed (`scripts/round3_configs.py seed`). **LM α 0.5 / β 0 is not re-selected.** Each test run
   happens once.

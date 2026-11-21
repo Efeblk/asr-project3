@@ -56,6 +56,12 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 4.85% | 11.07% | -6.21% | -6.72% – -5.76% | 1.27% | 2.13% | -0.87% | -1.07% – -0.70% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 12.80% | 12.71% | 0.08% | -0.06% – 0.24% | 2.60% | 2.59% | 0.01% | -0.02% – 0.04% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 24.14% | 11.07% | 13.07% | 12.58% – 13.59% | 4.45% | 2.13% | 2.32% | 2.05% – 2.65% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7 | mms-1b-all-kat | 24.14% | 22.01% | 2.13% | 1.89% – 2.34% | 4.45% | 3.62% | 0.83% | 0.59% – 1.11% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | whisper-large-v3-turbo-ft_cv-ka | 12.80% | 10.97% | 1.82% | 1.44% – 2.21% | 2.60% | 2.12% | 0.48% | 0.35% – 0.64% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | nvidia-stt-ka-fastconformer | 4.85% | 10.97% | -6.12% | -6.61% – -5.66% | 1.27% | 2.12% | -0.85% | -1.05% – -0.69% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13 | mms-1b-all-kat | 24.14% | 21.91% | 2.23% | 2.00% – 2.45% | 4.45% | 3.61% | 0.84% | 0.60% – 1.13% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | whisper-large-v3-turbo-ft_cv-ka | 12.80% | 11.07% | 1.72% | 1.35% – 2.10% | 2.60% | 2.13% | 0.47% | 0.34% – 0.62% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | nvidia-stt-ka-fastconformer | 4.85% | 11.07% | -6.22% | -6.70% – -5.76% | 1.27% | 2.13% | -0.87% | -1.07% – -0.70% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 12.71% | 12.84% | -0.13% | -0.24% – -0.04% | 2.59% | 2.70% | -0.11% | -0.21% – -0.03% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 25.32% | 27.47% | -2.15% | -3.92% – -0.45% | 4.76% | 12.15% | -7.39% | -9.10% – -5.74% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.49% | 27.47% | -11.99% | -13.57% – -10.45% | 5.32% | 12.15% | -6.83% | -8.50% – -5.27% |
@@ -75,7 +81,15 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 27.27% | 0.05% | -0.05% – 0.20% | 12.17% | 12.10% | 0.07% | -0.03% – 0.24% |
 | FLEURS ka | whisper-large-v3+lf-split | whisper-large-v3 | 69.12% | 69.68% | -0.56% | -0.98% – -0.20% | 19.79% | 21.23% | -1.44% | -2.33% – -0.70% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | mms-1b-all-kat | 25.32% | 27.27% | -1.95% | -3.76% – -0.28% | 4.76% | 12.10% | -7.34% | -9.03% – -5.72% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | nvidia-stt-ka-fastconformer | 15.49% | 27.27% | -11.79% | -13.36% – -10.23% | 5.32% | 12.10% | -6.78% | -8.40% – -5.23% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7 | mms-1b-all-kat | 25.32% | 25.70% | -0.38% | -0.93% – 0.18% | 4.76% | 5.48% | -0.72% | -1.03% – -0.44% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | whisper-large-v3-turbo-ft_cv-ka | 27.47% | 19.14% | 8.33% | 6.65% – 10.12% | 12.15% | 4.54% | 7.61% | 6.02% – 9.28% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | nvidia-stt-ka-fastconformer | 15.49% | 19.14% | -3.66% | -4.52% – -2.79% | 5.32% | 4.54% | 0.78% | 0.42% – 1.16% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13 | mms-1b-all-kat | 25.32% | 25.64% | -0.32% | -0.83% – 0.21% | 4.76% | 5.45% | -0.69% | -1.00% – -0.42% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | whisper-large-v3-turbo-ft_cv-ka | 27.47% | 19.09% | 8.38% | 6.67% – 10.20% | 12.15% | 4.48% | 7.67% | 6.07% – 9.35% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | nvidia-stt-ka-fastconformer | 15.49% | 19.09% | -3.60% | -4.46% – -2.72% | 5.32% | 4.48% | 0.84% | 0.46% – 1.25% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 30.00% | -2.67% | -4.96% – -0.38% | 12.17% | 13.95% | -1.78% | -4.11% – 0.51% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | 27.27% | 30.00% | -2.72% | -5.01% – -0.47% | 12.10% | 13.95% | -1.85% | -4.13% – 0.37% |
 
 ### Training-seed variance, MMS adapter FT (test, round 3)
 
@@ -162,6 +176,12 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 4.46% | 10.28% | -5.82% | -6.47% – -5.24% | 1.09% | 1.86% | -0.77% | -0.95% – -0.61% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 11.88% | 11.92% | -0.04% | -0.18% – 0.10% | 2.27% | 2.28% | -0.01% | -0.04% – 0.02% |
 | CV ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 23.69% | 10.28% | 13.42% | 12.69% – 14.24% | 4.05% | 1.86% | 2.19% | 1.90% – 2.56% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7 | mms-1b-all-kat | 23.69% | 21.33% | 2.37% | 2.08% – 2.70% | 4.05% | 3.39% | 0.66% | 0.45% – 0.97% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | whisper-large-v3-turbo-ft_cv-ka | 11.88% | 10.11% | 1.77% | 1.31% – 2.30% | 2.27% | 1.84% | 0.43% | 0.29% – 0.61% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | nvidia-stt-ka-fastconformer | 4.46% | 10.11% | -5.66% | -6.27% – -5.09% | 1.09% | 1.84% | -0.75% | -0.92% – -0.59% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13 | mms-1b-all-kat | 23.69% | 21.48% | 2.21% | 1.94% – 2.53% | 4.05% | 3.40% | 0.65% | 0.43% – 0.96% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | whisper-large-v3-turbo-ft_cv-ka | 11.88% | 10.35% | 1.53% | 1.07% – 2.05% | 2.27% | 1.90% | 0.38% | 0.23% – 0.56% |
+| CV ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | nvidia-stt-ka-fastconformer | 4.46% | 10.35% | -5.90% | -6.54% – -5.31% | 1.09% | 1.90% | -0.80% | -0.99% – -0.65% |
 | CV ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 11.92% | 11.92% | -0.00% | -0.00% – 0.00% | 2.28% | 2.28% | -0.00% | -0.00% – 0.00% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | mms-1b-all-kat | 26.16% | 24.77% | 1.39% | -1.76% – 4.36% | 4.72% | 10.30% | -5.58% | -8.22% – -3.13% |
 | FLEURS ka | whisper-large-v3-turbo-ft_cv-ka | nvidia-stt-ka-fastconformer | 15.17% | 24.77% | -9.59% | -11.69% – -7.38% | 5.24% | 10.30% | -5.06% | -7.05% – -3.09% |
@@ -181,7 +201,15 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 24.66% | 0.20% | -0.08% – 0.61% | 10.33% | 10.23% | 0.11% | -0.02% – 0.33% |
 | FLEURS ka | whisper-large-v3+lf-split | whisper-large-v3 | 70.08% | 70.11% | -0.03% | -0.85% – 0.93% | 18.31% | 19.71% | -1.40% | -2.58% – -0.28% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | mms-1b-all-kat | 26.16% | 24.66% | 1.50% | -1.41% – 4.23% | 4.72% | 10.23% | -5.51% | -8.02% – -3.16% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | nvidia-stt-ka-fastconformer | 15.17% | 24.66% | -9.49% | -11.61% – -7.34% | 5.24% | 10.23% | -4.99% | -6.96% – -3.06% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7 | mms-1b-all-kat | 26.16% | 25.64% | 0.51% | -0.41% – 1.39% | 4.72% | 5.44% | -0.72% | -1.17% – -0.31% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | whisper-large-v3-turbo-ft_cv-ka | 24.77% | 19.94% | 4.83% | 2.27% – 7.54% | 10.30% | 4.60% | 5.70% | 3.46% – 8.13% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed7+lm | nvidia-stt-ka-fastconformer | 15.17% | 19.94% | -4.77% | -6.30% – -3.23% | 5.24% | 4.60% | 0.63% | -0.13% – 1.57% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13 | mms-1b-all-kat | 26.16% | 26.17% | -0.02% | -0.98% – 0.92% | 4.72% | 5.48% | -0.76% | -1.21% – -0.35% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | whisper-large-v3-turbo-ft_cv-ka | 24.77% | 19.62% | 5.14% | 2.48% – 7.93% | 10.30% | 4.55% | 5.74% | 3.51% – 8.15% |
+| FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm | nvidia-stt-ka-fastconformer | 15.17% | 19.62% | -4.45% | -6.00% – -2.89% | 5.24% | 4.55% | 0.68% | -0.09% – 1.64% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 27.87% | -3.01% | -6.77% – 0.27% | 10.33% | 12.12% | -1.79% | -5.37% – 1.28% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | 24.66% | 27.87% | -3.21% | -6.85% – -0.06% | 10.23% | 12.12% | -1.90% | -5.40% – 1.09% |
 
 ### Training-seed variance, MMS adapter FT (dev, round 3)
 

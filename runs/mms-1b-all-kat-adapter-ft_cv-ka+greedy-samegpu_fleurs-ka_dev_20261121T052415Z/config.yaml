@@ -1,0 +1,13 @@
+name: mms-1b-all-kat-adapter-ft_cv-ka+greedy-samegpu_fleurs-ka_dev
+dataset: data/fleurs/ka_ge/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat

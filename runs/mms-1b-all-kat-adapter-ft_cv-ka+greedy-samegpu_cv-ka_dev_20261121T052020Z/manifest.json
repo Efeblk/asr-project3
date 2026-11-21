@@ -1,0 +1,75 @@
+{
+  "name": "mms-1b-all-kat-adapter-ft_cv-ka+greedy-samegpu_cv-ka_dev",
+  "created_utc": "2026-11-21T05:20:25+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14216,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat"
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none: every clip is decoded whole",
+  "env": {
+    "git_commit": "eceef3b9ed06d17597e386650895673df913d1ec",
+    "git_dirty": false,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "1.26.4",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.15",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_gb": 12.0
+    }
+  },
+  "model_load_sec": 4.69,
+  "completed_utc": "2026-11-21T05:24:12+00:00",
+  "totals": {
+    "items": 14216,
+    "audio_sec": 83399.76,
+    "compute_sec": 197.24,
+    "rtf": 0.0024
+  }
+}

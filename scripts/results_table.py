@@ -127,9 +127,15 @@ KA_PAIRS = [
     ("whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "whisper-large-v3-turbo-ft-r2_cv-ka"),
     ("whisper-large-v3+lf-split", "whisper-large-v3"),
     ("whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "mms-1b-all-kat"),
+    ("whisper-large-v3-turbo-ft-r2_cv-ka+lf-split", "nvidia-stt-ka-fastconformer"),
 ]
+for _s in ("seed7", "seed13"):  # round 3: the seed-42 conclusions, re-checked per seed
+    _ft = f"mms-1b-all-kat-adapter-ft_cv-ka-{_s}"
+    KA_PAIRS += [(_ft, "mms-1b-all-kat"), (f"{_ft}+lm", "whisper-large-v3-turbo-ft_cv-ka"),
+                 (f"{_ft}+lm", "nvidia-stt-ka-fastconformer")]
 if KA_SYSTEMS[-1][1].startswith("whisper-large-v3-turbo-ft-r2_cv-ka+chunk"):
     KA_PAIRS.append((KA_SYSTEMS[-1][1], "whisper-large-v3-turbo-ft-r2_cv-ka"))
+    KA_PAIRS.append((KA_SYSTEMS[-1][1], "whisper-large-v3-turbo-ft-r2_cv-ka+lf-split"))
 PAIRS = KA_PAIRS if LANG == "ka" else KK_PAIRS
 
 
@@ -260,7 +266,8 @@ elif __name__ == "__main__":
     for split, title in (("test", "Test (frozen, run once)"), ("dev", "Dev (selection)")):
         lines += [f"## {title}", ""] + main_table(split) + [""]
         lines += [f"### Paired comparisons ({split})", "", "Positive Δ = B has fewer errors than A. Cluster bootstrap "
-                  "(2000 resamples) over sessions/speakers on matched clip IDs.", ""] + paired_table(split) + [""]
+                  "(2000 resamples) over sessions/speakers on matched clip IDs. `whisper-large-v3-turbo-ft_cv-ka` = turbo FT r1; "
+                  "`*+lf-split` = after the Whisper long-form fix (round 3).", ""] + paired_table(split) + [""]
         sub = subcorpus_table(split)
         if sub:
             lines += [f"### KSC2 {split} WER by subcorpus", ""] + sub + [""]

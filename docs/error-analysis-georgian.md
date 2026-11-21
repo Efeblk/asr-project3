@@ -66,11 +66,13 @@ deletions):
 | Whisper-large-v3-turbo | 113.0 → 114.2 % | 586 → 530 | 127.8 → 126.9 % |
 | Whisper-small | 104.0 → 182.2 % | 997 → 418 (insertions 45 → 923) | 296.8 → 296.4 % |
 
-The bug barely affected our fine-tune: decoded normally, it still runs out of its 448-token budget and deletes
-almost as much. Its long-clip deletions are therefore the token budget, not the bug. For pretrained Whisper the bug
-was an advantage: timestamped long-form decoding let large-v3 continue past the budget, and the fix removes that.
+The bug barely affected our fine-tune overall. The one clip that is now split went from 22 to 5 deletions, while
+the other 31 affected clips went from 426 to 430. Decoded whole, they still delete about as much, which is consistent
+with token-budget truncation. On clips of 25 s or more r2 deletes 45.3 % after the fix (51.0 % frozen r2; frozen r1
+49.7 %). For pretrained Whisper the bug
+was an advantage, consistent with timestamped long-form decoding letting large-v3 continue past the budget; the fix removes that. Whisper-small instead falls into repetition loops on those clips (deletions 997 → 418, insertions 45 → 923), and turbo zero-shot is unchanged overall (Δ +0.79, n.s.).
 The re-runs also used batch 16 on the RTX 4070 SUPER instead of batch 32 on an A100. The changes on the other clips
-(≤ 0.9 points, almost all in the looping zero-shot models) are that fp16 batching and hardware noise.
+(at most 0.92 points, almost all in the looping zero-shot models) coincide with that batch and hardware change.
 
 The same budget explains why the in-training dev CER looked inflated. In-training evaluation capped generation at 225
 tokens, about 7 s of Georgian speech. The final evaluation used the model's full 448.
