@@ -255,7 +255,8 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   - Turbo FT vs our Kaldi GMM-HMM: Δ +9.85 (9.28–10.45).
   - MMS adapter FT vs MMS zero-shot: Δ +2.13 (1.89–2.35).
 - **FLEURS ka** (out of domain for our CV training):
-  - Turbo FT vs MMS zero-shot: Δ −2.15 (−3.92 to −0.45). Our fine-tune is worse here (§5.2).
+  - Turbo FT vs MMS zero-shot: Δ −2.15 (−3.92 to −0.45). Our fine-tune is worse here (§5.2). The r1 run has the
+    long-form bug; the bug-fixed r2 gives Δ −1.95 (−3.76 to −0.28).
   - Turbo FT vs NVIDIA: Δ −11.99. NVIDIA has the best FLEURS WER.
   - MMS adapter FT vs MMS zero-shot: Δ −0.69 (−1.23 to −0.15). † With seeds 7 and 13 the sign is the same, but
     the CIs include 0: −0.38 (−0.93 to 0.18) and −0.32 (−0.83 to 0.21). None of the three runs shows a greedy WER
@@ -276,9 +277,9 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   - MMS FT + beam + LM vs MMS zero-shot (greedy): Δ +6.05 (5.16–6.98).
   - MMS FT + beam + LM vs NVIDIA: Δ −3.79 (−4.57 to −2.96), so NVIDIA keeps the best FLEURS WER. On CER ours is
     lower: 4.64 vs 5.32 %, Δ +0.67 (0.33–1.05).
-  - Chunked r2 vs plain r2: Δ −2.67 (−4.96 to −0.38).
+  - Chunked r2 vs plain r2: Δ −2.67 (−4.96 to −0.38); vs the bug-fixed plain r2, Δ −2.72 (−5.01 to −0.47).
   - Plain r2 vs the original turbo FT: Δ +0.15 (−0.26 to 0.55). This is two training runs with the same recipe and
-    seed (§6).
+    seed (§6), both decoded with the long-form bug (r1 cannot be re-run).
 
 ## 5. Error analysis (summary of `docs/error-analysis-georgian.md`)
 
