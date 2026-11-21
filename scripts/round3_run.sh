@@ -38,7 +38,7 @@ else
 fi
 
 # 2. Seeds: train (resumable), generate configs, dev then frozen test (each once).
-for s in 7 13; do
+for s in ${SEEDS:-7 13}; do  # SEEDS="7" when another machine trains the other seed
   name=mms-1b-all-kat-adapter-ft_cv-ka-seed$s
   if ! done_ "train-seed$s"; then
     ck=$(ls -d checkpoints/"${name}"_2*/ 2>/dev/null | tail -1 || true)
