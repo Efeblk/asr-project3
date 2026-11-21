@@ -9,6 +9,12 @@ Round 3 adds two checks for rigor. It adds no new modelling ideas and changes no
   checkpoint rule (best dev WER on the same 300 dev clips).
 - Hardware: local RTX 4070 SUPER (WSL). The seed-42 run used an A100. Precision and batch (8 × 4 accumulation) are
   unchanged.
+  *Amended 2026-11-21, before seed 13 started and before any seed-7 result:* seed 13 trains on a Colab
+  A100-SXM4-40GB (the seed-42 hardware) so that the two seeds run in parallel. Seed 7 stays on the RTX 4070 SUPER.
+  Source code is the same commit, sent as a `git archive` whose commit is written into the run manifest. Only the
+  adapter + head tensors come back from Colab; `scripts/rebuild_mms_adapter.py` restores the model, which is then
+  evaluated in WSL like seed 7. Seed spread therefore also includes GPU-type nondeterminism, as seed 42 vs seed 7
+  already does.
 - Evaluation: the four frozen seed-42 configs (CV/FLEURS × plain/+LM) and their dev twins, with only the checkpoint
   path and run name changed (`scripts/round3_configs.py seed`). **LM α 0.5 / β 0 is not re-selected.** Each test run
   happens once.
