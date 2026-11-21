@@ -1,0 +1,6 @@
+{
+  "note": "Trained on a Colab A100 (round 3, seed 13). Only the adapter + lm_head tensors were copied back (the 1B base is frozen and pinned); scripts/rebuild_mms_adapter.py restores the full model. sha256 values were computed on the VM.",
+  "adapter_head.safetensors": {"sha256": "24e7ec0d94bd258c71fadb9ae1d006b996987aefdd305e169934e45ee63872f4", "local_copy": "checkpoints/colab-backup/mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z/adapter_head.safetensors (gitignored)"},
+  "final/model.safetensors (on the VM)": {"sha256": "536111d71902517c829cb2b9811458a536461e13243c1b9b0de5c5691ff745f1"},
+  "source_archive": {"git_commit": "b8fbf88920b94091bb09fab9039c2489ccc27812", "file": "asrbench-src.tar.gz (git archive)"}
+}

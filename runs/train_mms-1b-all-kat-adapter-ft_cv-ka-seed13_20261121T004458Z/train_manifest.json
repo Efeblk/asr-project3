@@ -1,0 +1,120 @@
+{
+  "name": "mms-1b-all-kat-adapter-ft_cv-ka-seed13",
+  "created_utc": "2026-11-21T02:04:08+00:00",
+  "kind": "training (our contribution, A1)",
+  "language": "ka",
+  "base_model": {
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+  },
+  "language_hint": null,
+  "targets": "references normalized with the scoring policy",
+  "vocab": {
+    "source": "checkpoint (MMS adapter 'kat')",
+    "size": 93
+  },
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "train_split": "train",
+    "dev_split": "dev",
+    "train_items": 99768,
+    "train_hours": 147.466,
+    "train_hours_requested": null,
+    "dropped_too_long": 0,
+    "dropped_too_many_tokens": [],
+    "dev_seed": 42,
+    "dev_items_for_selection": 300,
+    "dev_limit": 300,
+    "train_filter": null,
+    "dev_filter": null
+  },
+  "selection": {
+    "metric": "dev wer under the scoring policy",
+    "best_checkpoint": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z/checkpoint-3000",
+    "best_metric": 0.193138500635324,
+    "final_eval": {
+      "eval_loss": 0.11635098606348038,
+      "eval_wer": 0.193138500635324,
+      "eval_cer": 0.02986308447429605,
+      "eval_runtime": 4.6483,
+      "eval_samples_per_second": 64.54,
+      "eval_steps_per_second": 8.175,
+      "epoch": 0.9622323791195574
+    }
+  },
+  "training_args": {
+    "eval_strategy": "steps",
+    "save_strategy": "steps",
+    "logging_steps": 25,
+    "save_total_limit": 2,
+    "load_best_model_at_end": true,
+    "greater_is_better": false,
+    "report_to": [],
+    "remove_unused_columns": false,
+    "label_names": [
+      "labels"
+    ],
+    "dataloader_num_workers": 8,
+    "gradient_checkpointing": true,
+    "gradient_checkpointing_kwargs": {
+      "use_reentrant": false
+    },
+    "learning_rate": 0.001,
+    "warmup_steps": 100,
+    "max_steps": 3000,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "per_device_eval_batch_size": 8,
+    "eval_steps": 500,
+    "save_steps": 500,
+    "bf16": true,
+    "weight_decay": 0.005,
+    "seed": 13,
+    "metric_for_best_model": "wer"
+  },
+  "seed": 13,
+  "resumed": false,
+  "train_sec": 4712.2,
+  "global_steps": 3000,
+  "peak_gpu_memory_gb": 7.55,
+  "scoring_policy": {
+    "unicode_form": "NFC",
+    "lowercase": true,
+    "remove_punctuation": true,
+    "strip_diacritics": false,
+    "word_unit": "whitespace",
+    "cer_unit": "codepoint",
+    "drop_tokens": "",
+    "note": ""
+  },
+  "checkpoint_dir": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z/final",
+  "run_dir": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z",
+  "env": {
+    "git_commit": "b8fbf88920b94091bb09fab9039c2489ccc27812",
+    "git_dirty": null,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "1.26.4",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.3",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA A100-SXM4-40GB",
+      "gpu_memory_gb": 39.5
+    },
+    "source": "git archive (export-subst); local edits after export are not detectable"
+  }
+}
