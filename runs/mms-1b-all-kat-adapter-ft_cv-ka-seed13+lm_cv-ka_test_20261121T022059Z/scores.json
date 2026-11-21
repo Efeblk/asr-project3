@@ -1,0 +1,350 @@
+{
+  "run": "mms-1b-all-kat-adapter-ft_cv-ka-seed13+lm_cv-ka_test",
+  "split": "test",
+  "model": {
+    "trained_by_us": {
+      "trained_by_us": true,
+      "train_run": "runs/train_mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z",
+      "base_model": {
+        "family": "hf-ctc",
+        "model_id": "facebook/mms-1b-all",
+        "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+        "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd"
+      },
+      "train_dataset_sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+      "train_hours": 147.466,
+      "global_steps": 3000
+    },
+    "family": "hf-ctc",
+    "model_id": "checkpoints/mms-1b-all-kat-adapter-ft_cv-ka-seed13_20261121T004458Z/final",
+    "revision_requested": "main",
+    "revision_resolved": null,
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": "lm/ka_cv_train_tg.arpa",
+        "arpa_sha256": "1eab5b3af5ece42c93c04473155613cf928d0b342e44f0e37afa64eafe953547",
+        "beam_width": 100,
+        "workers": 12,
+        "alpha": 0.5,
+        "beta": 0.0
+      }
+    }
+  },
+  "scoring_policy": {
+    "default": {
+      "unicode_form": "NFC",
+      "lowercase": true,
+      "remove_punctuation": true,
+      "strip_diacritics": false,
+      "word_unit": "whitespace",
+      "cer_unit": "codepoint",
+      "drop_tokens": "",
+      "note": ""
+    },
+    "languages": {
+      "ja": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "zh": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "codepoint",
+        "drop_tokens": "",
+        "note": "No reliable spaces; CER is the primary metric unless a segmenter is declared (S16)."
+      },
+      "th": {
+        "unicode_form": "NFC",
+        "lowercase": true,
+        "remove_punctuation": true,
+        "strip_diacritics": false,
+        "word_unit": "none",
+        "cer_unit": "grapheme",
+        "drop_tokens": "",
+        "note": "No spaces between words; grapheme clusters for CER."
+      }
+    }
+  },
+  "policy_file": "configs/scoring.yaml",
+  "tag": null,
+  "languages": {
+    "ka": {
+      "items": 14258,
+      "word_counts": {
+        "C": 96607,
+        "S": 8367,
+        "D": 2827,
+        "I": 741,
+        "N": 107801,
+        "M": 105715
+      },
+      "wer": 0.11071325868962255,
+      "mer": 0.10995743583129111,
+      "wil": 0.1810492440845356,
+      "mean_clip_wer": 0.10957276424733292,
+      "char_counts": {
+        "C": 864719,
+        "S": 6369,
+        "D": 9670,
+        "I": 2738,
+        "N": 880758,
+        "M": 873826
+      },
+      "cer": 0.021319136471085135,
+      "wer_ci": {
+        "low": 0.10454527473399416,
+        "high": 0.11724267463192616,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "cer_ci": {
+        "low": 0.019070089214195018,
+        "high": 0.024080158642953587,
+        "clusters": 1058,
+        "n_boot": 2000,
+        "level": 0.95
+      },
+      "audio_sec": 84004.25,
+      "rtf": 0.0020898907398111577,
+      "rtfx": 478.49391403608007,
+      "orthographic": {
+        "wer": 0.304468566174746,
+        "cer": 0.045695817128062005
+      },
+      "silence": {
+        "silent_items": 1,
+        "items_with_output": 1,
+        "emitted_words": 1,
+        "examples": [
+          {
+            "id": "cv-ka-test-common_voice_ka_38257760",
+            "hyp": "აი"
+          }
+        ]
+      },
+      "top_substitutions": [
+        [
+          "ახალგაზრდა",
+          "ახალგაზდა",
+          18
+        ],
+        [
+          "წმიდა",
+          "წმინდა",
+          8
+        ],
+        [
+          "ტერიტორიაზე",
+          "ტერიტორიას",
+          6
+        ],
+        [
+          "სახელმწიფოს",
+          "სახელმწიფო",
+          6
+        ],
+        [
+          "მეფემ",
+          "მეფე",
+          5
+        ],
+        [
+          "როგორ",
+          "როგორც",
+          5
+        ],
+        [
+          "ჰქონდათ",
+          "ჰქონდა",
+          5
+        ],
+        [
+          "დააარსა",
+          "დაარსა",
+          5
+        ],
+        [
+          "ქვეშ",
+          "ქვეში",
+          5
+        ],
+        [
+          "არა",
+          "არ",
+          5
+        ],
+        [
+          "თავისი",
+          "თავის",
+          5
+        ],
+        [
+          "მსოფლიოს",
+          "მსოფლიო",
+          4
+        ],
+        [
+          "თვითმმართველობის",
+          "თვითმართველობის",
+          4
+        ],
+        [
+          "საბოლოოდ",
+          "საბოლოო",
+          4
+        ],
+        [
+          "დავით",
+          "დავიდ",
+          4
+        ]
+      ],
+      "worst_items": [
+        {
+          "id": "cv-ka-test-common_voice_ka_39760373",
+          "ref": "ამის შემდეგ ერთხანს მსახურობდა მღვდლად ხოლო პირველი მსოფლიო ომის დროს იყო ავსტრია უნგრეთის არმიის კაპელანი",
+          "hyp": "ამის შენი აჭისახეოდაიდელდახოლშიპერეცუკლიყომესასუყავსეალიაომიათისარმესკაპელა",
+          "errors": {
+            "C": 1,
+            "S": 2,
+            "D": 12,
+            "I": 0,
+            "N": 15,
+            "M": 3
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_41819001",
+          "ref": "გარდამოიხილე ზეცით ღმერთო იხილე მოხედე ვენახსა მას და განამტკიცე ესე რომელ დაასხა მარჯვენამან შენმან",
+          "hyp": "გარდა მოიხილასზაცითხმერთოიხილემოხედევენახსამასდაგანარგცეეზე რომელთა ასამარჯვემანშენმან",
+          "errors": {
+            "C": 0,
+            "S": 4,
+            "D": 10,
+            "I": 0,
+            "N": 14,
+            "M": 4
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39695177",
+          "ref": "ესპანეთთან დაზავების შემდგომ ანრიმ განიზრახა ფრანკო ესპანური ალიანსი დინასტიური ქორწინებით გაემყარებინა",
+          "hyp": "კაცი შედის ახლის იმერეთის ხომეინი კადიმია ის ელიასა ცხრამეტი ამარა მას შეიპარა საყურებლად",
+          "errors": {
+            "C": 0,
+            "S": 11,
+            "D": 0,
+            "I": 2,
+            "N": 11,
+            "M": 13
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097318",
+          "ref": "ანტისოციალური პიროვნების აშლილობის მქონე ადამიანი ხასიათდება სხვა ადამიანის უფლებების უგულვებელყოფით და მათი დარღვევით",
+          "hyp": "ანი სოციალური ბრაუნების კავშირების ადამიანი ხდება სწავლებები უიველყოფიდამათიდარგვევი",
+          "errors": {
+            "C": 1,
+            "S": 7,
+            "D": 5,
+            "I": 0,
+            "N": 13,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40097326",
+          "ref": "ქრისტიანობის შემოსვლის შემდეგ წარმართულ ლამარიას ცვლის მარიამ ღვთისმშობელი კულტი კი იგივე რჩება",
+          "hyp": "ტიან ობის სემიტების შემდეგ წარმოადგინა მარიასის მარია ხრიშომელიკილიდაირივერშიბა",
+          "errors": {
+            "C": 1,
+            "S": 6,
+            "D": 5,
+            "I": 1,
+            "N": 12,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760147",
+          "ref": "საშუალო სკოლის დამთავრების შემდეგ სწავლა განაგრძო ივანე ჯავახიშვილის სახელობის სახელმწიფო უნივერსიტეტში გეოგრაფია გეოლოგიის ფაკულტეტზე",
+          "hyp": "საშოს პისტოშებდესხავლაგანნაგდაიბანეჯაუჩვისაღებობისახეისა უნივერსიტეტში გეოგრაფია გეოლოგიის ვაკეზე",
+          "errors": {
+            "C": 3,
+            "S": 3,
+            "D": 8,
+            "I": 0,
+            "N": 14,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_49319910",
+          "ref": "აბა იქით გაიხედე მაიმუნი მაიმუნობს აბა კლასში ეს ბიჭები რასღა ჩხუბობთ თქვა პიშკებო",
+          "hyp": "აბა იქით გაიხედემაიმონიმაიმუნობსაბაკლასშიეზბიჭები რაღაც ჩხუ თქვაპიშკებო",
+          "errors": {
+            "C": 2,
+            "S": 4,
+            "D": 7,
+            "I": 0,
+            "N": 13,
+            "M": 6
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40908003",
+          "ref": "ჯერ ჯერობით კუნთების ტკივილს ვგრძნობ მაგრამ კორჩაკმა ხომ გვასწავლა მდგომარეობის დროებით გაუარესებამ არ შეგაშინოთო",
+          "hyp": "ჯერჯერობით კუნთების ტკივილს გვრცნობ მაგრამ კორჩაკმახომგაცწავლამდგომარეობისდროვებით გაუარესება მარშეგაშენოთო",
+          "errors": {
+            "C": 3,
+            "S": 5,
+            "D": 6,
+            "I": 0,
+            "N": 14,
+            "M": 8
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_40855669",
+          "ref": "ვინაიდან მას მაქსიმილიანის სახით უკვე ჰყავდა უფროსი ძმა ტახტზე ასვლის იმედი არ უნდა ჰქონოდა",
+          "hyp": "ვინაიდან მას მაქსიმილიანი სახით უგეყავდაუფირწმატახწეასუმედიაუნდაქენდ",
+          "errors": {
+            "C": 3,
+            "S": 2,
+            "D": 9,
+            "I": 0,
+            "N": 14,
+            "M": 5
+          }
+        },
+        {
+          "id": "cv-ka-test-common_voice_ka_39760422",
+          "ref": "ჩატარებული აქვს საერთაშორისო გუნდური შეხვედრები პოლონეთის უნგრეთის ჩეხოსლოვაკიის მონღოლეთის ეროვნულ ნაკრებებთან",
+          "hyp": "ბული ას ყატასორზოუნდოშფოდებიკლოლეთისიდათიჩეხვაკისმოიყოთარუნერე",
+          "errors": {
+            "C": 0,
+            "S": 3,
+            "D": 8,
+            "I": 0,
+            "N": 11,
+            "M": 3
+          }
+        }
+      ]
+    }
+  }
+}
