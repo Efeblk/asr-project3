@@ -1,0 +1,15 @@
+# Round 3 decoder ablation control (dev only, added after review), generated from mms-1b-all-kat-adapter-ft_cv-ka_cv-dev.yaml by
+# scripts/round3_configs.py: unchanged greedy config, re-run on the GPU used for the decoder variants.
+name: mms-1b-all-kat-adapter-ft_cv-ka+greedy-samegpu_cv-ka_dev
+dataset: data/cv/ka/manifest.jsonl
+split: dev
+languages:
+- ka
+eligibility_confirmed: true
+batch_size: 8
+model:
+  family: hf-ctc
+  id: checkpoints/mms-1b-all-kat-adapter-ft_cv-ka_20261119T014308Z/final
+  device: cuda
+  dtype: float16
+  target_lang: kat

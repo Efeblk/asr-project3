@@ -81,7 +81,21 @@ def decoder() -> None:
                      f"# Variant {tag}; everything else unchanged.\n")
 
 
-LFFIX_SYSTEMS = ("whisper-small", "whisper-large-v3", "whisper-large-v3-turbo", "whisper-large-v3-turbo-ft-r2_cv-ka")
+def decoder_control() -> None:
+    """Added after review (not pre-registered), dev only: the frozen greedy dev configs re-run unchanged on the GPU
+    that ran the decoder variants, so the ablation ladder compares decoders on one GPU."""
+    for base in ("mms-1b-all-kat-adapter-ft_cv-ka", "mms-1b-all-kat"):
+        for corpus in ("cv", "fleurs"):
+            src = KA / f"{base}_{corpus}-dev.yaml"
+            cfg = yaml.safe_load(src.read_text(encoding="utf-8"))
+            assert cfg["split"] == "dev" and not cfg["model"].get("lm"), src
+            cfg["name"] = cfg["name"].replace(base, f"{base}+greedy-samegpu", 1)
+            dump(cfg, OUT / "decoder" / f"{base}+greedy-samegpu_{corpus}-dev.yaml",
+                 f"# Round 3 decoder ablation control (dev only, added after review), generated from {src.name} by\n"
+                 f"# scripts/round3_configs.py: unchanged greedy config, re-run on the GPU used for the decoder variants.\n")
+
+
+LFFIX_SYSTEMS =("whisper-small", "whisper-large-v3", "whisper-large-v3-turbo", "whisper-large-v3-turbo-ft-r2_cv-ka")
 
 
 def lffix() -> None:
@@ -109,6 +123,8 @@ if __name__ == "__main__":
         lffix()
     elif sys.argv[1] == "decoder":
         decoder()
+    elif sys.argv[1] == "decoder-control":
+        decoder_control()
     elif sys.argv[1] == "seed":
         seed(int(sys.argv[2]), sys.argv[3])
     else:

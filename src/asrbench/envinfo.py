@@ -54,15 +54,11 @@ def _archive_commit() -> str | None:
 
 
 def capture() -> dict:
+    out = {"packages": package_versions(), "hardware": hardware()}
+    # Check the archive marker first: an export unpacked inside another checkout must not report that checkout's SHA.
+    if sha := _archive_commit():
+        return {"git_commit": sha, "git_dirty": None,
+                "source": "git archive (export-subst): the commit the code was exported from; local edits after "
+                          "export are not detectable", **out}
     status = _git("status", "--porcelain", "--untracked-files=no")  # run outputs are untracked until committed
-    commit = _git("rev-parse", "HEAD")
-    out = {
-        "git_commit": commit,
-        "git_dirty": bool(status) if status is not None else None,
-        "packages": package_versions(),
-        "hardware": hardware(),
-    }
-    if commit is None and (sha := _archive_commit()):
-        out["git_commit"] = sha
-        out["source"] = "git archive (export-subst); local edits after export are not detectable"
-    return out
+    return {"git_commit": _git("rev-parse", "HEAD"), "git_dirty": bool(status) if status is not None else None, **out}
