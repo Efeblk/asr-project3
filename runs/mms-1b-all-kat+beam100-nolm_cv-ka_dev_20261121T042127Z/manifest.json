@@ -1,0 +1,70 @@
+{
+  "name": "mms-1b-all-kat+beam100-nolm_cv-ka_dev",
+  "created_utc": "2026-11-21T04:21:36+00:00",
+  "task": "transcribe (same-language ASR)",
+  "split": "dev",
+  "languages": [
+    "ka"
+  ],
+  "dataset": {
+    "path": "data/cv/ka/manifest.jsonl",
+    "sha256": "8119119998bbec10ce2a37cc96829a9228187cd0fb08456716982a6e9c509b0c",
+    "items": 14216,
+    "limit": null
+  },
+  "model": {
+    "trained_by_us": null,
+    "family": "hf-ctc",
+    "model_id": "facebook/mms-1b-all",
+    "revision_requested": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "revision_resolved": "3d33597edbdaaba14a8e858e2c8caa76e3cec0cd",
+    "device": "cuda",
+    "dtype": "float16",
+    "language_hints": {},
+    "settings": {
+      "target_lang": "kat",
+      "lm": {
+        "arpa": null,
+        "alpha": 0.0,
+        "beta": 0.0,
+        "beam_width": 100,
+        "workers": 12
+      }
+    }
+  },
+  "batch_size": 8,
+  "timing_boundary": "model forward/decode only; audio loading and model loading excluded; CUDA synchronized before and after each batch; first batch preceded by a warm-up pass",
+  "chunking": "none: every clip is decoded whole",
+  "env": {
+    "git_commit": "61cd2596b22d6d2347a18f07acf025d1f17fbc3f",
+    "git_dirty": false,
+    "packages": {
+      "asrbench": "0.1.0",
+      "torch": "2.14.1+cu130",
+      "transformers": "4.57.6",
+      "accelerate": "1.12.0",
+      "jiwer": "4.0.0",
+      "numpy": "1.26.4",
+      "soundfile": "0.14.0",
+      "soxr": "1.1.0",
+      "huggingface-hub": "0.36.2"
+    },
+    "hardware": {
+      "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+      "machine": "x86_64",
+      "processor": "x86_64",
+      "python": "3.12.15",
+      "torch_cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 4070 SUPER",
+      "gpu_memory_gb": 12.0
+    }
+  },
+  "model_load_sec": 9.39,
+  "completed_utc": "2026-11-21T04:26:13+00:00",
+  "totals": {
+    "items": 14216,
+    "audio_sec": 83399.76,
+    "compute_sec": 245.9,
+    "rtf": 0.0029
+  }
+}

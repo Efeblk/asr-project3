@@ -235,7 +235,8 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
 - **CV ka**:
   - MMS FT + beam + LM vs MMS zero-shot (greedy): Δ +13.07 (12.58–13.59), from 24.14 % to 11.07 %.
   - MMS FT + beam + LM vs MMS FT (greedy): Δ +10.94 (10.48–11.41). This is the gain from the *decoder change*
-    (beam search + word LM + unpadded frames), not from the LM alone (§5.4).
+    (beam search + word LM + unpadded frames). The dev ablation (§5, item 10) attributes almost all of it to the
+    LM.
   - MMS FT + beam + LM vs MMS zero-shot + beam + LM: Δ +2.44 (2.16–2.74). This is the fine-tune's share when both
     systems use the same decoder.
   - MMS FT + beam + LM vs turbo FT: Δ +1.73 (1.33–2.12).
@@ -290,8 +291,9 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    - Turbo zero-shot loops on 6 % of CV clips and writes some outputs in Latin transliteration.
    - Both stay above 100 % WER even without the loops: their "support" for Georgian is not usable.
    - Fine-tuning removes the loops (11 of 14,258 clips).
-4. **The decoder matters most, and why.** "LM" below means the round-2 decoder change as a whole: greedy → beam 100,
-   plus the word trigram, decoding unpadded frames. §5.8 splits that gain into its parts on dev.
+4. **The decoder matters most, and why.** The round-2 decoder change has three parts: greedy → beam 100, the word
+   trigram, and decoding only unpadded frames. Item 10 splits the gain into these parts on dev: almost all of it is
+   the LM.
    - About half of the CTC models' substitutions are one character away from the reference word.
    - Beam search with a word LM trained only on CV train text fixes most of these: −10.6 points for MMS zero-shot
      and −10.9 for our MMS FT on CV test.
@@ -323,6 +325,21 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    produce punctuation, while Whisper learned it from the orthographic CV transcripts. Our normalized headline
    measures the words. Which system is "best" depends on whether the application needs punctuated text, and for
    that Whisper-turbo FT is clearly better. Full table: `docs/results-georgian.md`.
+10. **The LM, not the beam, gives the decoder gain (round 3, pre-registered, dev only).** The round-2 LM rows changed
+    three things at once. Left to right, the columns add one change at a time (the beam path also decodes only
+    unpadded frames), with the same checkpoints (seed 42 for the FT) and otherwise frozen configs (`configs/runs/ka/round3/decoder/`). Dev WER / CER in %:
+
+    | System, set | Greedy (as frozen) | Greedy, unpadded frames | Beam 100, no LM | Beam 100 + 3-gram LM |
+    |---|---|---|---|---|
+    | MMS zero-shot, CV dev | 23.69 / 4.05 | 23.70 / 4.05 | 23.55 / 4.04 | 12.68 / 2.61 |
+    | MMS zero-shot, FLEURS dev | 26.16 / 4.72 | 26.16 / 4.72 | 26.25 / 4.71 | 19.70 / 3.81 |
+    | MMS FT (ours), CV dev | 21.42 / 3.40 | 21.43 / 3.40 | 21.26 / 3.37 | 10.28 / 1.86 |
+    | MMS FT (ours), FLEURS dev | 25.93 / 5.62 | 25.90 / 5.62 | 25.92 / 5.61 | 20.41 / 4.72 |
+
+    Padding changes nothing (≤ 0.03 points). Beam search without an LM changes WER by at most 0.16 points: a CTC
+    model's greedy path is already almost the best single path. The word trigram accounts for the rest:
+    −10.9 to −11.0 points on CV dev and −5.5 to −6.6 on FLEURS dev. The near-miss substitutions of item 4 are
+    therefore fixed by word-level knowledge, not by a wider search.
 
 ## 6. Limitations
 
