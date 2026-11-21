@@ -29,6 +29,10 @@ The MFCC + GMM-HMM rows are a classical baseline we trained from scratch (`recip
 | ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.91 | 3.61 | 21.08–22.86 | 25.64 | 5.45 | 24.52–26.85 | 797 | A100-SXM4-40GB |
 | ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.97 | 2.12 | 10.37–11.61 | 19.14 | 4.54 | 17.99–20.35 | 377 | GeForce RTX 4070 SUPER |
 | ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 11.07 | 2.13 | 10.45–11.72 | 19.09 | 4.48 | 17.94–20.29 | 478 | A100-SXM4-40GB |
+| baseline (FLEURS re-run, §4 fix) | Whisper-small (zero-shot), long-form fix | — | — | — | 288.95 | 139.05 | 265.93–314.91 | — | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3 (zero-shot), long-form fix | — | — | — | 69.68 | 21.23 | 68.29–71.02 | — | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo (zero-shot), long-form fix | — | — | — | 126.05 | 108.51 | 121.58–130.92 | — | — |
+| ours (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo FT r2, long-form fix | — | — | — | 27.27 | 12.10 | 25.46–29.25 | — | — |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 12.84 | 2.70 | 12.04–13.69 | 30.00 | 13.95 | 27.78–32.35 | 87 | A100-SXM4-40GB |
 
 ### Paired comparisons (test)
@@ -68,6 +72,9 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 15.49% | 19.28% | -3.79% | -4.57% – -2.96% | 5.32% | 4.64% | 0.67% | 0.33% – 1.05% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 27.47% | 27.33% | 0.15% | -0.26% – 0.55% | 12.15% | 12.17% | -0.02% | -0.14% – 0.10% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 25.32% | 19.28% | 6.05% | 5.16% – 6.98% | 4.76% | 4.64% | 0.11% | -0.25% – 0.44% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 27.27% | 0.05% | -0.05% – 0.20% | 12.17% | 12.10% | 0.07% | -0.03% – 0.24% |
+| FLEURS ka | whisper-large-v3+lf-split | whisper-large-v3 | 69.12% | 69.68% | -0.56% | -0.98% – -0.20% | 19.79% | 21.23% | -1.44% | -2.33% – -0.70% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | mms-1b-all-kat | 25.32% | 27.27% | -1.95% | -3.76% – -0.28% | 4.76% | 12.10% | -7.34% | -9.03% – -5.72% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 30.00% | -2.67% | -4.96% – -0.38% | 12.17% | 13.95% | -1.78% | -4.11% – 0.51% |
 
 ### Training-seed variance, MMS adapter FT (test, round 3)
@@ -101,6 +108,10 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.91 | 38.97 | 5.99 | 25.64 | 40.75 | 7.79 | 1 / 0 |
 | ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.97 | 30.40 | 4.56 | 19.14 | 35.04 | 6.91 | 1 / 1 |
 | ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 11.07 | 30.45 | 4.57 | 19.09 | 34.95 | 6.84 | 1 / 1 |
+| baseline (FLEURS re-run, §4 fix) | Whisper-small (zero-shot), long-form fix | — | — | — | 288.95 | 296.72 | 137.68 | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3 (zero-shot), long-form fix | — | — | — | 69.68 | 73.05 | 22.17 | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo (zero-shot), long-form fix | — | — | — | 126.05 | 123.25 | 107.23 | — |
+| ours (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo FT r2, long-form fix | — | — | — | 27.27 | 32.90 | 13.08 | — |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 12.84 | 15.96 | 3.08 | 30.00 | 36.16 | 14.76 | 1 / 30 |
 
 ## Dev (selection)
@@ -124,6 +135,10 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.48 | 3.40 | 20.19–22.90 | 26.17 | 5.48 | 24.05–28.34 | 797 | A100-SXM4-40GB |
 | ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.11 | 1.84 | 9.31–11.00 | 19.94 | 4.60 | 17.87–22.15 | 386 | GeForce RTX 4070 SUPER |
 | ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 10.35 | 1.90 | 9.54–11.26 | 19.62 | 4.55 | 17.56–21.77 | 516 | A100-SXM4-40GB |
+| baseline (FLEURS re-run, §4 fix) | Whisper-small (zero-shot), long-form fix | — | — | — | 323.95 | 145.77 | 286.14–365.09 | — | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3 (zero-shot), long-form fix | — | — | — | 70.11 | 19.71 | 67.91–72.14 | — | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo (zero-shot), long-form fix | — | — | — | 139.27 | 114.74 | 129.83–149.93 | — | — |
+| ours (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo FT r2, long-form fix | — | — | — | 24.66 | 10.23 | 21.84–27.55 | — | — |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 11.92 | 2.28 | 10.82–13.17 | 27.87 | 12.12 | 23.96–32.46 | 87 | A100-SXM4-40GB |
 
 ### Paired comparisons (dev)
@@ -163,6 +178,9 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | nvidia-stt-ka-fastconformer | 15.17% | 20.41% | -5.23% | -6.77% – -3.57% | 5.24% | 4.72% | 0.52% | -0.26% – 1.54% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka | whisper-large-v3-turbo-ft_cv-ka | 24.77% | 24.86% | -0.09% | -0.68% – 0.49% | 10.30% | 10.33% | -0.03% | -0.26% – 0.15% |
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 26.16% | 20.41% | 5.75% | 4.34% – 7.07% | 4.72% | 4.72% | -0.01% | -0.57% – 0.50% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 24.66% | 0.20% | -0.08% – 0.61% | 10.33% | 10.23% | 0.11% | -0.02% – 0.33% |
+| FLEURS ka | whisper-large-v3+lf-split | whisper-large-v3 | 70.08% | 70.11% | -0.03% | -0.85% – 0.93% | 18.31% | 19.71% | -1.40% | -2.58% – -0.28% |
+| FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+lf-split | mms-1b-all-kat | 26.16% | 24.66% | 1.50% | -1.41% – 4.23% | 4.72% | 10.23% | -5.51% | -8.02% – -3.16% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 27.87% | -3.01% | -6.77% – 0.27% | 10.33% | 12.12% | -1.79% | -5.37% – 1.28% |
 
 ### Training-seed variance, MMS adapter FT (dev, round 3)
@@ -197,5 +215,9 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.48 | 38.51 | 5.77 | 26.17 | 40.74 | 7.67 | 0 / 0 |
 | ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.11 | 29.46 | 4.27 | 19.94 | 35.23 | 6.83 | 0 / 0 |
 | ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 10.35 | 29.67 | 4.32 | 19.62 | 34.87 | 6.76 | 0 / 0 |
+| baseline (FLEURS re-run, §4 fix) | Whisper-small (zero-shot), long-form fix | — | — | — | 323.95 | 330.30 | 143.58 | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3 (zero-shot), long-form fix | — | — | — | 70.11 | 72.88 | 20.53 | — |
+| baseline (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo (zero-shot), long-form fix | — | — | — | 139.27 | 136.71 | 113.12 | — |
+| ours (FLEURS re-run, §4 fix) | Whisper-large-v3-turbo FT r2, long-form fix | — | — | — | 24.66 | 29.01 | 11.00 | — |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 11.92 | 14.78 | 2.63 | 27.87 | 32.81 | 12.79 | 0 / 0 |
 

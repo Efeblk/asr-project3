@@ -189,6 +189,22 @@ zero-shot is Δ +2.13 / +2.13 / +2.23, and MMS FT + LM vs turbo FT is Δ +1.73 /
 LM vs NVIDIA is Δ −3.79 / −3.66 / −3.60. All of these CIs exclude 0. Per-seed rows and CIs:
 `docs/results-georgian.md`.
 
+**Whisper long-form bug-fix re-runs (round 3 §4, FLEURS test, run once).** Item 8 of §5 describes the bug. The
+frozen rows above are kept as they ran. The corrected values are:
+
+| System | FLEURS WER: frozen → fixed | FLEURS CER: frozen → fixed |
+|---|---|---|
+| Whisper-small | 284.13 → 288.95 | 139.27 → 139.05 |
+| Whisper-large-v3 | 69.12 → 69.68 | 19.79 → 21.23 |
+| Whisper-large-v3-turbo | 126.84 → 126.05 | 108.54 → 108.51 |
+| Turbo FT r2 (ours) | 27.33 → 27.27 | 12.17 → 12.10 |
+
+The r1 turbo FT could not be re-run (weights not kept), and r2 is the same recipe. The fix changes r2 by Δ +0.05
+(−0.05 to 0.20), which is not significant. Re-checked with fixed r2, the comparisons keep their sign and their CIs
+still exclude 0: vs MMS zero-shot Δ −1.95 (−3.76 to −0.28), vs NVIDIA Δ −11.79 (−13.36 to −10.23), and chunked vs
+fixed plain r2 Δ −2.72 (−5.01 to −0.47). The large-v3 change (Δ −0.56, −0.98 to −0.20) is significant, in the
+direction §5 item 8 explains.
+
 **Speed on one GPU (round 3, pre-registered).** Every system was run on the same RTX 4070 SUPER (WSL), on the
 same 500 CV dev clips (48.8 min of audio, the first 500 by clip ID), with batch 8 and each system's frozen
 precision and decoder. The timer covers forward + decoding after a warm-up pass, CUDA-synchronized, and for LM rows
@@ -255,8 +271,9 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    - Whisper's byte-level BPE has almost no Georgian merges: a word costs ~20.6 tokens and a second of speech ~30.
    - The decoder's 448-token window therefore holds only ~14.5 s of Georgian.
    - No CV test reference exceeds the token budget, but 22 % of FLEURS test references do.
-   - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more. Part of the latter
-     comes from the long-form bug (item 8), which hit exactly the 32 longest FLEURS clips.
+   - Our turbo FT deletes 3 % of words on clips under 15 s and 50 % on clips of 25 s or more. The long-form bug
+     (item 8) hit exactly the 32 longest FLEURS clips, but fixing it removes only 13 of r2's 448 deletions there.
+     The deletions are the token budget.
    - On FLEURS clips of up to 20 words, our turbo FT beats MMS in every length bucket (21–22 % vs 25–29 %).
    - The frozen r2 chunking study reduced FLEURS word deletions from 1,384 to 489, but insertions rose from
      188 to 1,441. WER worsened from 27.33 to 30.00 % and CER from 12.17 to 13.95 %.
@@ -319,7 +336,10 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
    On the same clips, our fine-tunes (trained without timestamps) skipped middle sentences and spliced the ends.
    Common Voice is unaffected, because no CV clip exceeds 15 s. The fix decodes only clips over 30 s specially, by
    balanced splitting without timestamps, identically for every Whisper system. The four affected systems were
-   re-run once on FLEURS dev and test (round 3 §4); the corrected rows are in §4.
+   re-run once on FLEURS dev and test (round 3 §4). On the 32 affected test clips, the fix moves r2 only from
+   53.5 to 52.5 % WER (the other 947 clips: 25.5 → 25.5 %). Pretrained Whisper gets *worse*: large-v3 goes from
+   68.4 to 76.6 %, because timestamp mode had let it decode past its token budget. No ranking and no conclusion
+   changes. Corrected rows: §4. Details: `docs/error-analysis-georgian.md`.
 9. **Orthographic scoring reverses the top two.** With case and punctuation kept, Whisper-turbo FT scores
    15.83 % WER on CV test (r2) and MMS FT + beam + LM 30.45 %. The CTC vocabulary and the normalized LM text cannot
    produce punctuation, while Whisper learned it from the orthographic CV transcripts. Our normalized headline

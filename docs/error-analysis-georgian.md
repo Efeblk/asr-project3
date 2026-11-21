@@ -54,7 +54,23 @@ longest-first, so the 32 longest FLEURS clips (19.1–33.2 s on test) all went t
 large-v3 partly escaped its token limit there. Among test clips whose reference has 31+ words, it deleted 14.1 %
 of words on the 21 inside that batch and 30.8 % on the 15 decoded normally. Our turbo FT, trained without timestamps, instead skipped middle sentences on the
 same clips. The "same deletion pattern" was therefore not the same mechanism. CV is unaffected (no clip > 15 s).
-The corrected FLEURS re-runs are in `docs/results-georgian.md` (round 3 §4) and in report §4.
+
+**Re-run result (round 3 §4, `runs/*+lf-split_fleurs-*`).** With the fix, only the one clip over 30 s is split,
+without timestamps; every other clip is decoded whole. On the 32 FLEURS test clips the bug had hit (word WER,
+deletions):
+
+| System | 32 clips: bug → fixed | Deletions | All other 947 clips |
+|---|---|---|---|
+| r2 turbo FT (ours) | 53.5 → 52.5 % | 448 → 435 | 25.5 → 25.5 % |
+| Whisper-large-v3 | 68.4 → 76.6 % | 137 → 416 | 69.2 → 69.2 % |
+| Whisper-large-v3-turbo | 113.0 → 114.2 % | 586 → 530 | 127.8 → 126.9 % |
+| Whisper-small | 104.0 → 182.2 % | 997 → 418 (insertions 45 → 923) | 296.8 → 296.4 % |
+
+The bug barely affected our fine-tune: decoded normally, it still runs out of its 448-token budget and deletes
+almost as much. Its long-clip deletions are therefore the token budget, not the bug. For pretrained Whisper the bug
+was an advantage: timestamped long-form decoding let large-v3 continue past the budget, and the fix removes that.
+The re-runs also used batch 16 on the RTX 4070 SUPER instead of batch 32 on an A100. The changes on the other clips
+(≤ 0.9 points, almost all in the looping zero-shot models) are that fp16 batching and hardware noise.
 
 The same budget explains why the in-training dev CER looked inflated. In-training evaluation capped generation at 225
 tokens, about 7 s of Georgian speech. The final evaluation used the model's full 448.
