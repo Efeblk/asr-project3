@@ -190,7 +190,9 @@ LM vs NVIDIA is Δ −3.79 / −3.66 / −3.60. All of these CIs exclude 0. Per-
 `docs/results-georgian.md`.
 
 **Whisper long-form bug-fix re-runs (round 3 §4, FLEURS test, run once).** Item 8 of §5 describes the bug. The
-frozen rows above are kept as they ran. The corrected values are:
+frozen rows above are kept as they ran. The re-runs changed only the long-form mode, plus batch 16 on the RTX 4070
+SUPER instead of batch 32 on an A100, so clips the bug did not touch can differ slightly through fp16 batching. The
+corrected values are:
 
 | System | FLEURS WER: frozen → fixed | FLEURS CER: frozen → fixed |
 |---|---|---|
