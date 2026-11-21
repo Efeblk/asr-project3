@@ -25,6 +25,10 @@ The MFCC + GMM-HMM rows are a classical baseline we trained from scratch (`recip
 | baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 13.50 | 3.08 | 12.73–14.39 | 18.36 | 3.81 | 17.28–19.50 | 367 | GeForce RTX 4070 SUPER |
 | ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 11.07 | 2.13 | 10.47–11.72 | 19.28 | 4.64 | 18.14–20.51 | 374 | GeForce RTX 4070 SUPER |
 | ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 12.71 | 2.59 | 11.95–13.56 | 27.33 | 12.17 | 25.48–29.32 | 87 | A100-SXM4-40GB |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 7 | 22.01 | 3.62 | 21.17–22.95 | 25.70 | 5.48 | 24.58–26.92 | 424 | GeForce RTX 4070 SUPER |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.91 | 3.61 | 21.08–22.86 | 25.64 | 5.45 | 24.52–26.85 | 797 | A100-SXM4-40GB |
+| ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.97 | 2.12 | 10.37–11.61 | 19.14 | 4.54 | 17.99–20.35 | 377 | GeForce RTX 4070 SUPER |
+| ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 11.07 | 2.13 | 10.45–11.72 | 19.09 | 4.48 | 17.94–20.29 | 478 | A100-SXM4-40GB |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 12.84 | 2.70 | 12.04–13.69 | 30.00 | 13.95 | 27.78–32.35 | 87 | A100-SXM4-40GB |
 
 ### Paired comparisons (test)
@@ -66,6 +70,15 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 25.32% | 19.28% | 6.05% | 5.16% – 6.98% | 4.76% | 4.64% | 0.11% | -0.25% – 0.44% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 27.33% | 30.00% | -2.67% | -4.96% – -0.38% | 12.17% | 13.95% | -1.78% | -4.11% – 0.51% |
 
+### Training-seed variance, MMS adapter FT (test, round 3)
+
+| Decoder | Set | WER seed 42 | WER seed 7 | WER seed 13 | WER mean ± SD | CER mean ± SD |
+|---|---|---|---|---|---|---|
+| greedy CTC | CV ka | 22.00 | 22.01 | 21.91 | 21.97 ± 0.06 | 3.62 ± 0.01 |
+| greedy CTC | FLEURS ka | 26.02 | 25.70 | 25.64 | 25.79 ± 0.20 | 5.53 ± 0.11 |
+| beam 100 + word 3-gram LM | CV ka | 11.07 | 10.97 | 11.07 | 11.04 ± 0.06 | 2.13 ± 0.01 |
+| beam 100 + word 3-gram LM | FLEURS ka | 19.28 | 19.14 | 19.09 | 19.17 ± 0.10 | 4.55 ± 0.08 |
+
 ### Orthographic scores and empty references (test)
 
 Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER keep case and punctuation, so they also count punctuation as words: CTC systems and the GMM-HMM output none, Whisper fine-tunes learned it from the orthographic CV transcripts.
@@ -84,6 +97,10 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 13.50 | 32.20 | 5.52 | 18.36 | 34.61 | 6.28 | 1 / 0 |
 | ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 11.07 | 30.45 | 4.57 | 19.28 | 35.16 | 7.01 | 1 / 1 |
 | ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 12.71 | 15.83 | 2.97 | 27.33 | 32.91 | 13.14 | 1 / 30 |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 7 | 22.01 | 39.08 | 6.00 | 25.70 | 40.66 | 7.82 | 1 / 0 |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.91 | 38.97 | 5.99 | 25.64 | 40.75 | 7.79 | 1 / 0 |
+| ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.97 | 30.40 | 4.56 | 19.14 | 35.04 | 6.91 | 1 / 1 |
+| ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 11.07 | 30.45 | 4.57 | 19.09 | 34.95 | 6.84 | 1 / 1 |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 12.84 | 15.96 | 3.08 | 30.00 | 36.16 | 14.76 | 1 / 30 |
 
 ## Dev (selection)
@@ -103,6 +120,10 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 12.68 | 2.61 | 11.58–13.87 | 19.70 | 3.81 | 17.66–21.88 | 379 | GeForce RTX 4070 SUPER |
 | ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 10.28 | 1.86 | 9.45–11.20 | 20.41 | 4.72 | 18.28–22.74 | 381 | GeForce RTX 4070 SUPER |
 | ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 11.92 | 2.28 | 10.82–13.17 | 24.86 | 10.33 | 21.89–27.99 | 87 | A100-SXM4-40GB |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 7 | 21.33 | 3.39 | 20.06–22.74 | 25.64 | 5.44 | 23.58–27.71 | 424 | GeForce RTX 4070 SUPER |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.48 | 3.40 | 20.19–22.90 | 26.17 | 5.48 | 24.05–28.34 | 797 | A100-SXM4-40GB |
+| ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.11 | 1.84 | 9.31–11.00 | 19.94 | 4.60 | 17.87–22.15 | 386 | GeForce RTX 4070 SUPER |
+| ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 10.35 | 1.90 | 9.54–11.26 | 19.62 | 4.55 | 17.56–21.77 | 516 | A100-SXM4-40GB |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 11.92 | 2.28 | 10.82–13.17 | 27.87 | 12.12 | 23.96–32.46 | 87 | A100-SXM4-40GB |
 
 ### Paired comparisons (dev)
@@ -144,6 +165,15 @@ Positive Δ = B has fewer errors than A. Cluster bootstrap (2000 resamples) on m
 | FLEURS ka | mms-1b-all-kat-adapter-ft_cv-ka+lm | mms-1b-all-kat | 26.16% | 20.41% | 5.75% | 4.34% – 7.07% | 4.72% | 4.72% | -0.01% | -0.57% – 0.50% |
 | FLEURS ka | whisper-large-v3-turbo-ft-r2_cv-ka+chunk14 | whisper-large-v3-turbo-ft-r2_cv-ka | 24.86% | 27.87% | -3.01% | -6.77% – 0.27% | 10.33% | 12.12% | -1.79% | -5.37% – 1.28% |
 
+### Training-seed variance, MMS adapter FT (dev, round 3)
+
+| Decoder | Set | WER seed 42 | WER seed 7 | WER seed 13 | WER mean ± SD | CER mean ± SD |
+|---|---|---|---|---|---|---|
+| greedy CTC | CV ka | 21.42 | 21.33 | 21.48 | 21.41 ± 0.08 | 3.39 ± 0.01 |
+| greedy CTC | FLEURS ka | 25.93 | 25.64 | 26.17 | 25.92 ± 0.27 | 5.51 ± 0.10 |
+| beam 100 + word 3-gram LM | CV ka | 10.28 | 10.11 | 10.35 | 10.25 ± 0.12 | 1.87 ± 0.03 |
+| beam 100 + word 3-gram LM | FLEURS ka | 20.41 | 19.94 | 19.62 | 19.99 ± 0.40 | 4.63 ± 0.09 |
+
 ### Orthographic scores and empty references (dev)
 
 Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER keep case and punctuation, so they also count punctuation as words: CTC systems and the GMM-HMM output none, Whisper fine-tunes learned it from the orthographic CV transcripts.
@@ -163,5 +193,9 @@ Primary numbers are normalized (`configs/scoring.yaml`). Orthographic WER/CER ke
 | baseline+our LM | MMS-1b-all + kat adapter, zero-shot + our CV-train word 3-gram LM (LM ablation) | 12.68 | 31.26 | 5.04 | 19.70 | 35.03 | 6.16 | 0 / 0 |
 | ours+decoder | MMS-1b-all, kat adapter fine-tune + our word 3-gram LM (beam 100; α/β selected on dev) | 10.28 | 29.61 | 4.29 | 20.41 | 35.62 | 6.94 | 0 / 0 |
 | ours | Whisper-large-v3-turbo, full fine-tune, retrain r2 (same config; r1 weights not kept) | 11.92 | 14.78 | 2.63 | 24.86 | 29.16 | 11.11 | 0 / 0 |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 7 | 21.33 | 38.41 | 5.76 | 25.64 | 40.20 | 7.63 | 0 / 0 |
+| ours (round 3 seed) | MMS-1b-all, kat adapter fine-tune, seed 13 | 21.48 | 38.51 | 5.77 | 26.17 | 40.74 | 7.67 | 0 / 0 |
+| ours+decoder (round 3 seed) | … seed 7 + our word 3-gram LM (same α/β) | 10.11 | 29.46 | 4.27 | 19.94 | 35.23 | 6.83 | 0 / 0 |
+| ours+decoder (round 3 seed) | … seed 13 + our word 3-gram LM (same α/β) | 10.35 | 29.67 | 4.32 | 19.62 | 34.87 | 6.76 | 0 / 0 |
 | ours+decoder | … r2 + chunked decoding (long clips split at pauses into ≤ 14 s; selected on dev) | 11.92 | 14.78 | 2.63 | 27.87 | 32.81 | 12.79 | 0 / 0 |
 

@@ -170,6 +170,25 @@ comparison are there). WER / CER in %, 95 % CI on WER.
 Bold = best value in its column within its block (round 1 and round 2 are bolded separately). NVIDIA's CV row is in
 italics because it is contaminated and excluded from every comparison.
 
+**Training-seed variance (round 3, pre-registered).** Our MMS adapter FT was trained twice more, with seeds 7 and 13.
+Recipe, data, steps and checkpoint rule were identical, and the train IDs are byte-identical. LM α/β were not
+re-selected, and each test ran once. Seed 7 trained on the RTX 4070 SUPER, seeds 42 and 13 on an A100. All three
+selected the last checkpoint (step 3000; 300-clip dev WER 19.61 / 19.86 / 19.31 %). Test WER, seeds 42 / 7 / 13,
+with mean ± sample SD:
+
+| Decoder | CV ka WER | FLEURS ka WER |
+|---|---|---|
+| greedy CTC | 22.00 / 22.01 / 21.91 → **21.97 ± 0.06** | 26.02 / 25.70 / 25.64 → **25.79 ± 0.20** |
+| beam 100 + our 3-gram LM | 11.07 / 10.97 / 11.07 → **11.04 ± 0.06** | 19.28 / 19.14 / 19.09 → **19.17 ± 0.10** |
+
+The seed spread (SD ≤ 0.20 points) is far smaller than the test-sampling CI half-width (0.6–0.9 points on CV,
+≈ 1.2 on FLEURS). Seed 42 was not a lucky draw: it is never the best of the three, and on FLEURS it is the worst
+for both decoders. The
+conclusions drawn from seed 42 hold for every seed, with one exception, marked † below. On CV, MMS FT vs MMS
+zero-shot is Δ +2.13 / +2.13 / +2.23, and MMS FT + LM vs turbo FT is Δ +1.73 / +1.82 / +1.72. On FLEURS, MMS FT +
+LM vs NVIDIA is Δ −3.79 / −3.66 / −3.60. All of these CIs exclude 0. Per-seed rows and CIs:
+`docs/results-georgian.md`.
+
 **Speed on one GPU (round 3, pre-registered).** Every system was run on the same RTX 4070 SUPER (WSL), on the
 same 500 CV dev clips (48.8 min of audio, the first 500 by clip ID), with batch 8 and each system's frozen
 precision and decoder. The timer covers forward + decoding after a warm-up pass, CUDA-synchronized, and for LM rows
@@ -207,7 +226,10 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
 - **FLEURS ka** (out of domain for our CV training):
   - Turbo FT vs MMS zero-shot: Δ −2.15 (−3.92 to −0.45). Our fine-tune is worse here (§5.2).
   - Turbo FT vs NVIDIA: Δ −11.99. NVIDIA has the best FLEURS WER.
-  - MMS adapter FT vs MMS zero-shot: Δ −0.69 (−1.23 to −0.15).
+  - MMS adapter FT vs MMS zero-shot: Δ −0.69 (−1.23 to −0.15). † With seeds 7 and 13 the sign is the same, but
+    the CIs include 0: −0.38 (−0.93 to 0.18) and −0.32 (−0.83 to 0.21). The robust finding is "no gain on
+    FLEURS", not a significant loss. The CER loss holds for all three seeds (Δ CER −0.72 and −0.69 for seeds
+    7 and 13, CIs excluding 0).
 
 *Follow-up (round 2, reused test set):*
 - **CV ka**:
@@ -316,7 +338,9 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
   Turbo r1 and r2 are two training runs with the same recipe and seed. Their CV test WERs differ by 0.08 points;
   the CI (−0.06 to 0.24) is only the test-sampling uncertainty of that difference. Two runs cannot estimate
   training variance. For our best system (MMS adapter FT, ± decoder), seeds 7 and 13 were therefore trained as
-  well (round 3, §4).
+  well (round 3, §4). Their seed SD is ≤ 0.20 WER points on test. That covers the MMS rows only. The Whisper
+  turbo FT has two runs with the same seed, and its training variance remains unmeasured. Seeds also differed in GPU
+  type (A100 for 42 and 13, RTX 4070 SUPER for 7), so the spread includes hardware nondeterminism.
 - **Speed in the results tables is not comparable across rows.** RTFx there was measured on whatever hardware each
   run used (A100, L4, RTX 4070 SUPER, CPU). The same-GPU benchmark in §4 is the comparable one. Its 500-clip CV dev
   slice contains no clip over 14 s, so it times the chunked r2 decoder without any chunking.
