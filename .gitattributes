@@ -6,3 +6,4 @@
 *.wav binary
 *.flac binary
 *.mp3 binary
+src/asrbench/ARCHIVE_COMMIT export-subst

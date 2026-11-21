@@ -44,11 +44,25 @@ def hardware() -> dict:
     return info
 
 
+def _archive_commit() -> str | None:
+    """Commit of a `git archive` export (no .git dir, e.g. a Colab VM): git fills ARCHIVE_COMMIT via export-subst."""
+    try:
+        sha = (Path(__file__).resolve().parent / "ARCHIVE_COMMIT").read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    return sha if len(sha) == 40 and all(c in "0123456789abcdef" for c in sha) else None
+
+
 def capture() -> dict:
     status = _git("status", "--porcelain", "--untracked-files=no")  # run outputs are untracked until committed
-    return {
-        "git_commit": _git("rev-parse", "HEAD"),
+    commit = _git("rev-parse", "HEAD")
+    out = {
+        "git_commit": commit,
         "git_dirty": bool(status) if status is not None else None,
         "packages": package_versions(),
         "hardware": hardware(),
     }
+    if commit is None and (sha := _archive_commit()):
+        out["git_commit"] = sha
+        out["source"] = "git archive (export-subst); local edits after export are not detectable"
+    return out
