@@ -1,11 +1,9 @@
 # Project requirements
 
 Sources:
-- **L#** = `materials/course/week09-asr-lecture.pptx`, slide #
-- **S#** = `materials/course/week09-asr-study.pptx`, slide #
+- **L#** = Week 9 course lecture deck (`week09-asr-lecture.pptx`, course material — not redistributed in this repo), slide #
+- **S#** = Week 9 course study deck (`week09-asr-study.pptx`, course material — not redistributed in this repo), slide #
 - **A1** = the announcement "Project 3 Baselines and Bonus Points" (`materials/course/announcement-2026-11-17-baselines-and-bonus.md`). It is newer than the decks, so **where they disagree, A1 wins.**
-
-The searchable text, including the speaker notes, is in `materials/text/week09-asr-*.txt`. Search for `## Slide N`.
 
 > The decks say "the project"; A1 calls it "Project 3", which confirms they are the same project.
 >

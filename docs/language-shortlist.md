@@ -1,6 +1,6 @@
 # Language shortlist (research snapshot, 2026-11-17)
 
-This is a neutral list of candidates. **Cross out any language that is ineligible for you** (rule 2 in AGENTS.md: no mother tongue, never recorded here), and check the class register for languages other groups have already claimed (A1). Every number has a source URL. Anything not checked against a primary source is marked **unverified**.
+This is a neutral list of candidates. **Cross out any language that is ineligible for you** (rule 2 in `docs/project-requirements.md`: no mother tongue, never recorded here), and check the class register for languages other groups have already claimed (A1). Every number has a source URL. Anything not checked against a primary source is marked **unverified**.
 
 Constraints assumed: one MAIN language (zero-shot baselines plus our own fine-tune of Whisper-small and/or XLS-R-300M / MMS CTC on one RTX 4070 SUPER 12 GB), and 1–3 EXTRA languages (baselines only, maybe a second fine-tune).
 
