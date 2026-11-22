@@ -309,7 +309,8 @@ percentage points, with a 95 % paired cluster-bootstrap CI. **Positive means our
      the 14–15 s row suggest, the second piece is a short tail of at most a few seconds, often mostly silence.
      Whisper fills such a tail with a repetition loop. The 49 looping clips
      hold 1,049 of the 1,441 insertions (73 %). On CV test, 6 of the 7 clips over 14 s loop the same way, which
-     accounts for the whole 12.71 → 12.84 % change. On clips over 16 s, chunking *halved* WER. The truncation
+     account for the whole 12.71 → 12.84 % change. On clips of 16 s or more (94 clips pooled), chunking cut WER by
+     41 % relative (45.10 → 26.45 %). The truncation
      diagnosis was right. The splitter was wrong: no minimum piece length and no overlap, against S70/L39. A
      balanced splitter (`split_balanced`: equal pieces, no short tail) is now in the harness, but it was not
      evaluated as a chunking decoder, because that would be a third use of this test set. (Plain r2's long-clip

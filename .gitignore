@@ -4,20 +4,25 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
-# Large/local data and model caches (keep manifests + predictions in git, not raw audio)
+# Large/local raw audio caches (cleaned text manifests + CLEANING.md are committed under data/)
 data/*
 !data/README.md
+!data/CLEANING.md
+!data/manifests/
 # Scratch / smoke-test runs (prefix with _). Real runs under runs/ are deliverables: commit them.
 runs/_*/
 *.ckpt
-# Fine-tuned weights from `asrbench train` (the small train manifests go to runs/train_*/ and are committed)
+# Full multi-GB fine-tuned weights from `asrbench train` (small 8.7 MB MMS adapters are committed under artifacts/)
 checkpoints/
 *.safetensors
+!artifacts/mms-kat-adapters/**/*.safetensors
 .cache/
 # OS
 .DS_Store
 Thumbs.db
 
-# Word n-gram LMs for CTC decoding (regenerable: recipes/kaldi-gmm-ka stage 1, gunzipped)
-lm/
+# Uncompressed word n-gram LM at root (gzipped ARPA is committed under artifacts/lm/)
+/lm/
 .venv-*/
+# Temporary rendered slide PNG previews
+presentation/preview_slides/

@@ -190,8 +190,8 @@ KA_INTRO = ["# Georgian results (our language)", "",
             "23% on the newest). Its CV numbers are not a fair comparison; FLEURS ka test (held out by NVIDIA) is.", "",
             "The MFCC + GMM-HMM rows are a classical baseline we trained from scratch (`recipes/kaldi-gmm-ka/`) on the "
             "same CV train split, on CPU. Unlike the neural baselines (greedy / beam decoding without an external LM) it "
-            "decodes with a trigram LM built from CV train transcripts (no dev/test text; 0.1% of dev/test sentences "
-            "occur verbatim in train, `docs/split-audit.md`) and a closed 91k-word vocabulary (OOV: 5.6% of CV dev "
+            "decodes with a trigram LM built from CV train transcripts (no dev/test text; 0 raw verbatim dev/test sentences "
+            "in train, 0.1% after normalization, `docs/split-audit.md`) and a closed 91k-word vocabulary (OOV: 5.6% of CV dev "
             "tokens, 14.8% of FLEURS dev). LM weight and insertion penalty were selected on CV dev "
             "(`recipes/kaldi-gmm-ka/decode-frozen.yaml`). Its output has no case or punctuation, so only normalized "
             "WER/CER apply. RTFx is wall clock on 8 parallel CPU decode jobs, MFCC extraction included.", "",

@@ -5,43 +5,38 @@ description = "Reproducible multilingual (non-English) ASR evaluation harness fo
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
-    "jiwer>=3.1",
-    "numpy>=1.26",
-    "soundfile>=0.12",
-    "soxr>=0.4",
-    "pyyaml>=6.0",
-    "huggingface-hub[hf_xet]>=0.26",
-    "regex>=2024.0",
+    "jiwer==4.0.0",
+    "numpy==1.26.4",
+    "soundfile==0.14.0",
+    "soxr==1.1.0",
+    "pyyaml==6.0.3",
+    "huggingface-hub[hf_xet]==0.36.2",
+    "regex==2026.11.15",
 ]
 
 [project.optional-dependencies]
-# Transformers-based models: Whisper (multilingual) and wav2vec2/XLS-R CTC fine-tunes.
+# Transformers-based models: Whisper (multilingual) and wav2vec2/XLS-R/MMS CTC fine-tunes.
 hf = [
-    "torch>=2.5",
-    "transformers>=4.46",
-    "accelerate>=1.0",
+    "torch==2.14.1",
+    "transformers==4.57.6",
+    "accelerate==1.12.0",
 ]
 # Word n-gram LM beam search for CTC models (pyctcdecode + KenLM). KenLM builds on Linux/WSL only.
 lm = [
     "pyctcdecode==0.5.0",
     "kenlm==0.3.0; sys_platform == 'linux'",
 ]
-# NVIDIA NeMo models (Canary v2, Parakeet TDT v3). NeMo is best supported on Linux/WSL.
+# NVIDIA NeMo models (FastConformer ka). NeMo is best supported on Linux/WSL in its own venv.
 nemo = [
-    "torch>=2.5",
-    "nemo_toolkit[asr]>=2.4",
-]
-# Qwen3-ASR (needs a CUDA GPU with bfloat16).
-qwen = [
-    "torch>=2.5",
-    "qwen-asr",
+    "torch==2.14.1",
+    "nemo_toolkit[asr]==3.0.0",
 ]
 
 [project.scripts]
 asrbench = "asrbench.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=8"]
+dev = ["pytest==9.2.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -66,4 +61,4 @@ torch = [{ index = "pytorch-cu130", marker = "sys_platform == 'win32' or sys_pla
 
 [tool.uv]
 # Keep the same torch release on every platform (the CUDA index lags PyPI).
-constraint-dependencies = ["torch==2.14.*"]
+constraint-dependencies = ["torch==2.14.1"]

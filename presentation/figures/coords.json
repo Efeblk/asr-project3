@@ -1,0 +1,68 @@
+{
+  "benchmark": {
+    "img_size": [
+      2684,
+      1155
+    ],
+    "nvidia_fl": [
+      1151.0,
+      550.0
+    ],
+    "whisper_ortho": [
+      2344.9,
+      726.3
+    ],
+    "whisper_cv_end": [
+      1203.2,
+      715.2
+    ],
+    "mms_lm_cv": [
+      1061.6,
+      904.9
+    ],
+    "mms_lm_fl_end": [
+      1300.1,
+      929.5
+    ],
+    "mms_lm_rtfx": [
+      2542.8,
+      916.1
+    ]
+  },
+  "data_and_metrics": {
+    "img_size": [
+      2684,
+      935
+    ],
+    "nvidia_cliff": [
+      1193.0,
+      444.4
+    ],
+    "kaldi_cer": [
+      1763.9,
+      637.8
+    ],
+    "mms_greedy_cer": [
+      2029.0,
+      694.1
+    ],
+    "whisper_ortho_bar": [
+      2225.2,
+      543.4
+    ]
+  },
+  "diagnostics": {
+    "img_size": [
+      2684,
+      1089
+    ],
+    "tail_spike": [
+      542.6,
+      287.5
+    ],
+    "lm_delta": [
+      2519.2,
+      274.3
+    ]
+  }
+}
